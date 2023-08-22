@@ -36,7 +36,7 @@ fn Layout<'a>(cx: Scope<'a, LayoutProps<'a>>) -> Element {
             title { "{cx.props.title}" }
         }
 
-        body { class: "{bg_background()} flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75",
+        body { class: "{bg_background()} dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75",
             &cx.props.children,
             MainJs {}
         }
@@ -50,7 +50,7 @@ fn horizontal_center_fixed() -> &'static str {
 fn Body(cx: Scope) -> Element {
     dbg!("Body");
     cx.render(rsx!(
-        main { class: "", h1 { "Hello, squirrld!" } }
+        main { class: "", h1 { "Hello, squirrel!" } }
     ))
 }
 
