@@ -50,7 +50,7 @@ fn horizontal_center_fixed() -> &'static str {
 fn Body(cx: Scope) -> Element {
     dbg!("Body");
     cx.render(rsx!(
-        main { class: "", h1 { "Hello, world!" } }
+        main { class: "", h1 { "Hello, squirrld!" } }
     ))
 }
 

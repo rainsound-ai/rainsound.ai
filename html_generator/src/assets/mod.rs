@@ -95,6 +95,11 @@ impl Default for Assets {
     }
 }
 
+// fn save_build_time() {
+//     let mut file = fs::File::create("../target/build_time.txt").unwrap();
+//     let build_time = chrono::Local::now().to_rfc3339();
+//     write!(file, "{}", build_time).ok();
+// }
 impl NonHtmlAssets {
     pub fn new() -> NonHtmlAssets {
         println!("main.css");
@@ -118,7 +123,7 @@ impl NonHtmlAssets {
         println!("build_time.txt");
         let build_time = TextAsset {
             asset_path: "build-time",
-            content: include_str!("../../../target/build_time.txt"),
+            content: chrono::Local::now().to_rfc3339(),
         };
 
         let images = ImageAssets::new();

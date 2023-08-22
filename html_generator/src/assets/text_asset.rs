@@ -3,7 +3,7 @@ use crate::prelude::*;
 #[derive(PartialEq)]
 pub struct TextAsset {
     pub asset_path: &'static str,
-    pub content: &'static str,
+    pub content: String,
 }
 
 impl NonImageAsset for TextAsset {
