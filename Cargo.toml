@@ -61,7 +61,7 @@ build_browser_production = [
 ]
 
 build_html = "cargo run"
-serve_static_files = "./target/cargo_install/bin/simple-http-server --port 3000 built"
+serve_static_files = "./target/cargo_install/bin/simple-http-server --port 3000 --nocache built"
 
 # Tailwind
 watch_tailwind = "npx --prefix ./target/node_modules tailwindcss -i ./html_generator/src/main.css -o ./target/tailwind/built.css --watch"

@@ -18,7 +18,7 @@ pub fn start_checking_for_updates() {
 static original_build_time_cell: OnceCell<DateTime<Local>> = OnceCell::new();
 
 async fn check_for_updates() {
-    log!("Checking for updates.");
+    log!("Checking for updates!");
     if new_version_available().await {
         // Reload page.
         BrowserHistory::new().go(0);
@@ -49,7 +49,7 @@ async fn new_version_available() -> bool {
 }
 
 async fn get_most_recent_build_time() -> Result<DateTime<Local>, gloo::net::Error> {
-    let response = Request::get("/build-time").send().await?;
+    let response = Request::get("/site-build-time").send().await?;
 
     if !response.ok() {
         let status_code = response.status();
