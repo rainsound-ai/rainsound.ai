@@ -1,0 +1,74 @@
+[workspace]
+members = ["browser", "html_generator", "shared"]
+
+[profile.release]
+# Tell `rustc` to optimize for small code size.
+opt-level = "s"
+lto = true
+
+# Always build the image crate with optimizations enabled, even in debug mode.
+[profile.dev.package.image]
+opt-level = 3
+
+# For cargo-commander.
+[commands]
+dev = { parallel = true, cmd = [
+    "cargo cmd watch_tailwind",
+    "cargo cmd watch_rust",
+] }
+build = [
+    "cargo cmd build_tailwind_production",
+    "cargo cmd build_rust_production",
+]
+preview = ["cargo cmd build", "cargo cmd serve_static_files"]
+deploy = [
+    "cargo cmd build",
+    "git add --all",
+    "git commit -m 'Deploy.'",
+    "git push",
+]
+setup = [
+    "cargo install cargo-watch --version 8.4.0 --root ./target/cargo_install",
+    "cargo install wasm-pack --version 0.12.1 --root ./target/cargo_install",
+    "cargo install wasm-opt --version 0.114.0 --root ./target/cargo_install",
+    "cargo install simple-http-server --version 0.6.7 --root ./target/cargo_install",
+    "cargo install twiggy --version 0.7.0 --root ./target/cargo_install",
+    "rm -rf ./target/node_modules && npm install && mv node_modules ./target/node_modules",
+]
+
+# Rust
+watch_rust = "./target/cargo_install/bin/cargo-watch --watch ./html_generator --watch ./browser --watch ./shared -x 'cmd build_rust_dev'"
+
+build_rust_dev = [
+    "cargo cmd build_browser_dev",
+    "cargo cmd build_html",
+    "cargo cmd serve_static_files",
+]
+
+build_rust_production = [
+    "cargo cmd build_browser_production",
+    "cargo cmd build_html",
+]
+
+build_browser_dev = "cd browser && ../target/cargo_install/bin/wasm-pack build --target web --out-dir ../target/browser --out-name browser --dev --features dev"
+# Remove the dev feature, but keep debug symbols so Twiggy's output is more useful.
+build_browser_for_bundle_size_analysis = "cd browser && ../target/cargo_install/bin/wasm-pack build --target web --out-dir ../target/browser --out-name browser --dev"
+build_browser_production = [
+    # Build.
+    "cd browser && ../target/cargo_install/bin/wasm-pack build --target web --out-dir ../target/browser --out-name browser --release",
+    # Optimize wasm size.
+    "cd browser && ../target/cargo_install/bin/wasm-opt -Os -o ../target/browser/browser_bg.wasm ../target/browser/browser_bg.wasm",
+]
+
+build_html = "cargo run"
+serve_static_files = "./target/cargo_install/bin/simple-http-server --port 3000 built"
+
+# Tailwind
+watch_tailwind = "npx --prefix ./target/node_modules tailwindcss -i ./html_generator/src/main.css -o ./target/tailwind/built.css --watch"
+build_tailwind_production = "npx --prefix ./target/node_modules tailwindcss -i ./html_generator/src/main.css -o ./target/tailwind/built.css --minify"
+
+# Bundle size.
+analyze_bundle_size = [
+    "cargo cmd build_browser_production",
+    "./target/cargo_install/bin/twiggy target/browser/browser_bg.wasm",
+]
