@@ -4,6 +4,7 @@ use crate::prelude::*;
 pub struct JsAsset {
     pub asset_path: &'static str,
     pub contents: &'static str,
+    pub size_budget: NumBytes,
 }
 
 impl JsAsset {
@@ -19,6 +20,16 @@ impl JsAsset {
         )
         .unwrap();
         out
+    }
+}
+
+impl HasSizeBudget for JsAsset {
+    fn size_budget(&self) -> NumBytes {
+        self.size_budget
+    }
+
+    fn check_size_budget(&self) -> HowCloseToBudget {
+        NonImageAsset::check_size_budget(self)
     }
 }
 

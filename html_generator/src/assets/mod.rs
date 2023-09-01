@@ -1,33 +1,37 @@
 use crate::prelude::*;
+use arraygen::Arraygen;
 use once_cell::sync::Lazy;
-use rayon::prelude::*;
-use std::collections::HashSet;
 use std::fs;
 use std::path::{Path, PathBuf};
 
 mod asset_path;
-pub use asset_path::*;
+pub use self::asset_path::*;
 
 mod css_asset;
-use css_asset::*;
+use self::css_asset::*;
 
 mod html_asset;
-use html_asset::*;
+use self::html_asset::*;
 
 mod image_asset;
-pub use image_asset::*;
+pub use self::image_asset::*;
 
 mod js_asset;
-use js_asset::*;
+use self::js_asset::*;
+
+mod size_budget;
+pub use self::size_budget::*;
 
 mod text_asset;
-use text_asset::*;
+use self::text_asset::*;
 
 mod wasm_asset;
-use wasm_asset::*;
+use self::wasm_asset::*;
 
 pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
 
+#[derive(Arraygen)]
+#[gen_array(fn html_assets_with_size_budget: &dyn HasSizeBudget, implicit_select_all: HtmlAsset)]
 pub struct Assets {
     index_html: HtmlAsset,
 }
@@ -38,7 +42,8 @@ pub struct Assets {
 // If we didn't do this, we'd have a circular dependency.
 // This causes problems. For example, it can lead to
 // deadlocking if we're using a lazily initialized global variable.
-#[derive(PartialEq)]
+#[derive(PartialEq, Arraygen)]
+#[gen_array(fn assets_with_size_budget: &dyn HasSizeBudget, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
 pub struct NonHtmlAssets {
     pub main_css: CssAsset,
     pub browser_js: JsAsset,
@@ -52,19 +57,29 @@ pub struct ImageAssets {
     // pub hasui_hero: LightDarkImageAsset,
 }
 
-pub trait NonImageAsset {
+pub trait NonImageAsset: HasSizeBudget {
     fn asset_path(&self) -> &str;
 
     fn bytes(&self) -> Vec<u8>;
 
     fn save_to_disk(&self, built_dir: &Path) {
         println!("Saving asset: {:?}", self.asset_path());
-        let path = Assets::path_on_disk(built_dir, self.asset_path());
+        let path = self.path_on_disk(built_dir);
+
         if let Err(error) = fs::remove_file(&path) {
             println!("Error removing file: {}", error);
         }
         let bytes = self.bytes();
         fs::write(path, bytes).unwrap();
+    }
+
+    fn check_size_budget(&self) -> HowCloseToBudget {
+        let size_in_bytes = self.bytes().len();
+        HowCloseToBudget::from_num_bytes(size_in_bytes, self.size_budget())
+    }
+
+    fn path_on_disk(&self, built_dir: &Path) -> PathBuf {
+        Assets::path_on_disk(built_dir, self.asset_path())
     }
 }
 
@@ -73,15 +88,28 @@ impl Assets {
         let index_html = HtmlAsset {
             asset_path: "index.html",
             contents: crate::routes::get(),
+            size_budget: NumBytes(1),
         };
 
         Assets { index_html }
     }
 
-    pub fn save_to_disk(&self, built_dir: &Path) {
+    pub fn built_dir() -> PathBuf {
+        manifest::dir().join("built")
+    }
+
+    pub fn save_to_disk(&self) {
+        let built_dir = Self::built_dir();
+
+        println!("Creating built folder.");
+        if let Err(error) = fs::create_dir(&built_dir) {
+            println!("Error creating built folder: {}", error);
+        }
+
+        println!("Saving assets to disk.");
         println!("index.html");
-        self.index_html.save_to_disk(built_dir);
-        non_html_assets.save_to_disk(built_dir);
+        self.index_html.save_to_disk(&built_dir);
+        non_html_assets.save_to_disk(&built_dir);
     }
 
     fn path_on_disk(build_dir: &Path, asset_path: impl Into<String>) -> PathBuf {
@@ -101,24 +129,28 @@ impl NonHtmlAssets {
         let main_css = CssAsset {
             asset_path: "main.css",
             contents: include_str!("../../../target/tailwind/built.css"),
+            size_budget: NumBytes(1),
         };
 
         println!("browser.js");
         let browser_js = JsAsset {
             asset_path: "browser.js",
             contents: include_str!("../../../target/browser/browser.js"),
+            size_budget: NumBytes(1),
         };
 
         println!("browser_bg.wasm");
         let browser_bg_wasm = WasmAsset {
             asset_path: "browser_bg.wasm",
             bytes: include_bytes!("../../../target/browser/browser_bg.wasm"),
+            size_budget: NumBytes(1),
         };
 
         println!("build_time.txt");
         let build_time = TextAsset {
             asset_path: "site-build-time",
             content: chrono::Local::now().to_rfc3339(),
+            size_budget: NumBytes(1),
         };
 
         let images = ImageAssets::new();
@@ -202,5 +234,39 @@ impl ImageAssets {
         //     .for_each(|resized_image_asset| {
         //         resized_image_asset.save_to_disk(built_dir, &paths_of_files_in_built_dir);
         //     });
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_bundle_size() {
+        let assets = Assets::new();
+        let html_assets_with_size_budget = assets.html_assets_with_size_budget();
+        let non_html_assets_with_size_budget = non_html_assets.assets_with_size_budget();
+
+        let assets_with_size_budget: Vec<&dyn HasSizeBudget> = html_assets_with_size_budget
+            .into_iter()
+            .chain(non_html_assets_with_size_budget.into_iter())
+            .collect::<Vec<_>>();
+
+        for asset in assets_with_size_budget {
+            let how_close_to_budget = asset.check_size_budget();
+
+            match how_close_to_budget {
+                HowCloseToBudget::WellBelowBudget => {}
+
+                HowCloseToBudget::CloseToBudget { .. } => {
+                    println!("{}", how_close_to_budget);
+                }
+
+                HowCloseToBudget::OverBudget { .. } => {
+                    println!("{}", how_close_to_budget);
+                    panic!("Asset is over budget.");
+                }
+            }
+        }
     }
 }

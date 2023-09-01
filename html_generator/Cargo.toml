@@ -23,5 +23,6 @@ rayon = "1.7.0"
 tree_magic = "0.2.3"
 base64 = { version = "0.21.2" }
 chrono = "0.4.26"
+arraygen = "0.3.2"
 
 [build-dependencies]

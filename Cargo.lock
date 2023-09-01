@@ -59,6 +59,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "arraygen"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d18fb8e389fd57e0a796f7aca8785c788c24e51efb39bda68d4fb09fa7566888"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
 name = "askama_escape"
 version = "0.10.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1050,6 +1061,7 @@ checksum = "443144c8cdadd93ebf52ddb4056d257f5b52c04d3c804e657d19eb73fc33668b"
 name = "html_generator"
 version = "0.1.0"
 dependencies = [
+ "arraygen",
  "base64",
  "chrono",
  "color-eyre",
