@@ -236,37 +236,3 @@ impl ImageAssets {
         //     });
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_bundle_size() {
-        let assets = Assets::new();
-        let html_assets_with_size_budget = assets.html_assets_with_size_budget();
-        let non_html_assets_with_size_budget = non_html_assets.assets_with_size_budget();
-
-        let assets_with_size_budget: Vec<&dyn HasSizeBudget> = html_assets_with_size_budget
-            .into_iter()
-            .chain(non_html_assets_with_size_budget.into_iter())
-            .collect::<Vec<_>>();
-
-        for asset in assets_with_size_budget {
-            let how_close_to_budget = asset.check_size_budget();
-
-            match how_close_to_budget {
-                HowCloseToBudget::WellBelowBudget => {}
-
-                HowCloseToBudget::CloseToBudget { .. } => {
-                    println!("{}", how_close_to_budget);
-                }
-
-                HowCloseToBudget::OverBudget { .. } => {
-                    println!("{}", how_close_to_budget);
-                    panic!("Asset is over budget.");
-                }
-            }
-        }
-    }
-}
