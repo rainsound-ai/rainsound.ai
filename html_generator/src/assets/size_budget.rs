@@ -1,24 +1,27 @@
-use std::fmt::Display;
+use std::{fmt::Display, path::Path};
 
 use super::NonImageAsset;
 
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub struct NumBytes(pub usize);
 
-pub enum HowCloseToBudget {
+pub enum HowCloseToBudget<'asset> {
     WellBelowBudget,
     CloseToBudget {
+        path: &'asset Path,
         actual_size: NumBytes,
         budget: NumBytes,
     },
     OverBudget {
+        path: &'asset Path,
         actual_size: NumBytes,
         budget: NumBytes,
     },
 }
 
-impl HowCloseToBudget {
+impl HowCloseToBudget<'_> {
     pub fn new(asset: &dyn NonImageAsset) -> Self {
+        let path = asset.path();
         let actual_size = asset.bytes().len();
         let budget = asset.size_budget().0;
         let half_of_budget = budget / 2;
@@ -29,37 +32,45 @@ impl HowCloseToBudget {
 
         if (half_of_budget..=budget).contains(&actual_size) {
             return HowCloseToBudget::CloseToBudget {
+                path,
                 actual_size: NumBytes(actual_size),
                 budget: NumBytes(budget),
             };
         }
 
         HowCloseToBudget::OverBudget {
+            path,
             actual_size: NumBytes(actual_size),
             budget: NumBytes(budget),
         }
     }
 }
 
-impl Display for HowCloseToBudget {
+impl Display for HowCloseToBudget<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            HowCloseToBudget::WellBelowBudget => write!(f, "Well below budget"),
+            HowCloseToBudget::WellBelowBudget => Ok(()),
             HowCloseToBudget::CloseToBudget {
+                path,
                 actual_size,
                 budget,
             } => write!(
                 f,
-                "Close to budget ({} bytes out of {} bytes)",
-                actual_size.0, budget.0
+                "{} is close to budget ({} bytes out of {} bytes)",
+                path.to_str().unwrap(),
+                actual_size.0,
+                budget.0
             ),
             HowCloseToBudget::OverBudget {
+                path,
                 actual_size,
                 budget,
             } => write!(
                 f,
-                "Over budget ({} bytes out of {} bytes)",
-                actual_size.0, budget.0
+                "{} is over budget ({} bytes out of {} bytes)",
+                path.to_str().unwrap(),
+                actual_size.0,
+                budget.0
             ),
         }
     }
