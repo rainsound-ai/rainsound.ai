@@ -1,6 +1,14 @@
-use std::{fmt::Display, path::Path};
+use std::{fmt::Display, path::Path, time::Duration};
 
 use super::NonImageAsset;
+
+// Assuming 10 Mbps download speed, which seems like a conservative
+// estimate for mobile phones.
+//
+// Should also factor in typical latency and parsing time.
+pub fn loading_time_budget(duration: Duration) -> NumBytes {
+    //
+}
 
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub struct NumBytes(pub usize);
