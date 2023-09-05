@@ -18,7 +18,7 @@ pub enum HowCloseToBudget {
 }
 
 impl HowCloseToBudget {
-    pub fn new(asset: &dyn NonImageAsset) -> Self {
+    pub fn new<Asset: NonImageAsset + ?Sized>(asset: &Asset) -> Self {
         let actual_size = asset.bytes().len();
         let budget = asset.size_budget().0;
         let half_of_budget = budget / 2;
