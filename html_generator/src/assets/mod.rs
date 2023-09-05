@@ -36,7 +36,7 @@ pub use self::wasm_asset::*;
 pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
 
 #[derive(Arraygen)]
-#[gen_array(fn html_assets_with_size_budget: &dyn HasSizeBudget, implicit_select_all: HtmlAsset)]
+#[gen_array(fn html_assets_with_size_budget: &dyn NonImageAsset, implicit_select_all: HtmlAsset)]
 pub struct Assets {
     html_assets: Vec<HtmlAsset>,
 }
@@ -48,7 +48,7 @@ pub struct Assets {
 // This causes problems. For example, it can lead to
 // deadlocking if we're using a lazily initialized global variable.
 #[derive(PartialEq, Arraygen)]
-#[gen_array(fn assets_with_size_budget: &dyn HasSizeBudget, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
+#[gen_array(fn assets_with_size_budget: &dyn NonImageAsset, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
 pub struct NonHtmlAssets {
     pub main_css: CssAsset,
     pub browser_js: JsAsset,
@@ -62,7 +62,7 @@ pub struct ImageAssets {
     pub hasui_hero: LightDarkImageAsset,
 }
 
-pub trait NonImageAsset: HasSizeBudget {
+pub trait NonImageAsset {
     fn path(&self) -> &Path;
 
     fn bytes(&self) -> Vec<u8>;
@@ -88,6 +88,8 @@ pub trait NonImageAsset: HasSizeBudget {
     fn path_on_disk(&self, built_dir: &Path) -> PathBuf {
         Assets::path_on_disk(built_dir, self.path())
     }
+
+    fn size_budget(&self) -> NumBytes;
 }
 
 impl Assets {

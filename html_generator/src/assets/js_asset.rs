@@ -25,16 +25,6 @@ impl JsAsset {
     }
 }
 
-impl HasSizeBudget for JsAsset {
-    fn size_budget(&self) -> NumBytes {
-        self.size_budget
-    }
-
-    fn check_size_budget(&self) -> HowCloseToBudget {
-        NonImageAsset::check_size_budget(self)
-    }
-}
-
 impl NonImageAsset for JsAsset {
     fn path(&self) -> &Path {
         &self.path
@@ -46,5 +36,9 @@ impl NonImageAsset for JsAsset {
 
         // Minified.
         self.minified_contents()
+    }
+
+    fn size_budget(&self) -> NumBytes {
+        self.size_budget
     }
 }

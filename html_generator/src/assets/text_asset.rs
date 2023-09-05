@@ -9,16 +9,6 @@ pub struct TextAsset {
     pub size_budget: NumBytes,
 }
 
-impl HasSizeBudget for TextAsset {
-    fn size_budget(&self) -> NumBytes {
-        self.size_budget
-    }
-
-    fn check_size_budget(&self) -> HowCloseToBudget {
-        NonImageAsset::check_size_budget(self)
-    }
-}
-
 impl NonImageAsset for TextAsset {
     fn path(&self) -> &Path {
         &self.path
@@ -26,5 +16,9 @@ impl NonImageAsset for TextAsset {
 
     fn bytes(&self) -> Vec<u8> {
         self.content.as_bytes().to_vec()
+    }
+
+    fn size_budget(&self) -> NumBytes {
+        self.size_budget
     }
 }

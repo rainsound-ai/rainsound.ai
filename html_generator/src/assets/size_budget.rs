@@ -3,11 +3,6 @@ use std::fmt::Display;
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub struct NumBytes(pub usize);
 
-pub trait HasSizeBudget {
-    fn size_budget(&self) -> NumBytes;
-    fn check_size_budget(&self) -> HowCloseToBudget;
-}
-
 pub enum HowCloseToBudget {
     WellBelowBudget,
     CloseToBudget {
@@ -78,7 +73,7 @@ mod tests {
         let html_assets_with_size_budget = assets.html_assets_with_size_budget();
         let non_html_assets_with_size_budget = non_html_assets.assets_with_size_budget();
 
-        let assets_with_size_budget: Vec<&dyn HasSizeBudget> = html_assets_with_size_budget
+        let assets_with_size_budget: Vec<&dyn NonImageAsset> = html_assets_with_size_budget
             .into_iter()
             .chain(non_html_assets_with_size_budget.into_iter())
             .collect::<Vec<_>>();

@@ -17,16 +17,6 @@ impl HtmlAsset {
     }
 }
 
-impl HasSizeBudget for HtmlAsset {
-    fn size_budget(&self) -> NumBytes {
-        self.size_budget
-    }
-
-    fn check_size_budget(&self) -> HowCloseToBudget {
-        NonImageAsset::check_size_budget(self)
-    }
-}
-
 impl NonImageAsset for HtmlAsset {
     fn path(&self) -> &Path {
         &self.path
@@ -38,5 +28,9 @@ impl NonImageAsset for HtmlAsset {
 
         // Minified.
         self.minified_contents()
+    }
+
+    fn size_budget(&self) -> NumBytes {
+        self.size_budget
     }
 }

@@ -9,16 +9,6 @@ pub struct CssAsset {
     pub size_budget: NumBytes,
 }
 
-impl HasSizeBudget for CssAsset {
-    fn size_budget(&self) -> NumBytes {
-        self.size_budget
-    }
-
-    fn check_size_budget(&self) -> HowCloseToBudget {
-        NonImageAsset::check_size_budget(self)
-    }
-}
-
 impl NonImageAsset for CssAsset {
     fn path(&self) -> &Path {
         &self.path
@@ -26,5 +16,9 @@ impl NonImageAsset for CssAsset {
 
     fn bytes(&self) -> Vec<u8> {
         self.contents.as_bytes().to_vec()
+    }
+
+    fn size_budget(&self) -> NumBytes {
+        self.size_budget
     }
 }
