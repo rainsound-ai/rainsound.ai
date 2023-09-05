@@ -1,8 +1,10 @@
+use std::path::{Path, PathBuf};
+
 use crate::prelude::*;
 
 #[derive(PartialEq)]
 pub struct TextAsset {
-    pub asset_path: &'static str,
+    pub path: PathBuf,
     pub content: String,
     pub size_budget: NumBytes,
 }
@@ -18,8 +20,8 @@ impl HasSizeBudget for TextAsset {
 }
 
 impl NonImageAsset for TextAsset {
-    fn asset_path(&self) -> &str {
-        self.asset_path
+    fn path(&self) -> &Path {
+        &self.path
     }
 
     fn bytes(&self) -> Vec<u8> {

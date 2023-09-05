@@ -1,0 +1,132 @@
+dev() {
+	echo "✨ Starting development server"
+	watch_tailwind &
+	watch_rust
+}
+
+build() {
+	echo "✨ Building for production"
+	build_tailwind_production && build_rust_production
+}
+
+preview() {
+	echo "✨ Previewing production build"
+	build && serve_static_files
+}
+
+deploy() {
+	echo "✨ Deploying"
+	build &&
+		git add --all &&
+		git commit -m "Deploy." &&
+		git push
+}
+
+setup() {
+	echo "✨ Setting up libraries"
+	cargo install cargo-watch --version 8.4.0 --root ./target/cargo_install &&
+		cargo install wasm-pack --version 0.12.1 --root ./target/cargo_install &&
+		cargo install wasm-opt --version 0.114.0 --root ./target/cargo_install &&
+		cargo install simple-http-server --version 0.6.7 --root ./target/cargo_install &&
+		cargo install twiggy --version 0.7.0 --root ./target/cargo_install &&
+		rm -rf ./target/node_modules && npm install && mv node_modules ./target/node_modules
+}
+
+# Semi private 🤷‍♂️
+build_rust_dev() {
+	echo "✨ Building Rust for development"
+	build_browser_dev && build_html && serve_static_files
+}
+
+# Private
+
+watch_rust() {
+	echo "✨ Watching Rust"
+	./target/cargo_install/bin/cargo-watch \
+		--watch ./html_generator \
+		--watch ./browser \
+		--watch ./shared \
+		--shell './scripts build_rust_dev'
+}
+
+build_rust_production() {
+	echo "✨ Building Rust for production"
+	build_browser_production && build_html
+}
+
+build_browser_dev() {
+	echo "✨ Building browser crate for development"
+	cd browser && ../target/cargo_install/bin/wasm-pack build \
+		--target web \
+		--out-dir ../target/browser \
+		--out-name browser \
+		--dev \
+		--features dev
+	cd ..
+}
+
+build_browser_production() {
+	echo "✨ Building browser crate for production"
+	cd browser &&
+		../target/cargo_install/bin/wasm-pack build --target web --out-dir ../target/browser --out-name browser --release &&
+		../target/cargo_install/bin/wasm-opt -Os -o ../target/browser/browser_bg.wasm ../target/browser/browser_bg.wasm
+	cd ..
+}
+
+build_html() {
+	echo "✨ Building HTML"
+	cargo run
+}
+
+serve_static_files() {
+	echo "✨ Serving static files"
+	./target/cargo_install/bin/simple-http-server \
+		--port 3000 \
+		--index \
+		--nocache built
+}
+
+watch_tailwind() {
+	echo "✨ Watching tailwind"
+	npx \
+		--prefix ./target/node_modules tailwindcss \
+		-i ./html_generator/src/main.css \
+		-o ./target/tailwind/built.css \
+		--watch
+}
+
+build_tailwind_production() {
+	echo "✨ Building tailwind for production"
+	npx \
+		--prefix ./target/node_modules tailwindcss \
+		-i ./html_generator/src/main.css \
+		-o ./target/tailwind/built.css \
+		--minify
+}
+
+ARGC=$#
+ARGV=$@
+
+if [ $ARGC -eq 0 ]; then
+	echo "Usage: ./deploy.sh <dev|build|preview|deploy|setup>"
+	exit 1
+fi
+
+for target in $ARGV; do
+	if [ $target == "dev" ]; then
+		dev
+	elif [ $target == "build" ]; then
+		build
+	elif [ $target == "build_rust_dev" ]; then
+		build_rust_dev
+	elif [ $target == "preview" ]; then
+		preview
+	elif [ $target == "deploy" ]; then
+		deploy
+	elif [ $target == "setup" ]; then
+		setup
+	else
+		echo "Unknown script: $target"
+		exit 1
+	fi
+done

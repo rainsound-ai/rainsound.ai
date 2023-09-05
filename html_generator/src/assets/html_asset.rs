@@ -1,7 +1,10 @@
+use std::path::{Path, PathBuf};
+
 use crate::prelude::*;
 
+#[derive(Debug)]
 pub struct HtmlAsset {
-    pub asset_path: &'static str,
+    pub path: PathBuf,
     pub contents: String,
     pub size_budget: NumBytes,
 }
@@ -25,8 +28,8 @@ impl HasSizeBudget for HtmlAsset {
 }
 
 impl NonImageAsset for HtmlAsset {
-    fn asset_path(&self) -> &'static str {
-        self.asset_path
+    fn path(&self) -> &Path {
+        &self.path
     }
 
     fn bytes(&self) -> Vec<u8> {

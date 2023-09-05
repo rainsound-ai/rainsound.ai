@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-#[derive(PartialEq, Clone, Copy)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub struct NumBytes(pub usize);
 
 pub trait HasSizeBudget {
@@ -72,9 +72,9 @@ mod tests {
     use super::*;
     use crate::prelude::*;
 
-    #[test]
-    fn test_bundle_size() {
-        let assets = Assets::new();
+    #[tokio::test]
+    async fn test_bundle_size() {
+        let assets = Assets::new().await;
         let html_assets_with_size_budget = assets.html_assets_with_size_budget();
         let non_html_assets_with_size_budget = non_html_assets.assets_with_size_budget();
 

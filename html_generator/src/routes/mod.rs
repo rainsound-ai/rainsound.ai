@@ -1,63 +1,167 @@
+use std::{path::PathBuf, str::FromStr};
+
 use crate::prelude::*;
 use dioxus::prelude::*;
+use dioxus_router::prelude::*;
+use dioxus_ssr::incremental::{DefaultRenderer, IncrementalRendererConfig};
 
-pub fn get() -> String {
+pub async fn get_pages() -> Vec<HtmlAsset> {
     // create a VirtualDom with the app component
-    let mut app = VirtualDom::new(App);
-
+    // let mut app = VirtualDom::new(App);
     // rebuild the VirtualDom before rendering
-    let _ = app.rebuild();
-
+    // let _ = app.rebuild();
     // render the VirtualDom to HTML
-    dioxus_ssr::render(&app)
+    // dioxus_ssr::render(&app)
+    let temporary_asset_directory = manifest::dir().join("target").join("temp");
+
+    let mut renderer = IncrementalRendererConfig::new()
+        .static_dir(&temporary_asset_directory)
+        .build();
+
+    pre_cache_static_routes::<Route, _>(
+        &mut renderer,
+        &DefaultRenderer {
+            before_body: r#"<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width,
+                initial-scale=1.0">
+                <title>Dioxus Application</title>
+            </head>
+            <body>"#
+                .to_string(),
+            after_body: r#"</body>
+            </html>"#
+                .to_string(),
+        },
+    )
+    .await
+    .unwrap();
+
+    // relative paths with out the file name
+    let paths = Route::SITE_MAP
+        .iter()
+        .flat_map(|route| route.flatten().into_iter())
+        .filter_map(|route| {
+            let segments = &route
+                .iter()
+                .map(|segment| segment.to_string())
+                .collect::<Vec<_>>()
+                .join("")[1..];
+
+            if segments == ":...segments" {
+                return None;
+            }
+
+            Some(PathBuf::from_str(segments).unwrap())
+        })
+        .collect::<Vec<_>>();
+
+    dbg!(&paths);
+
+    let html_assets = paths
+        .into_iter()
+        .map(|cleaned_path| {
+            let temp_path = temporary_asset_directory
+                .join(&cleaned_path)
+                .join("index.html");
+
+            dbg!(&temp_path);
+
+            let contents = fs::read_to_string(temp_path).unwrap();
+            let path = cleaned_path.join("index.html");
+
+            HtmlAsset {
+                path,
+                contents,
+                size_budget: NumBytes(1),
+            }
+        })
+        .collect::<Vec<_>>();
+
+    dbg!(&html_assets);
+
+    html_assets
 }
 
-fn App(cx: Scope) -> Element {
-    cx.render(rsx!(
-        Layout { title: "Taneda Santōka", Body {} }
-    ))
-}
+// ANCHOR: router
+#[rustfmt::skip]
+#[derive(Routable, Clone, PartialEq, Debug)]
+enum Route {
+    #[layout(Layout)]
+        #[route("/")]
+        Home {},  
+        #[route("/contact")]
+        Contact {},  
+    #[end_layout]
 
-#[derive(Props)]
-struct LayoutProps<'a> {
-    title: &'static str,
-    children: Element<'a>,
+    #[route("/:..segments")]
+    NotFound { segments: Vec<String> },
 }
+// ANCHOR_END: router
+
+// #[derive(Props)]
+// struct LayoutProps<'a> {
+//     title: &'static str,
+//     children: Element<'a>,
+// }
 
 // fn Layout(title: &'static str, body: Element) -> Element {
-fn Layout<'a>(cx: Scope<'a, LayoutProps<'a>>) -> Element {
-    dbg!("Layout");
-    cx.render(rsx!(
+#[inline_props]
+fn Layout(cx: Scope) -> Element {
+    render! {
         head {
             meta { charset: "UTF-8" }
             meta { content: "width=device-width, initial-scale=1.0", name: "viewport" }
             meta { http_equiv: "X-UA-Compatible", content: "ie=edge" }
             link { rel: "stylesheet", href: "main.css" }
-            title { "{cx.props.title}" }
         }
 
         body { class: "{bg_background()} dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75",
-            &cx.props.children,
+            nav { class: "flex gap-2 p-2 items-center justify-center w-full",
+                Link { to: Route::Home {}, "Home" }
+                Link { to: Route::Contact {}, "Contact" }
+            }
+            main { Outlet::<Route> {} }
             MainJs {}
         }
-    ))
+    }
 }
 
-fn horizontal_center_fixed() -> &'static str {
-    "left-1/2 transform -translate-x-1/2"
-}
-
-fn Body(cx: Scope) -> Element {
+#[inline_props]
+fn Home(cx: Scope) -> Element {
     dbg!("Body");
-    cx.render(rsx!(
-        main { class: "", h1 { "Hello, squirrel!" } }
-    ))
+    render! {
+        h1 { "Home" }
+        p { "Hello, squirrel!" }
+    }
+}
+
+#[inline_props]
+fn Contact(cx: Scope) -> Element {
+    render! {
+        h1 { "Contact" }
+        p { "This is the contact page." }
+    }
+}
+
+#[inline_props]
+fn NotFound(cx: Scope, segments: Vec<String>) -> Element {
+    render! {
+        h1 { "404" }
+        p { "Page not found." }
+    }
 }
 
 fn MainJs(cx: Scope) -> Element {
     dbg!("MainJs");
     let contents = include_str!("../main.js");
-    cx.render(rsx!( script { "type": "module", dangerous_inner_html: "{contents}" } ))
+    render! { script { "type": "module", dangerous_inner_html: "{contents}" } }
+}
+
+fn horizontal_center_fixed() -> &'static str {
+    "left-1/2 transform -translate-x-1/2"
 }
 
 fn bg_background() -> &'static str {

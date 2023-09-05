@@ -5,6 +5,7 @@ use rayon::prelude::*;
 use std::collections::HashSet;
 use std::io::Cursor;
 use std::path::{Path, PathBuf};
+use std::str::FromStr;
 use std::sync::Arc;
 
 #[derive(PartialEq)]
@@ -14,9 +15,20 @@ pub struct LightDarkImageAsset {
     pub dark_mode: ImageAsset,
 }
 
+impl LightDarkImageAsset {
+    pub fn resized_variants(&self) -> Vec<ResizedImageAsset> {
+        self.light_mode
+            .resized_variants
+            .iter()
+            .chain(self.dark_mode.resized_variants.iter())
+            .cloned()
+            .collect()
+    }
+}
+
 #[derive(PartialEq)]
 pub struct ImageAsset {
-    pub asset_path: String,
+    pub path: PathBuf,
     pub alt: &'static str,
     pub bytes: &'static [u8],
     pub lqip: String,
@@ -33,22 +45,22 @@ pub struct ImageAsset {
 
 impl ImageAsset {
     pub fn new(
-        asset_path: &'static str,
+        path: PathBuf,
         alt: &'static str,
         bytes: &'static [u8],
         // lqip: &'static str,
     ) -> ImageAsset {
-        let asset_path = "images/".to_string() + asset_path;
+        let path = PathBuf::from_str("images/").unwrap().join(path);
         let image = image::load_from_memory(bytes).unwrap();
         let image = Arc::new(image);
         let (width, height) = image.dimensions();
-        let srcset = Self::create_srcset(&asset_path, width);
-        let resized_variants = Self::resized_variants(&asset_path, &image);
+        let srcset = Self::create_srcset(&path, width);
+        let resized_variants = Self::resized_variants(&path, &image);
         let mime_type = tree_magic::from_u8(bytes);
         let lqip = Self::create_lqip(image.clone(), &mime_type);
 
         ImageAsset {
-            asset_path,
+            path,
             alt,
             bytes,
             lqip,
@@ -66,7 +78,12 @@ impl ImageAsset {
         // it's probably an old mobile browser. If that's the case, they
         // also probably don't have a lot of bandwidth so go with the smallest
         // image possible.
-        self.resized_variants.first().unwrap().asset_path.as_str()
+        self.resized_variants
+            .first()
+            .unwrap()
+            .path
+            .to_str()
+            .unwrap()
     }
 
     pub fn srcset(&self) -> &str {
@@ -77,28 +94,26 @@ impl ImageAsset {
         &self.mime_type
     }
 
-    fn resized_variants(
-        asset_path: &str,
-        original_image: &Arc<DynamicImage>,
-    ) -> Vec<ResizedImageAsset> {
+    fn resized_variants(path: &Path, original_image: &Arc<DynamicImage>) -> Vec<ResizedImageAsset> {
         let original_width = original_image.width();
 
         Self::available_widths(original_width)
             .into_par_iter()
             .map(|target_width| ResizedImageAsset {
-                asset_path: Self::asset_path_with_width(asset_path, target_width),
+                path: Self::path_with_width(path, target_width),
                 width: target_width,
                 image: original_image.clone(),
             })
             .collect()
     }
 
-    fn create_srcset(asset_path: &str, image_width: u32) -> String {
+    fn create_srcset(path: &Path, image_width: u32) -> String {
         Self::available_widths(image_width)
             .into_iter()
             .map(|width| {
-                let asset_path_with_width = Self::asset_path_with_width(asset_path, width);
-                format!("{asset_path_with_width} {width}w")
+                let path_with_width = Self::path_with_width(path, width);
+                let path_string = path_with_width.to_str().unwrap();
+                format!("{path_string} {width}w")
             })
             .collect::<Vec<String>>()
             .join(", ")
@@ -115,10 +130,11 @@ impl ImageAsset {
         (100..=4000).step_by(100).collect()
     }
 
-    fn asset_path_with_width(asset_path: &str, width: u32) -> String {
-        map_filename_without_extension(asset_path, |filename_without_extension| {
-            format!("{filename_without_extension}-{width}w")
-        })
+    fn path_with_width(path: &Path, width: u32) -> PathBuf {
+        let old_file_stem = path.file_stem().unwrap().to_str().unwrap();
+        let old_file_extension = path.extension().unwrap().to_str().unwrap();
+        let new_file_name = format!("{}-{}w.{}", old_file_stem, width, old_file_extension);
+        path.with_file_name(new_file_name)
     }
 
     fn create_lqip(image: Arc<DynamicImage>, mime_type: &str) -> String {
@@ -137,9 +153,9 @@ impl ImageAsset {
     }
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone)]
 pub struct ResizedImageAsset {
-    asset_path: String,
+    path: PathBuf,
     width: u32,
     image: Arc<DynamicImage>,
 }
@@ -147,14 +163,14 @@ pub struct ResizedImageAsset {
 impl ResizedImageAsset {
     pub fn save_to_disk(&self, built_dir: &Path, paths_of_files_in_built_dir: &HashSet<PathBuf>) {
         println!("Deciding whether to save resized image to disk");
-        let path = Assets::path_on_disk(built_dir, &self.asset_path);
+        let path = Assets::path_on_disk(built_dir, &self.path);
         if self.needs_to_be_recreated(&path, paths_of_files_in_built_dir) {
             let parent_dir = path.parent().unwrap();
             if !parent_dir.exists() {
                 fs::create_dir_all(parent_dir).unwrap();
             }
 
-            println!("Saving resized image to disk: {:?}", &self.asset_path);
+            println!("Saving resized image to disk: {:?}", &self.path);
             self.image
                 .resize_to_width(self.width)
                 .save_with_format(path, image::ImageFormat::Jpeg)
@@ -165,7 +181,7 @@ impl ResizedImageAsset {
 
         println!(
             "Resized image {} already exists, so skipping saving it to disk.",
-            &self.asset_path
+            &self.path.to_str().unwrap()
         );
     }
 
