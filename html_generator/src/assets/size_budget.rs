@@ -19,8 +19,8 @@ pub enum HowCloseToBudget<'asset> {
     },
 }
 
-impl HowCloseToBudget<'_> {
-    pub fn new(asset: &dyn NonImageAsset) -> Self {
+impl<'asset> HowCloseToBudget<'asset> {
+    pub fn new<Asset: NonImageAsset + ?Sized>(asset: &'asset Asset) -> HowCloseToBudget<'asset> {
         let path = asset.path();
         let actual_size = asset.bytes().len();
         let budget = asset.size_budget().0;
