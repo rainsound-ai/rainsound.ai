@@ -1,5 +1,7 @@
 use std::fmt::Display;
 
+use super::NonImageAsset;
+
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub struct NumBytes(pub usize);
 
@@ -16,8 +18,9 @@ pub enum HowCloseToBudget {
 }
 
 impl HowCloseToBudget {
-    pub fn from_num_bytes(actual_size: usize, budget: NumBytes) -> Self {
-        let budget = budget.0;
+    pub fn new(asset: &dyn NonImageAsset) -> Self {
+        let actual_size = asset.bytes().len();
+        let budget = asset.size_budget().0;
         let half_of_budget = budget / 2;
 
         if (0..=half_of_budget).contains(&actual_size) {

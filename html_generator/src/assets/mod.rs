@@ -81,8 +81,7 @@ pub trait NonImageAsset {
     }
 
     fn check_size_budget(&self) -> HowCloseToBudget {
-        let size_in_bytes = self.bytes().len();
-        HowCloseToBudget::from_num_bytes(size_in_bytes, self.size_budget())
+        HowCloseToBudget::new(self)
     }
 
     fn path_on_disk(&self, built_dir: &Path) -> PathBuf {
