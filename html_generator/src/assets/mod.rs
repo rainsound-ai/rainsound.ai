@@ -7,6 +7,7 @@ use std::collections::HashSet;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
+use std::time::Duration;
 use struct_iterable::Iterable;
 
 mod path;
@@ -24,8 +25,8 @@ pub use self::image_asset::*;
 mod js_asset;
 pub use self::js_asset::*;
 
-mod size_budget;
-pub use self::size_budget::*;
+mod performance_budget;
+pub use self::performance_budget::*;
 
 mod text_asset;
 pub use self::text_asset::*;
@@ -36,7 +37,7 @@ pub use self::wasm_asset::*;
 pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
 
 #[derive(Arraygen)]
-#[gen_array(fn html_assets_with_size_budget: &dyn NonImageAsset, implicit_select_all: HtmlAsset)]
+#[gen_array(fn html_assets_with_performance_budget: &dyn NonImageAsset, implicit_select_all: HtmlAsset)]
 pub struct Assets {
     html_assets: Vec<HtmlAsset>,
 }
@@ -48,7 +49,7 @@ pub struct Assets {
 // This causes problems. For example, it can lead to
 // deadlocking if we're using a lazily initialized global variable.
 #[derive(PartialEq, Arraygen)]
-#[gen_array(fn assets_with_size_budget: &dyn NonImageAsset, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
+#[gen_array(fn assets_with_performance_budget: &dyn NonImageAsset, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
 pub struct NonHtmlAssets {
     pub main_css: CssAsset,
     pub browser_js: JsAsset,
@@ -80,15 +81,16 @@ pub trait NonImageAsset {
         fs::write(path, bytes).unwrap();
     }
 
-    fn check_size_budget(&self) -> HowCloseToBudget {
-        HowCloseToBudget::new(self)
-    }
-
     fn path_on_disk(&self, built_dir: &Path) -> PathBuf {
         Assets::path_on_disk(built_dir, self.path())
     }
 
-    fn size_budget(&self) -> NumBytes;
+    fn check_performance_budget(&self) -> HowCloseToBudget {
+        HowCloseToBudget::new(self)
+    }
+
+    // Used for enforcing performance budgets.
+    fn load_time_budget(&self) -> Duration;
 }
 
 impl Assets {
@@ -128,28 +130,28 @@ impl NonHtmlAssets {
         let main_css = CssAsset {
             path: PathBuf::from_str("main.css").unwrap(),
             contents: include_str!("../../../target/tailwind/built.css"),
-            size_budget: NumBytes(1),
+            load_time_budget: Duration::from_millis(1),
         };
 
         println!("browser.js");
         let browser_js = JsAsset {
             path: PathBuf::from_str("browser.js").unwrap(),
             contents: include_str!("../../../target/browser/browser.js"),
-            size_budget: NumBytes(1),
+            load_time_budget: Duration::from_millis(1),
         };
 
         println!("browser_bg.wasm");
         let browser_bg_wasm = WasmAsset {
             path: PathBuf::from_str("browser_bg.wasm").unwrap(),
             bytes: include_bytes!("../../../target/browser/browser_bg.wasm"),
-            size_budget: NumBytes(1),
+            load_time_budget: Duration::from_millis(1),
         };
 
         println!("build_time.txt");
         let build_time = TextAsset {
             path: PathBuf::from_str("site-build-time").unwrap(),
             content: chrono::Local::now().to_rfc3339(),
-            size_budget: NumBytes(1),
+            load_time_budget: Duration::from_millis(1),
         };
 
         let images = ImageAssets::new();

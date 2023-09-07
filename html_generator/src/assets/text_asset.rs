@@ -1,4 +1,5 @@
 use std::path::{Path, PathBuf};
+use std::time::Duration;
 
 use crate::prelude::*;
 
@@ -6,7 +7,7 @@ use crate::prelude::*;
 pub struct TextAsset {
     pub path: PathBuf,
     pub content: String,
-    pub size_budget: NumBytes,
+    pub load_time_budget: Duration,
 }
 
 impl NonImageAsset for TextAsset {
@@ -18,7 +19,7 @@ impl NonImageAsset for TextAsset {
         self.content.as_bytes().to_vec()
     }
 
-    fn size_budget(&self) -> NumBytes {
-        self.size_budget
+    fn load_time_budget(&self) -> Duration {
+        self.load_time_budget
     }
 }

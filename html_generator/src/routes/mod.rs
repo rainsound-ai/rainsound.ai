@@ -1,4 +1,4 @@
-use std::{path::PathBuf, str::FromStr};
+use std::{path::PathBuf, str::FromStr, time::Duration};
 
 use crate::prelude::*;
 use dioxus::prelude::*;
@@ -67,15 +67,13 @@ pub async fn get_pages() -> Vec<HtmlAsset> {
                 .join(&cleaned_path)
                 .join("index.html");
 
-            dbg!(&temp_path);
-
             let contents = fs::read_to_string(temp_path).unwrap();
             let path = cleaned_path.join("index.html");
 
             HtmlAsset {
                 path,
                 contents,
-                size_budget: NumBytes(1),
+                load_time_budget: Duration::from_millis(1),
             }
         })
         .collect::<Vec<_>>();

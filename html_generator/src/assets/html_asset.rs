@@ -1,4 +1,5 @@
 use std::path::{Path, PathBuf};
+use std::time::Duration;
 
 use crate::prelude::*;
 
@@ -6,7 +7,7 @@ use crate::prelude::*;
 pub struct HtmlAsset {
     pub path: PathBuf,
     pub contents: String,
-    pub size_budget: NumBytes,
+    pub load_time_budget: Duration,
 }
 
 impl HtmlAsset {
@@ -30,7 +31,7 @@ impl NonImageAsset for HtmlAsset {
         self.minified_contents()
     }
 
-    fn size_budget(&self) -> NumBytes {
-        self.size_budget
+    fn load_time_budget(&self) -> Duration {
+        self.load_time_budget
     }
 }
