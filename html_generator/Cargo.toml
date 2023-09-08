@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 description = "The server for this project, used during development and for building the site."
 license = "unlicensed"
-repository = "https://github.com/photon-garden/santoka/"
+repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
 
 [dependencies]
 shared = { path = "../shared", features = ["server"] }

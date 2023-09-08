@@ -5,13 +5,19 @@ authors = ["Luca Bailey <mail@photon.garden>"]
 edition = "2021"
 description = "The browser code for this project."
 license = "unlicensed"
-repository = "https://github.com/photon-garden/santoka/"
+repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
 
 [features]
-dev = ["chrono", "console_error_panic_hook", "futures-util", "once_cell", "wasm-bindgen-futures"]
+dev = [
+    "chrono",
+    "console_error_panic_hook",
+    "futures-util",
+    "once_cell",
+    "wasm-bindgen-futures",
+]
 
 [dependencies]
 shared = { path = "../shared", features = ["browser"] }
