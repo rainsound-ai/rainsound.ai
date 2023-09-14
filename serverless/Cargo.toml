@@ -6,8 +6,18 @@ description = "Serverless functions for this project for handling back end logic
 license = "unlicensed"
 repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
 
-[dependencies]
-shared = { path = "../shared", features = ["server"] }
-worker = "0.0.18"
+# https://github.com/rustwasm/wasm-pack/issues/1247
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false
 
-[build-dependencies]
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+worker = "^0.0.18"
+shared = { path = "../shared", features = ["server"] }
+
+[profile.release]
+lto = true
+strip = true
+codegen-units = 1

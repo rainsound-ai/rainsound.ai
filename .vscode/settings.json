@@ -2,7 +2,8 @@
 	"rust-analyzer.linkedProjects": [
 		"./Cargo.toml",
 		"./browser/Cargo.toml",
-		"./html_generator/Cargo.toml"
+		"./html_generator/Cargo.toml",
+		"./serverless/Cargo.toml"
 	],
 	"rust-analyzer.showUnlinkedFileNotification": false
 }

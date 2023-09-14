@@ -1,0 +1,6 @@
+name = "serverless"
+main = "build/worker/shim.mjs"
+compatibility_date = "2023-09-14"
+
+[build]
+command = "cargo install -q worker-build && worker-build --release"
