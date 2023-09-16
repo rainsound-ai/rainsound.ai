@@ -97,7 +97,7 @@ watch_tailwind() {
 }
 
 build_tailwind_production() {
-	echo "✨ Building tailwind for production"
+	echo "✨ Building Tailwind for production"
 	npx \
 		--prefix ./target/node_modules tailwindcss \
 		-i ./html_generator/src/main.css \
