@@ -1,7 +1,5 @@
 use super::Route;
-use crate::prelude::*;
-use dioxus::prelude::*;
-use dioxus_router::prelude::*;
+use super::*;
 
 #[inline_props]
 pub fn Layout(cx: Scope) -> Element {
@@ -22,10 +20,6 @@ pub fn Layout(cx: Scope) -> Element {
             MainJs {}
         }
     }
-}
-
-fn bg_background() -> &'static str {
-    "bg-neutral-50 dark:bg-neutral-900"
 }
 
 fn MainJs(cx: Scope) -> Element {
