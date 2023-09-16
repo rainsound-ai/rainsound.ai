@@ -33,6 +33,7 @@ setup() {
 }
 
 # Semi private 🤷‍♂️
+
 build_rust_dev() {
 	echo "✨ Building Rust for development"
 	build_browser_dev && build_html && serve_static_files
@@ -87,7 +88,7 @@ serve_static_files() {
 }
 
 watch_tailwind() {
-	echo "✨ Watching tailwind"
+	echo "✨ Watching Tailwind"
 	npx \
 		--prefix ./target/node_modules tailwindcss \
 		-i ./html_generator/src/main.css \
@@ -108,7 +109,7 @@ ARGC=$#
 ARGV=$@
 
 if [ $ARGC -eq 0 ]; then
-	echo "Usage: ./deploy.sh <dev|build|preview|deploy|setup>"
+	echo "Usage: ./scripts dev|build|preview|deploy|setup|build_rust_dev"
 	exit 1
 fi
 
@@ -126,7 +127,7 @@ for target in $ARGV; do
 	elif [ $target == "setup" ]; then
 		setup
 	else
-		echo "Unknown script: $target"
+		echo "Unknown command: $target"
 		exit 1
 	fi
 done
