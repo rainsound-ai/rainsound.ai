@@ -95,7 +95,7 @@ pub trait NonImageAsset {
 
 impl Assets {
     pub async fn new() -> Assets {
-        let html_assets = crate::routes::get_pages().await;
+        let html_assets = HtmlAsset::get_pages().await;
         Assets { html_assets }
     }
 
