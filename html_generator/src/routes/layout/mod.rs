@@ -24,6 +24,6 @@ pub fn Layout(cx: Scope) -> Element {
 
 fn MainJs(cx: Scope) -> Element {
     dbg!("MainJs");
-    let contents = include_str!("../main.js");
+    let contents = include_str!("../../main.js");
     render! { script { "type": "module", dangerous_inner_html: "{contents}" } }
 }
