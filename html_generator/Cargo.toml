@@ -23,7 +23,9 @@ rayon = "1.7.0"
 tree_magic = "0.2.3"
 base64 = { version = "0.21.2" }
 chrono = "0.4.26"
-dioxus-router = { version = "^0.4.1", features = ["ssr"] }
+dioxus-router = { version = "^0.4.1", default-features = false, features = [
+    "ssr",
+] }
 async-io = "1.13.0"
 struct_iterable = "0.1.1"
 arraygen = "0.3.2"
