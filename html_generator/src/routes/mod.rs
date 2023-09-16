@@ -8,6 +8,9 @@ use components::*;
 mod contact;
 use contact::*;
 
+mod css_class_groups;
+use css_class_groups::*;
+
 mod layout;
 use layout::*;
 
@@ -37,10 +40,6 @@ fn Home(cx: Scope) -> Element {
         h1 { "Home" }
         p { "Hello, squirrel!" }
     }
-}
-
-fn horizontal_center_fixed() -> &'static str {
-    "left-1/2 transform -translate-x-1/2"
 }
 
 // #[derive(Props)]
