@@ -11,35 +11,39 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
     // );
 
     Router::new()
-        .get("/", |_req, _ctx| {
-            let html = include_str!("../../built/index.html");
-            Response::from_html(html)
+        .post("/contact", |req, _ctx| {
+            dbg!(req);
+            Response::ok("Hello, world!")
         })
-        .get("/main.css", |_req, _ctx| {
-            let css = include_str!("../../built/main.css");
-            Response::ok(css).map(|mut r| {
-                r.headers_mut().set("Content-Type", "text/css").unwrap();
-                r
-            })
-        })
-        .get("/browser.js", |_req, _ctx| {
-            let js = include_str!("../../built/browser.js");
-            Response::ok(js).map(|mut r| {
-                r.headers_mut()
-                    .set("Content-Type", "text/javascript")
-                    .unwrap();
-                r
-            })
-        })
-        .get("/browser_bg.wasm", |_req, _ctx| {
-            let wasm = include_bytes!("../../built/browser_bg.wasm").to_vec();
-            Response::from_bytes(wasm).map(|mut r| {
-                r.headers_mut()
-                    .set("Content-Type", "application/wasm")
-                    .unwrap();
-                r
-            })
-        })
+        // .get("/", |_req, _ctx| {
+        //     let html = include_str!("../../built/index.html");
+        //     Response::from_html(html)
+        // })
+        // .get("/main.css", |_req, _ctx| {
+        //     let css = include_str!("../../built/main.css");
+        //     Response::ok(css).map(|mut r| {
+        //         r.headers_mut().set("Content-Type", "text/css").unwrap();
+        //         r
+        //     })
+        // })
+        // .get("/browser.js", |_req, _ctx| {
+        //     let js = include_str!("../../built/browser.js");
+        //     Response::ok(js).map(|mut r| {
+        //         r.headers_mut()
+        //             .set("Content-Type", "text/javascript")
+        //             .unwrap();
+        //         r
+        //     })
+        // })
+        // .get("/browser_bg.wasm", |_req, _ctx| {
+        //     let wasm = include_bytes!("../../built/browser_bg.wasm").to_vec();
+        //     Response::from_bytes(wasm).map(|mut r| {
+        //         r.headers_mut()
+        //             .set("Content-Type", "application/wasm")
+        //             .unwrap();
+        //         r
+        //     })
+        // })
         .run(req, env)
         .await
 
