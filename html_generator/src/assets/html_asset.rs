@@ -14,6 +14,12 @@ pub struct HtmlAsset {
     pub load_time_budget: Duration,
 }
 
+static template: &str = r#"<!DOCTYPE html>
+<html lang="en">
+    {head_and_body}
+</html>
+"#;
+
 impl HtmlAsset {
     pub async fn get_pages() -> Vec<HtmlAsset> {
         // create a VirtualDom with the app component
@@ -28,22 +34,15 @@ impl HtmlAsset {
             .static_dir(&temporary_asset_directory)
             .build();
 
+        let mut split_template = template.split("{head_and_body}");
+        let before_body = split_template.next().unwrap();
+        let after_body = split_template.next().unwrap();
+
         pre_cache_static_routes::<Route, _>(
             &mut renderer,
             &DefaultRenderer {
-                before_body: r#"<!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width,
-                initial-scale=1.0">
-                <title>Dioxus Application</title>
-            </head>
-            <body>"#
-                    .to_string(),
-                after_body: r#"</body>
-            </html>"#
-                    .to_string(),
+                before_body: before_body.to_string(),
+                after_body: after_body.to_string(),
             },
         )
         .await

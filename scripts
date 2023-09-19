@@ -1,6 +1,5 @@
 dev() {
 	echo "✨ Starting development server"
-	watch_tailwind &
 	watch_rust &
 	watch_serverless_functions
 }
@@ -41,7 +40,7 @@ setup() {
 
 build_rust_dev() {
 	echo "✨ Building Rust for development"
-	build_browser_dev && build_html && serve_static_files
+	build_tailwind_dev && build_browser_dev && build_html && serve_static_files
 }
 
 # Private
@@ -102,13 +101,13 @@ serve_static_files() {
 		--nocache built
 }
 
-watch_tailwind() {
+build_tailwind_dev() {
 	echo "✨ Watching Tailwind"
 	npx \
 		--prefix ./target/node_modules tailwindcss \
 		-i ./html_generator/src/main.css \
-		-o ./target/tailwind/built.css \
-		--watch
+		-o ./target/tailwind/built.css
+	# --watch
 }
 
 build_tailwind_production() {
@@ -124,7 +123,7 @@ ARGC=$#
 ARGV=$@
 
 if [ $ARGC -eq 0 ]; then
-	echo "Usage: ./scripts dev|build|preview|deploy|setup|build_rust_dev"
+	echo "Usage: ./scripts dev|build|preview|deploy|setup|build_rust_dev|build_tailwind_dev"
 	exit 1
 fi
 
@@ -143,6 +142,8 @@ for target in $ARGV; do
 		setup
 	elif [ $target == "watch_serverless_functions" ]; then
 		watch_serverless_functions
+	elif [ $target == "build_tailwind_dev" ]; then
+		build_tailwind_dev
 	else
 		echo "Unknown command: $target"
 		exit 1
