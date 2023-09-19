@@ -10,9 +10,8 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
         .await
 }
 
-async fn post_contact(mut req: Request, _ctx: worker::RouteContext<()>) -> Result<Response> {
-    let form_data: ContactFormSubmission = req.form_data().await?.try_into()?;
-
+async fn post_contact(req: Request, _ctx: worker::RouteContext<()>) -> Result<Response> {
+    let form_data = ContactFormSubmission::from_request(req).await?;
     console_debug!("{}", form_data);
     Response::ok("response from POST /contact")
 }
@@ -22,6 +21,13 @@ struct ContactFormSubmission {
     name: String,
     email: String,
     message: String,
+}
+
+impl ContactFormSubmission {
+    async fn from_request(mut req: Request) -> Result<Self> {
+        let form_data = req.form_data().await?;
+        form_data.try_into()
+    }
 }
 
 impl Display for ContactFormSubmission {
@@ -35,11 +41,17 @@ impl Display for ContactFormSubmission {
 }
 
 impl TryFrom<worker::FormData> for ContactFormSubmission {
-    type Error = &'static str;
+    type Error = Error;
     fn try_from(value: worker::FormData) -> std::result::Result<Self, Self::Error> {
-        let name = value.get_field("name").ok_or("Missing Name")?;
-        let email = value.get_field("email").ok_or("Missing email")?;
-        let message = value.get_field("message").ok_or("Missing Message")?;
+        let name = value
+            .get_field("name")
+            .ok_or(Error::RustError("Missing Name.".to_string()))?;
+        let email = value
+            .get_field("email")
+            .ok_or(Error::RustError("Missing Email.".to_string()))?;
+        let message = value
+            .get_field("message")
+            .ok_or(Error::RustError("Missing Message.".to_string()))?;
 
         Ok(Self {
             name,
@@ -62,12 +74,8 @@ impl FormDataExtension for worker::FormData {
 
         match field {
             worker::FormEntry::Field(text) => Some(text),
-            worker::FormEntry::File(file) => None,
+            worker::FormEntry::File(_file) => None,
         }
-        // self.get(field_name).map(|form_entry| match form_entry {
-        //     worker::FormEntry::Field(text) => Some(text),
-        //     worker::FormEntry::File(file) => None,
-        // })
     }
 }
 
