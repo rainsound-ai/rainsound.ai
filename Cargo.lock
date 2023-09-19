@@ -2119,7 +2119,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "serverless"
+name = "serverless_functions"
 version = "0.1.0"
 dependencies = [
  "shared",

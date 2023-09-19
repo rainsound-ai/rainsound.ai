@@ -2,7 +2,7 @@ dev() {
 	echo "✨ Starting development server"
 	watch_tailwind &
 	watch_rust &
-	watch_functions
+	watch_serverless_functions
 }
 
 build() {
@@ -14,7 +14,7 @@ preview() {
 	echo "✨ Previewing production build"
 	build && (
 		serve_static_files &
-		watch_functions
+		watch_serverless_functions
 	)
 }
 
@@ -24,7 +24,7 @@ deploy() {
 		git add --all &&
 		git commit -m "Deploy." &&
 		git push &&
-		deploy_functions
+		deploy_serverless_functions
 }
 
 setup() {
@@ -55,13 +55,13 @@ watch_rust() {
 		--shell './scripts build_rust_dev'
 }
 
-watch_functions() {
+watch_serverless_functions() {
 	echo "✨ Watching functions"
-	cd ./serverless && npm run dev
+	cd ./serverless_functions && npm run dev
 }
 
-deploy_functions() {
-	cd ./serverless && npm run deploy
+deploy_serverless_functions() {
+	cd ./serverless_functions && npm run deploy
 	cd ..
 }
 
@@ -141,8 +141,8 @@ for target in $ARGV; do
 		deploy
 	elif [ $target == "setup" ]; then
 		setup
-	elif [ $target == "watch_functions" ]; then
-		watch_functions
+	elif [ $target == "watch_serverless_functions" ]; then
+		watch_serverless_functions
 	else
 		echo "Unknown command: $target"
 		exit 1

@@ -1,4 +1,4 @@
-name = "serverless"
+name = "creative_computing_website_serverless_functions"
 main = "build/worker/shim.mjs"
 compatibility_date = "2023-09-04"
 
