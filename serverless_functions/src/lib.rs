@@ -34,7 +34,7 @@ impl Display for ContactFormSubmission {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "{{ name: {}, email: {}, message: {} }}",
+            "ContactFormSubmission {{ name: {}, email: {}, message: {} }}",
             self.name, self.email, self.message
         )
     }
@@ -42,16 +42,16 @@ impl Display for ContactFormSubmission {
 
 impl TryFrom<worker::FormData> for ContactFormSubmission {
     type Error = Error;
-    fn try_from(value: worker::FormData) -> std::result::Result<Self, Self::Error> {
-        let name = value
+    fn try_from(form_data: worker::FormData) -> std::result::Result<Self, Self::Error> {
+        let name = form_data
             .get_field("name")
-            .ok_or(Error::RustError("Missing Name.".to_string()))?;
-        let email = value
+            .ok_or(Error::RustError("Missing name.".to_string()))?;
+        let email = form_data
             .get_field("email")
-            .ok_or(Error::RustError("Missing Email.".to_string()))?;
-        let message = value
+            .ok_or(Error::RustError("Missing email.".to_string()))?;
+        let message = form_data
             .get_field("message")
-            .ok_or(Error::RustError("Missing Message.".to_string()))?;
+            .ok_or(Error::RustError("Missing message.".to_string()))?;
 
         Ok(Self {
             name,
