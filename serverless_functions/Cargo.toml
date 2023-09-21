@@ -17,6 +17,7 @@ crate-type = ["cdylib"]
 worker = "^0.0.18"
 shared = { path = "../shared", features = ["server"] }
 serde = "1.0.188"
+notion = "0.5.1"
 
 [profile.release]
 lto = true
