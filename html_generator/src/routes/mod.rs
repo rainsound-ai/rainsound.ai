@@ -38,7 +38,8 @@ fn Home(cx: Scope) -> Element {
     dbg!("Body");
     render! {
         h1 { "Home" }
-        p { "Hello, squirrel!" }
+        p { "Hello, squirreld!" }
+        p { "WE MAEK THE SOFTWRE FOR YOU GIVE US MONEY NOM NOM NOM NOM 🧌" }
     }
 }
 
