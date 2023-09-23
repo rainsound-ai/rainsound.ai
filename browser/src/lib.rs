@@ -1,5 +1,9 @@
 #![allow(non_upper_case_globals)]
 
+// Use `wee_alloc` as the global allocator.
+#[global_allocator]
+static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+
 use prelude::*;
 // use serde::de::DeserializeOwned;
 use shared::prelude::*;
