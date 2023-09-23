@@ -1,7 +1,7 @@
 mod forms;
 mod notion;
 use forms::ContactFormSubmission;
-use notion::add_to_database;
+// use notion::add_to_database;
 use worker::*;
 
 #[event(fetch)]
@@ -16,7 +16,7 @@ async fn post_contact(req: Request, _ctx: worker::RouteContext<()>) -> Result<Re
     let form_data = ContactFormSubmission::from_request(req).await?;
     console_debug!("{}", form_data);
 
-    add_to_database(form_data).await?;
+    // add_to_database(form_data).await?;
 
     Response::ok("response from POST /contact")
 }

@@ -36,6 +36,19 @@ setup() {
 		rm -rf ./target/node_modules && npm install && mv node_modules ./target/node_modules
 }
 
+profile_bundle_size() {
+	echo "✨ Profiling the browser bundle size."
+	build_tailwind_production &&
+		build_rust_profiling &&
+		echo "" &&
+		du -sh ./built/browser_bg.wasm &&
+		echo "" &&
+		./target/cargo_install/bin/twiggy top -n 20 ./built/browser_bg.wasm &&
+		echo "" &&
+		./target/cargo_install/bin/twiggy dominators ./built/browser_bg.wasm 
+
+}
+
 # Semi private 🤷‍♂️
 
 build_rust_dev() {
@@ -65,8 +78,13 @@ deploy_serverless_functions() {
 }
 
 build_rust_production() {
-	echo "✨ Building Rust for production"
+	echo "✨ Building Rust for production."
 	build_browser_production && build_html
+}
+
+build_rust_profiling() {
+	echo "✨ Building Rust for profiling."
+	build_browser_profiling && build_html
 }
 
 build_browser_dev() {
@@ -77,6 +95,17 @@ build_browser_dev() {
 		--out-name browser \
 		--dev \
 		--features dev
+	cd ..
+}
+
+build_browser_profiling() {
+	echo "✨ Building browser crate for profiling."
+	cd browser &&
+	../target/cargo_install/bin/wasm-pack build \
+		--target web \
+		--out-dir ../target/browser \
+		--out-name browser \
+		--profiling
 	cd ..
 }
 
@@ -144,6 +173,8 @@ for target in $ARGV; do
 		watch_serverless_functions
 	elif [ $target == "build_tailwind_dev" ]; then
 		build_tailwind_dev
+	elif [ $target == "profile_bundle_size" ]; then
+		profile_bundle_size
 	else
 		echo "Unknown command: $target"
 		exit 1
