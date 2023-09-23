@@ -1,5 +1,7 @@
-use serde::Deserialize;
-use std::fmt::Display;
+mod forms;
+mod notion;
+use forms::ContactFormSubmission;
+use notion::add_to_database;
 use worker::*;
 
 #[event(fetch)]
@@ -13,70 +15,10 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
 async fn post_contact(req: Request, _ctx: worker::RouteContext<()>) -> Result<Response> {
     let form_data = ContactFormSubmission::from_request(req).await?;
     console_debug!("{}", form_data);
+
+    add_to_database(form_data).await?;
+
     Response::ok("response from POST /contact")
-}
-
-#[derive(Debug, Deserialize)]
-struct ContactFormSubmission {
-    name: String,
-    email: String,
-    message: String,
-}
-
-impl ContactFormSubmission {
-    async fn from_request(mut req: Request) -> Result<Self> {
-        let form_data = req.form_data().await?;
-        form_data.try_into()
-    }
-}
-
-impl Display for ContactFormSubmission {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "ContactFormSubmission {{ name: {}, email: {}, message: {} }}",
-            self.name, self.email, self.message
-        )
-    }
-}
-
-impl TryFrom<worker::FormData> for ContactFormSubmission {
-    type Error = Error;
-    fn try_from(form_data: worker::FormData) -> std::result::Result<Self, Self::Error> {
-        let name = form_data
-            .get_field("name")
-            .ok_or(Error::RustError("Missing name.".to_string()))?;
-        let email = form_data
-            .get_field("email")
-            .ok_or(Error::RustError("Missing email.".to_string()))?;
-        let message = form_data
-            .get_field("message")
-            .ok_or(Error::RustError("Missing message.".to_string()))?;
-
-        Ok(Self {
-            name,
-            email,
-            message,
-        })
-    }
-}
-
-trait FormDataExtension {
-    fn get_field(&self, field_name: &str) -> Option<String>;
-}
-
-impl FormDataExtension for worker::FormData {
-    fn get_field(&self, field_name: &str) -> Option<String> {
-        let field = match self.get(field_name) {
-            Some(form_entry) => form_entry,
-            None => return None,
-        };
-
-        match field {
-            worker::FormEntry::Field(text) => Some(text),
-            worker::FormEntry::File(_file) => None,
-        }
-    }
 }
 
 // if !matches!(req.method(), Method::Post) {

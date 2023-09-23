@@ -12,7 +12,11 @@ pub fn Layout(cx: Scope) -> Element {
         }
 
         body { class: "{bg_background()} dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75",
-            nav { class: "flex gap-2 p-2 items-center justify-center w-full",
+            nav { class: " flex gap-2 p-2 items-center justify-start w-full font-semibold text-lg",
+                Link { class: "flex gap-2 items-center", to: Route::Home {},
+                    span { class: "text-4xl font-bold", "🌸" }
+                    span { "Hyperbloom.studio" }
+                }
                 Link { to: Route::Home {}, "Home" }
                 Link { to: Route::Contact {}, "Contact" }
             }
