@@ -28,7 +28,7 @@ impl HtmlAsset {
         // let _ = app.rebuild();
         // render the VirtualDom to HTML
         // dioxus_ssr::render(&app)
-        let temporary_asset_directory = manifest::dir().join("target").join("temp");
+        let temporary_asset_directory = crate::manifest::dir().join("target").join("temp");
 
         let mut renderer = IncrementalRendererConfig::new()
             .static_dir(&temporary_asset_directory)
@@ -76,7 +76,7 @@ impl HtmlAsset {
                     .join(&cleaned_path)
                     .join("index.html");
 
-                let contents = fs::read_to_string(temp_path).unwrap();
+                let contents = std::fs::read_to_string(temp_path).unwrap();
                 let path = cleaned_path.join("index.html");
 
                 HtmlAsset {

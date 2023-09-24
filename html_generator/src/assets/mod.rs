@@ -110,7 +110,7 @@ impl Assets {
     }
 
     pub fn built_dir() -> PathBuf {
-        manifest::dir().join("built")
+        crate::manifest::dir().join("built")
     }
 
     fn path_on_disk(built_dir: &Path, asset_path: &Path) -> PathBuf {
@@ -192,6 +192,7 @@ impl ImageAssets {
             PathBuf::from_str("hasui-light.jpeg").unwrap(),
             "A mountain in the distance",
             include_bytes!("./original_images/hasui_light.jpeg"),
+            Placeholder::Lqip,
         );
 
         println!("hasui-dark.jpeg");
@@ -199,14 +200,15 @@ impl ImageAssets {
             PathBuf::from_str("hasui-dark.jpeg").unwrap(),
             "A town at night",
             include_bytes!("./original_images/hasui_dark.jpeg"),
+            Placeholder::Lqip,
         );
 
         ImageAssets {
-            hasui_hero: LightDarkImageAsset {
-                alt: "A woodblock print by Kawase Hasui. In dark mode, it's a town at night. In light mode, it's a mountain in the distance.",
-                light_mode: hasui_light,
-                dark_mode: hasui_dark,
-            },
+            hasui_hero: LightDarkImageAsset::new(
+                "A woodblock print by Kawase Hasui. In dark mode, it's a town at night. In light mode, it's a mountain in the distance.",
+                hasui_light,
+                hasui_dark,
+            ),
         }
     }
 

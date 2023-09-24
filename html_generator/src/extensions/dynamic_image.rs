@@ -1,8 +1,11 @@
+use base64::Engine;
 use image::imageops::FilterType;
-use image::{DynamicImage, GenericImageView};
+use image::{DynamicImage, GenericImageView, ImageFormat};
+use std::io::Cursor;
 
 pub trait DynamicImageExtension {
     fn resize_to_width(&self, new_width: u32) -> Self;
+    fn to_data_uri(&self) -> DataUriAndMimeType;
 }
 
 impl DynamicImageExtension for DynamicImage {
@@ -20,4 +23,32 @@ impl DynamicImageExtension for DynamicImage {
 
         self.resize(new_width, new_height, FilterType::Lanczos3)
     }
+
+    fn to_data_uri(&self) -> DataUriAndMimeType {
+        let mut bytes: Cursor<Vec<u8>> = Cursor::new(Vec::new());
+        self.write_to(&mut bytes, ImageFormat::Jpeg)
+            .expect("Error encoding low quality image placeholder.");
+        let base64_encoded = base64::engine::general_purpose::STANDARD.encode(bytes.into_inner());
+
+        let mime_type = "format/jpeg";
+
+        let data_uri = format!(
+            "data:{mime_type};base64,{base64}",
+            mime_type = mime_type,
+            base64 = base64_encoded
+        );
+
+        DataUriAndMimeType {
+            mime_type,
+            data_uri,
+        }
+    }
 }
+
+pub struct DataUriAndMimeType {
+    pub mime_type: &'static str,
+    pub data_uri: String,
+}
+
+pub type MimeType = &'static str;
+pub type DataUri = String;

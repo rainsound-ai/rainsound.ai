@@ -3,7 +3,6 @@ use dioxus::prelude::*;
 use dioxus_router::prelude::*;
 
 mod components;
-use components::*;
 
 mod contact;
 use contact::*;

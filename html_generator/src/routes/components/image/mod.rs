@@ -4,6 +4,47 @@ use dioxus::prelude::*;
 #[inline_props]
 pub fn Image<'a>(cx: Scope, asset: &'a ImageAsset, class: &'static str) -> Element<'a> {
     dbg!("Image");
+
+    match &asset.placeholder {
+        GeneratedPlaceholder::Color { css_string } => render!(
+            //
+            ImageWithColorPlaceholder { asset: asset, class: class, placeholder_color_css_string: css_string }
+        ),
+
+        GeneratedPlaceholder::Lqip {
+            data_uri,
+            mime_type: _mime_type,
+        } => {
+            render!( ImageWithLqip { asset: asset, class: class, data_uri: data_uri } )
+        }
+    }
+}
+
+#[inline_props]
+pub fn ImageWithColorPlaceholder<'a>(
+    cx: Scope,
+    asset: &'a ImageAsset,
+    class: &'static str,
+    placeholder_color_css_string: &'a str,
+) -> Element<'a> {
+    render!(
+        img {
+            class: "select-none {class}",
+            style: "background-color: {placeholder_color_css_string}",
+            alt: asset.alt,
+            src: asset.src(),
+            srcset: asset.srcset()
+        }
+    )
+}
+
+#[inline_props]
+pub fn ImageWithLqip<'a>(
+    cx: Scope,
+    asset: &'a ImageAsset,
+    class: &'static str,
+    data_uri: &'a str,
+) -> Element<'a> {
     render!(
         div {
             //
@@ -13,7 +54,7 @@ pub fn Image<'a>(cx: Scope, asset: &'a ImageAsset, class: &'static str) -> Eleme
                 alt: asset.alt,
                 class: "shrink-0 min-w-full min-h-full object-cover",
                 style: "image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;",
-                src: "{asset.lqip}"
+                src: "{data_uri}"
             }
 
             img {

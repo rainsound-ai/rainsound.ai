@@ -12,31 +12,72 @@ pub struct LightDarkImageProps<'a> {
 }
 
 pub fn LightDarkImage<'a>(cx: Scope<'a, LightDarkImageProps<'a>>) -> Element<'a> {
-    let class = &cx.props.class;
-    let asset = cx.props.asset;
-    let above_the_fold = cx.props.above_the_fold;
-    let is_largest_contentful_paint = cx.props.is_largest_contentful_paint;
+    let props = cx.props;
+    match &props.asset.placeholder {
+        LightDarkPlaceholder::Color {
+            light_mode_css_string,
+            dark_mode_css_string,
+        } => render!(
+            LightDarkImageWithColorPlaceholder {
+                asset: props.asset,
+                class: "{props.class}",
+                above_the_fold: props.above_the_fold,
+                is_largest_contentful_paint: props.is_largest_contentful_paint,
+                light_mode_css_string: light_mode_css_string,
+                dark_mode_css_string: dark_mode_css_string
+            }
+        ),
 
+        LightDarkPlaceholder::Lqip {
+            light_mode_data_uri,
+            light_mode_mime_type,
+            dark_mode_data_uri,
+            dark_mode_mime_type,
+        } => render!(
+            LightDarkImageWithLqip {
+                asset: props.asset,
+                class: "{props.class}",
+                above_the_fold: props.above_the_fold,
+                is_largest_contentful_paint: props.is_largest_contentful_paint,
+                light_mode_data_uri: light_mode_data_uri,
+                light_mode_mime_type: light_mode_mime_type,
+                dark_mode_data_uri: dark_mode_data_uri,
+                dark_mode_mime_type: dark_mode_mime_type
+            }
+        ),
+    }
+}
+
+#[inline_props]
+pub fn LightDarkImageWithLqip<'a>(
+    cx: Scope<'a>,
+    asset: &'a LightDarkImageAsset,
+    class: &'a str,
+    above_the_fold: bool,
+    is_largest_contentful_paint: bool,
+    light_mode_data_uri: &'a str,
+    light_mode_mime_type: &'static str,
+    dark_mode_data_uri: &'a str,
+    dark_mode_mime_type: &'static str,
+) -> Element<'a> {
     // style: "image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;",
-    cx.render(rsx!(
-        div {
-            //
-            class: "select-none relative {class}",
+    render!(
+        div { class: "select-none relative {class}",
 
             picture { class: "shrink-0 min-w-full min-h-full object-cover blur-lg",
 
                 source {
                     //
                     "media": "(prefers-color-scheme: light)",
-                    "srcset": "{asset.light_mode.lqip}",
-                    "type": "image/jpeg"
+                    "srcset": "{light_mode_data_uri}",
+                    "type": "{light_mode_mime_type}"
                 }
 
                 source {
                     //
                     "media": "(prefers-color-scheme: dark)",
-                    "srcset": "{asset.dark_mode.lqip}",
-                    "type": "image/jpeg"
+                    "srcset": "{dark_mode_data_uri}",
+                    "type": "{dark_mode_mime_type}"
                 }
 
                 img {
@@ -67,13 +108,68 @@ pub fn LightDarkImage<'a>(cx: Scope<'a, LightDarkImageProps<'a>>) -> Element<'a>
 
                 img {
                     //
-                    "loading": if above_the_fold { "eager" } else { "lazy" },
-                    "fetchpriority": if is_largest_contentful_paint { "high" } else { "auto" },
+                    "loading": if *above_the_fold { "eager" } else { "lazy" },
+                    "fetchpriority": if *is_largest_contentful_paint { "high" } else { "auto" },
                     alt: asset.alt,
                     class: "absolute top-0 left-0 min-w-full min-h-full object-cover",
                     src: asset.light_mode.src()
                 }
             }
         }
-    ))
+    )
+}
+
+#[inline_props]
+pub fn LightDarkImageWithColorPlaceholder<'a>(
+    cx: Scope<'a>,
+    asset: &'a LightDarkImageAsset,
+    class: &'a str,
+    above_the_fold: bool,
+    is_largest_contentful_paint: bool,
+    light_mode_css_string: &'a str,
+    dark_mode_css_string: &'a str,
+) -> Element<'a> {
+    // style: "image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;",
+    render!(
+        div { class: "select-none relative {class}",
+
+            div {
+                class: "shrink-0 min-w-full min-h-full object-cover dark:hidden",
+                background_color: "{light_mode_css_string}"
+            }
+
+            div {
+                class: "shrink-0 min-w-full min-h-full object-cover",
+                background_color: "{dark_mode_css_string}"
+            }
+
+            picture {
+                //
+                class: "absolute top-0 left-0 min-w-full min-h-full object-cover",
+
+                source {
+                    //
+                    "media": "(prefers-color-scheme: light)",
+                    "srcset": asset.light_mode.srcset(),
+                    "type": asset.light_mode.mime_type()
+                }
+
+                source {
+                    //
+                    "media": "(prefers-color-scheme: dark)",
+                    "srcset": asset.dark_mode.srcset(),
+                    "type": asset.dark_mode.mime_type()
+                }
+
+                img {
+                    //
+                    "loading": if *above_the_fold { "eager" } else { "lazy" },
+                    "fetchpriority": if *is_largest_contentful_paint { "high" } else { "auto" },
+                    alt: asset.alt,
+                    class: "absolute top-0 left-0 min-w-full min-h-full object-cover",
+                    src: asset.light_mode.src()
+                }
+            }
+        }
+    )
 }
