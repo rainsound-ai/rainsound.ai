@@ -1,6 +1,5 @@
 use crate::ContactFormSubmission;
 use notion::models::PageCreateRequest;
-use std::env;
 
 pub async fn add_contact_form_submission_to_database(form_data: ContactFormSubmission) {
     let properties = hashmap! {
@@ -18,14 +17,14 @@ pub async fn add_contact_form_submission_to_database(form_data: ContactFormSubmi
 }
 
 fn get_api() {
-    let api_token = env::var("NOTION_API_TOKEN");
+    let api_token = std::env!("NOTION_API_TOKEN");
     dbg!(&api_token);
 
     NotionApi::new(api_token)
 }
 
 fn get_database_id() {
-    let database_id = env::var("NOTION_DATABASE_ID");
+    let database_id = std::env!("NOTION_DATABASE_ID");
     dbg!(&database_id);
 
     Parent::DatabaseId(DatabaseId::new(database_id))
