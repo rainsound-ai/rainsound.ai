@@ -192,7 +192,9 @@ impl ImageAssets {
             PathBuf::from_str("hasui-light.jpeg").unwrap(),
             "A mountain in the distance",
             include_bytes!("./original_images/hasui_light.jpeg"),
-            Placeholder::Lqip,
+            Placeholder::Color {
+                css_string: "pink".to_owned(),
+            },
         );
 
         println!("hasui-dark.jpeg");
@@ -200,7 +202,7 @@ impl ImageAssets {
             PathBuf::from_str("hasui-dark.jpeg").unwrap(),
             "A town at night",
             include_bytes!("./original_images/hasui_dark.jpeg"),
-            Placeholder::Lqip,
+            Placeholder::AutomaticColor,
         );
 
         ImageAssets {
