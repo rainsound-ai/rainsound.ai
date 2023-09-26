@@ -1,8 +1,9 @@
+#[allow(non_upper_case_globals)]
+use forms::ContactFormSubmission;
+use worker::*;
+
 mod forms;
 mod notion;
-use forms::ContactFormSubmission;
-use notion;
-use worker::*;
 
 #[event(fetch)]
 pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Response> {
@@ -16,7 +17,7 @@ async fn post_contact(req: Request, _ctx: worker::RouteContext<()>) -> Result<Re
     let form_data = ContactFormSubmission::from_request(req).await?;
     console_debug!("{}", form_data);
 
-    notion::add_contact_form_submission_to_database(form_data).await?;
+    notion::add_contact_form_submission_to_database(form_data).await;
 
     Response::ok("response from POST /contact")
 }

@@ -4,9 +4,9 @@ use worker::*;
 
 #[derive(Debug, Deserialize)]
 pub struct ContactFormSubmission {
-    name: String,
-    email: String,
-    message: String,
+    pub name: String,
+    pub email: String,
+    pub message: String,
 }
 
 impl ContactFormSubmission {
