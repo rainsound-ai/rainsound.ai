@@ -68,13 +68,22 @@ watch_rust() {
 }
 
 watch_serverless_functions() {
-	echo "✨ Watching functions"
+	echo "✨ Watching serverless functions"
 	cd ./serverless_functions && npm run dev
 }
 
 deploy_serverless_functions() {
-	cd ./serverless_functions && npm run deploy
+	cd ./serverless_functions
+
+	npm run deploy
+
+	# Store the exit status of the last command.
+	exit_status=$?
+
 	cd ..
+
+	# Exit with the stored exit status.
+	return $exit_status
 }
 
 build_rust_production() {
@@ -89,32 +98,58 @@ build_rust_profiling() {
 
 build_browser_dev() {
 	echo "✨ Building browser crate for development"
-	cd browser && ../target/cargo_install/bin/wasm-pack build \
+
+	cd browser
+
+	../target/cargo_install/bin/wasm-pack build \
 		--target web \
 		--out-dir ../target/browser \
 		--out-name browser \
 		--dev \
 		--features dev
+
+	# Store the exit status of the last command.
+	exit_status=$?
+
 	cd ..
+
+	# Exit with the stored exit status.
+	return $exit_status
 }
 
 build_browser_profiling() {
 	echo "✨ Building browser crate for profiling."
-	cd browser &&
+	cd browser
+
 	../target/cargo_install/bin/wasm-pack build \
 		--target web \
 		--out-dir ../target/browser \
 		--out-name browser \
 		--profiling
+
+	# Store the exit status of the last command.
+	exit_status=$?
+
 	cd ..
+
+	# Exit with the stored exit status.
+	return $exit_status
 }
 
 build_browser_production() {
 	echo "✨ Building browser crate for production"
-	cd browser &&
-		../target/cargo_install/bin/wasm-pack build --target web --out-dir ../target/browser --out-name browser --release &&
+	cd browser 
+
+	../target/cargo_install/bin/wasm-pack build --target web --out-dir ../target/browser --out-name browser --release &&
 		../target/cargo_install/bin/wasm-opt -Os -o ../target/browser/browser_bg.wasm ../target/browser/browser_bg.wasm
+
+	# Store the exit status of the last command.
+	exit_status=$?
+
 	cd ..
+
+	# Exit with the stored exit status.
+	return $exit_status
 }
 
 build_html() {
