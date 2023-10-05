@@ -1201,6 +1201,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "html_generator_hack"
+version = "0.1.0"
+dependencies = [
+ "dioxus",
+ "dioxus-router",
+ "dioxus-ssr",
+ "shared",
+]
+
+[[package]]
 name = "http"
 version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2129,6 +2139,7 @@ dependencies = [
 name = "serverless_functions"
 version = "0.1.0"
 dependencies = [
+ "html_generator_hack",
  "serde",
  "serde_json",
  "shared",

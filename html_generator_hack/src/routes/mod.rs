@@ -39,7 +39,6 @@ pub fn Home(cx: Scope) -> Element {
         h1 { "Home" }
         p { "Hello, squirreld!" }
         p { "WE MAEK THE SOFTWRE FOR YOU GIVE US MONEY NOM NOM NOM NOM 🧌" }
-        LightDarkImage { asset: &non_html_assets.images.hasui_hero }
     }
 }
 

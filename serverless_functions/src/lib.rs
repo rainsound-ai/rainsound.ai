@@ -8,9 +8,57 @@ mod notion;
 #[event(fetch)]
 pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Response> {
     Router::new()
+        .get_async("/pre-rendered", get_pre_rendered_home_page)
+        .get_async("/dynamically-rendered", get_dynamically_rendered_home_page)
+        .get_async("/main.css", get_main_css)
+        .get_async("/browser.js", get_browser_js)
+        .get_async("/browser_bg.wasm", get_browser_bg_wasm)
         .post_async("/contact", post_contact)
         .run(req, env)
         .await
+}
+
+async fn get_pre_rendered_home_page(
+    _req: Request,
+    _ctx: worker::RouteContext<()>,
+) -> Result<Response> {
+    Response::from_html(include_str!("../../built/index.html"))
+}
+
+async fn get_dynamically_rendered_home_page(
+    _req: Request,
+    _ctx: worker::RouteContext<()>,
+) -> Result<Response> {
+    let html = html_generator_hack::assets::HtmlAsset::home_page();
+    Response::from_html(html)
+}
+
+async fn get_main_css(_req: Request, _ctx: worker::RouteContext<()>) -> Result<Response> {
+    let bytes = include_str!("../../built/main.css");
+    Response::ok(bytes).map(|mut r| {
+        r.headers_mut().set("Content-Type", "text/css").unwrap();
+        r
+    })
+}
+
+async fn get_browser_js(_req: Request, _ctx: worker::RouteContext<()>) -> Result<Response> {
+    let bytes = include_str!("../../built/browser.js");
+    Response::ok(bytes).map(|mut r| {
+        r.headers_mut()
+            .set("Content-Type", "text/javascript")
+            .unwrap();
+        r
+    })
+}
+
+async fn get_browser_bg_wasm(_req: Request, _ctx: worker::RouteContext<()>) -> Result<Response> {
+    let bytes = include_bytes!("../../built/browser_bg.wasm").to_vec();
+    Response::from_bytes(bytes).map(|mut r| {
+        r.headers_mut()
+            .set("Content-Type", "application/wasm")
+            .unwrap();
+        r
+    })
 }
 
 async fn post_contact(req: Request, _ctx: worker::RouteContext<()>) -> Result<Response> {

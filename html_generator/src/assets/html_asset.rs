@@ -1,3 +1,4 @@
+use dioxus::prelude::VirtualDom;
 use dioxus_router::prelude::*;
 use dioxus_ssr::incremental::{DefaultRenderer, IncrementalRendererConfig};
 use std::path::{Path, PathBuf};
@@ -21,6 +22,14 @@ static template: &str = r#"<!DOCTYPE html>
 "#;
 
 impl HtmlAsset {
+    pub fn home_page() -> String {
+        // create a VirtualDom with the app component
+        let mut app = VirtualDom::new(crate::routes::Home);
+        // rebuild the VirtualDom before rendering
+        let _ = app.rebuild();
+        dioxus_ssr::render(&app)
+    }
+
     pub async fn get_pages() -> Vec<HtmlAsset> {
         // create a VirtualDom with the app component
         // let mut app = VirtualDom::new(App);
@@ -67,9 +76,7 @@ impl HtmlAsset {
             })
             .collect::<Vec<_>>();
 
-        dbg!(&paths);
-
-        let html_assets = paths
+        paths
             .into_iter()
             .map(|cleaned_path| {
                 let temp_path = temporary_asset_directory
@@ -85,11 +92,7 @@ impl HtmlAsset {
                     load_time_budget: Duration::from_millis(1),
                 }
             })
-            .collect::<Vec<_>>();
-
-        dbg!(&html_assets);
-
-        html_assets
+            .collect::<Vec<_>>()
     }
 
     fn minified_contents(&self) -> Vec<u8> {
