@@ -1,4 +1,4 @@
-#[allow(non_upper_case_globals)]
+#![allow(non_upper_case_globals)]
 use forms::ContactFormSubmission;
 use worker::*;
 
@@ -14,6 +14,7 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
 }
 
 async fn post_contact(req: Request, _ctx: worker::RouteContext<()>) -> Result<Response> {
+    console_debug!("POST /contact");
     let form_data = ContactFormSubmission::from_request(req).await?;
     console_debug!("{}", form_data);
 

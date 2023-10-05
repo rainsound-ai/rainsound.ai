@@ -1,5 +1,6 @@
 use crate::ContactFormSubmission;
 use serde::Serialize;
+use worker::{Fetch, Headers, Method, Request, RequestInit};
 
 static notion_api_token: &str = std::env!("NOTION_API_TOKEN");
 static database_id: &str = std::env!("NOTION_DATABASE_ID");
@@ -8,29 +9,36 @@ pub async fn add_contact_form_submission_to_database(form_data: ContactFormSubmi
     let request_body = RequestBody::from_form_data(form_data);
     let serialized_request_body = serde_json::to_string(&request_body).unwrap();
 
-    let client = reqwest::Client::new();
-    let res = client
-        .post("https://api.notion.com/v1/pages")
-        .header(
-            reqwest::header::AUTHORIZATION,
-            format!("Bearer {}", notion_api_token),
-        )
-        .header(reqwest::header::CONTENT_TYPE, "application/json")
-        .header("Notion-Version", "2022-06-28")
-        .body(serialized_request_body)
+    let mut headers = Headers::new();
+
+    let bearer = format!("Bearer {}", notion_api_token);
+    headers.set("Authorization", &bearer).unwrap();
+    headers.set("Content-Type", "application/json").unwrap();
+    headers.set("Notion-Version", "2022-06-28").unwrap();
+
+    let mut request_init = RequestInit::new();
+    request_init
+        .with_method(Method::Post)
+        .with_headers(headers)
+        .with_body(Some(serialized_request_body.into()));
+
+    let url = "https://api.notion.com/v1/pages";
+
+    let request = Request::new_with_init(url, &request_init).unwrap();
+    let response = Fetch::Request(request)
         .send()
         .await
         .unwrap()
         .text()
-        .await;
-
-    dbg!(res);
+        .await
+        .unwrap();
 }
 
 #[derive(Serialize)]
 struct RequestBody {
     parent: Parent,
     properties: Properties,
+    children: Vec<ParagraphBlock>,
 }
 
 #[derive(Serialize)]
@@ -41,18 +49,66 @@ struct Parent {
 #[derive(Serialize)]
 struct Properties {
     name: TitleProperty,
-    // email: EmailProperty,
-    // message: TextProperty,
+    email: EmailProperty,
 }
 
 #[derive(Serialize)]
 struct TitleProperty {
-    title: Vec<Text>,
+    title: Vec<TitleElement>,
+}
+
+#[derive(Serialize)]
+struct TitleElement {
+    text: Text,
 }
 
 #[derive(Serialize)]
 struct Text {
     content: String,
+}
+
+#[derive(Serialize)]
+struct EmailProperty {
+    email: String,
+}
+
+#[derive(Serialize)]
+struct RichTextElement {
+    r#type: &'static str,
+    text: Text,
+}
+
+impl RichTextElement {
+    fn new(text: String) -> Self {
+        RichTextElement {
+            r#type: "text",
+            text: Text { content: text },
+        }
+    }
+}
+
+#[derive(Serialize)]
+struct ParagraphBlock {
+    object: &'static str, // Always "block"
+    r#type: &'static str, // Always "paragraph"
+    paragraph: Paragraph,
+}
+
+impl ParagraphBlock {
+    fn new(text: String) -> Self {
+        ParagraphBlock {
+            object: "block",
+            r#type: "paragraph",
+            paragraph: Paragraph {
+                rich_text: vec![RichTextElement::new(text)],
+            },
+        }
+    }
+}
+
+#[derive(Serialize)]
+struct Paragraph {
+    rich_text: Vec<RichTextElement>,
 }
 
 impl RequestBody {
@@ -63,11 +119,21 @@ impl RequestBody {
             },
             properties: Properties {
                 name: TitleProperty {
-                    title: vec![Text {
-                        content: form_data.name,
+                    title: vec![TitleElement {
+                        text: Text {
+                            content: form_data.name,
+                        },
                     }],
                 },
+                email: EmailProperty {
+                    email: form_data.email,
+                },
+                // message: vec![RichTextElement {
+                //     r#type: "text",
+                //     plain_text: form_data.message,
+                // }],
             },
+            children: vec![ParagraphBlock::new(form_data.message)],
         }
     }
 }
