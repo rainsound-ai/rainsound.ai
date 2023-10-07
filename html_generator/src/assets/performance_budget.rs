@@ -109,9 +109,9 @@ mod tests {
     use super::*;
     use crate::prelude::*;
 
-    #[tokio::test]
-    async fn check_performance_budgets() {
-        let assets = Assets::new().await;
+    #[test]
+    fn check_performance_budgets() {
+        let assets = Assets::new();
         let html_assets_with_performance_budget = assets.html_assets_with_performance_budget();
         let non_html_assets_with_performance_budget =
             non_html_assets.assets_with_performance_budget();

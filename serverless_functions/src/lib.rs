@@ -22,14 +22,15 @@ async fn get_pre_rendered_home_page(
     _req: Request,
     _ctx: worker::RouteContext<()>,
 ) -> Result<Response> {
-    Response::from_html(include_str!("../../built/index.html"))
+    let html = include_str!("../../built/index.html");
+    Response::from_html(html)
 }
 
 async fn get_dynamically_rendered_home_page(
     _req: Request,
     _ctx: worker::RouteContext<()>,
 ) -> Result<Response> {
-    let html = html_generator_hack::assets::HtmlAsset::home_page();
+    let html = html_generator::routes::home_page().into_string();
     Response::from_html(html)
 }
 

@@ -1,5 +1,4 @@
 use crate::prelude::*;
-use dioxus::prelude::*;
 
 #[derive(Props)]
 pub struct LightDarkImageProps<'a> {

@@ -94,8 +94,8 @@ pub trait NonImageAsset {
 }
 
 impl Assets {
-    pub async fn new() -> Assets {
-        let html_assets = HtmlAsset::get_pages().await;
+    pub fn new() -> Assets {
+        let html_assets = HtmlAsset::get_pages();
         Assets { html_assets }
     }
 
@@ -115,6 +115,12 @@ impl Assets {
 
     fn path_on_disk(built_dir: &Path, asset_path: &Path) -> PathBuf {
         built_dir.join(asset_path)
+    }
+}
+
+impl Default for Assets {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

@@ -1,75 +1,65 @@
-use crate::prelude::*;
-use dioxus::prelude::*;
-use dioxus_router::prelude::*;
+use maud::{html, Markup};
+use strum_macros::EnumIter;
 
-mod components;
-use components::*;
+// mod components;
+// use components::*;
 
 mod contact;
 use contact::*;
 
 mod css_class_groups;
-use css_class_groups::*;
+// use css_class_groups::*;
 
 mod layout;
 use layout::*;
 
-mod not_found;
-use not_found::*;
+// mod not_found;
+// use not_found::*;
 
-// ANCHOR: router
-#[rustfmt::skip]
-#[derive(Routable, Clone, PartialEq, Debug)]
-pub enum Route {
-    #[layout(Layout)]
-        #[route("/")]
-        Home {},  
-        #[route("/contact")]
-        Contact {},  
-    #[end_layout]
-
-    #[route("/:..segments")]
-    NotFound { segments: Vec<String> },
+#[derive(EnumIter)]
+pub enum RouteNames {
+    HomePage,
+    ContactPage,
+    // SubmitContactForm,
 }
-// ANCHOR_END: router
 
-pub fn Home(cx: Scope) -> Element {
-    dbg!("Body");
-    render! {
-        h1 { "Home" }
-        p { "Hello, squirreld!" }
-        p { "WE MAEK THE SOFTWRE FOR YOU GIVE US MONEY NOM NOM NOM NOM 🧌" }
-        LightDarkImage { asset: &non_html_assets.images.hasui_hero }
+impl RouteNames {
+    pub fn route(&self) -> Route {
+        match self {
+            RouteNames::HomePage => Route::Page {
+                path: "/".to_string(),
+                html: home_page(),
+            },
+
+            RouteNames::ContactPage => Route::Page {
+                path: "/contact".to_string(),
+                html: contact_page(),
+            },
+            // Routes::SubmitContactForm => Route {
+            //     verb: HttpVerb::Post,
+            //     path: "/contact".to_string(),
+            // },
+        }
     }
 }
 
-// #[derive(Props)]
-// struct RenderBrowserComponentProps<BrowserComponentProps>
-// where
-//     BrowserComponentProps: Serialize,
-// {
-//     class: Option<&'static str>,
-//     component: BrowserComponent<BrowserComponentProps>,
-//     children: Option<Element<'static>>,
-// }
+pub enum HttpVerb {
+    Get,
+    Post,
+    Put,
+    Delete,
+}
 
-// fn RenderBrowserComponent<BrowserComponentProps>(
-//     cx: Scope<'static, RenderBrowserComponentProps<BrowserComponentProps>>,
-// ) -> Element<'static>
-// where
-//     BrowserComponentProps: Serialize,
-// {
-//     let component = &cx.props.component;
-//     let serialized_props = serde_json::to_string(&component.props).unwrap();
+pub enum Route {
+    Page { path: String, html: Markup },
+}
 
-//     cx.render(rsx!(
-//         div {
-//             class: cx.props.class,
-//             "data-browser-component-name": component.name,
-//             "data-browser-component-props": "{serialized_props}",
-//             if let Some(children) = &cx.props.children {
-//                 children
-//             }
-//         }
-//     ))
-// }
+pub fn home_page() -> Markup {
+    dbg!("Body");
+    layout(html! {
+        h1 { "Home" }
+        p { "Hello, squirreld!" }
+        p { "WE MAEK THE SOFTWRE FOR YOU GIVE US MONEY NOM NOM NOM NOM 🧌" }
+        // LightDarkImage { asset: &non_html_assets.images.hasui_hero }
+    })
+}

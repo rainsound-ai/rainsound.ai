@@ -1,29 +1,29 @@
-use dioxus::prelude::*;
+use maud::{html, Markup};
 
-#[inline_props]
-pub fn Contact(cx: Scope) -> Element {
-    render! {
+pub fn contact_page() -> Markup {
+    html! {
         h1 { "Contact" }
 
         p { "O hai mark" }
 
-        form {
-            class: "flex flex-col gap-2 w-full max-w-2xl py-4",
-            action: "http://localhost:8787/contact",
-            method: "POST",
+        form
+            class="flex flex-col gap-2 w-full max-w-2xl py-4"
+            action="http://localhost:8787/contact"
+            method="POST"
+        {
             label {
                 p { "Name" }
-                input { required: true, name: "name" }
+                input required name="name";
             }
 
             label {
                 p { "Email" }
-                input { required: true, name: "email" }
+                input required name="email";
             }
 
             label {
                 p { "Message" }
-                textarea { required: true, name: "message" }
+                textarea required name="message" {}
             }
 
             button { "Send" }
