@@ -1,21 +1,28 @@
 [workspace]
 members = [
     # 
-    "browser",
+    # "browser",
     # "assets",
     "new_assets",
     "shared",
     "serverless_functions",
+]
+exclude = [
+    # We have to exclude the browser crate from the workspace because
+    # we build it as part of serverless_functions/build.rs.
+    #
+    # If it's part of the workspace, build.rs deadlocks because the cargo
+    # process that's building the browser crate is waiting for the
+    # serverless_functions crate to finish building, but the
+    # serverless_functions crate is waiting for the browser crate to
+    # finish building.
+    "browser",
 ]
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.
 opt-level = "s"
 lto = true
-
-# Always build the image crate with optimizations enabled, even in debug mode.
-[profile.dev.package.image]
-opt-level = 3
 
 # For cargo-commander.
 [commands]

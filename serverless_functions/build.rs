@@ -8,7 +8,9 @@ fn main() {
     println!("cargo:rerun-if-changed=../**/*.html");
     println!("cargo:rerun-if-changed=../**/*.rs");
     println!("cargo:rerun-if-changed=../**/*.css");
-    new_assets::tailwind::build_tailwind(true);
+
+    new_assets::build::tailwind::build_tailwind(true);
+    new_assets::build::browser_crate::build_browser_crate(true);
 
     //     // println!("Removing built folder");
     //     // if let Err(error) = fs::remove_dir_all(&built_dir) {

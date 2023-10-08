@@ -32,6 +32,7 @@ pub async fn add_contact_form_submission_to_database(form_data: ContactFormSubmi
         .text()
         .await
         .unwrap();
+    // console_debug!("Response from Notion API: {}", response);
 }
 
 #[derive(Serialize)]

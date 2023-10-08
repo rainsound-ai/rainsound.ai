@@ -8,7 +8,6 @@ description = "Code shared between browser and server."
 license = "unlicensed"
 repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
 
-
 [features]
 browser = ["wasm-bindgen", "web-sys", "gloo", "serde"]
 server = ["serde"]

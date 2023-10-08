@@ -1,17 +1,14 @@
 use maud::{html, Markup};
 use strum_macros::EnumIter;
 
-// mod components;
-// use components::*;
+mod components;
+use components::*;
 
 pub mod contact;
 use contact::*;
 
 mod css_class_groups;
 use css_class_groups::*;
-
-mod layout;
-use layout::*;
 
 // mod not_found;
 // use not_found::*;

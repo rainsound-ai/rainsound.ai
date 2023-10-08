@@ -1,6 +1,6 @@
 use arraygen::Arraygen;
 use new_assets::non_image_asset::NonImageAsset;
-use new_assets::CssAsset;
+use new_assets::*;
 use once_cell::sync::Lazy;
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -19,8 +19,8 @@ type ContentType = String;
 #[gen_array(pub fn all_assets: &dyn NonImageAsset, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
 pub struct NonHtmlAssets {
     pub built_css: CssAsset,
-    // pub browser_js: JsAsset,
-    // pub browser_bg_wasm: WasmAsset,
+    pub browser_js: JsAsset,
+    pub browser_bg_wasm: WasmAsset,
     // pub build_time: TextAsset,
     // pub images: ImageAssets,
 }
@@ -39,7 +39,23 @@ impl NonHtmlAssets {
             load_time_budget: Duration::from_millis(1),
         };
 
-        NonHtmlAssets { built_css }
+        let browser_js = JsAsset {
+            path: PathBuf::from_str("browser.js").unwrap(),
+            contents: include_str!("../../../target/browser/browser.js"),
+            load_time_budget: Duration::from_millis(1),
+        };
+
+        let browser_bg_wasm = WasmAsset {
+            path: PathBuf::from_str("browser_bg.wasm").unwrap(),
+            bytes: include_bytes!("../../../target/browser/browser_bg.wasm"),
+            load_time_budget: Duration::from_millis(1),
+        };
+
+        NonHtmlAssets {
+            built_css,
+            browser_js,
+            browser_bg_wasm,
+        }
     }
 
     fn by_path(&self) -> HashMap<String, (ContentType, Vec<u8>)> {

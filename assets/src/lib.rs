@@ -55,7 +55,6 @@ pub use self::workspace_root::*;
 
 pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
 
-
 #[derive(PartialEq, Iterable)]
 pub struct ImageAssets {
     pub hasui_hero: LightDarkImageAsset,

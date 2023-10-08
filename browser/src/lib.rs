@@ -25,6 +25,8 @@ fn main() -> Result<(), JsValue> {
     // mount_component(show_if_scrolled::name, hydrate_show_if_scrolled);
     // mount_component(parallax::name, hydrate_parallax);
 
+    // alert("Hello from Rust!");
+
     Ok(())
 }
 
