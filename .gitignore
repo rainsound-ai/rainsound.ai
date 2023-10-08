@@ -8,3 +8,4 @@ node_modules
 .env
 .envrc
 /browser/target/**
+/browser/target
