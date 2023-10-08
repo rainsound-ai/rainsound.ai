@@ -33,7 +33,10 @@ setup() {
 		cargo install wasm-opt --version 0.114.0 --root ./target/cargo_install &&
 		cargo install simple-http-server --version 0.6.7 --root ./target/cargo_install &&
 		cargo install twiggy --version 0.7.0 --root ./target/cargo_install &&
-		rm -rf ./target/node_modules && npm install && mv node_modules ./target/node_modules
+		cargo install worker-build --root ./target/cargo_install &&
+		rm -rf ./target/node_modules &&
+		npm install &&
+		mv node_modules ./target/node_modules
 }
 
 profile_bundle_size() {

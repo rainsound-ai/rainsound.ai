@@ -3,8 +3,11 @@
 
 fn main() {
     println!("Running serverless_functions build.rs.");
-    let workspace_root_dir = new_assets::workspace_root::dir();
-    println!("{}", workspace_root_dir.to_string_lossy());
+
+    // If you change these, also change them in tailwind.config.js.
+    println!("cargo:rerun-if-changed=../**/*.html");
+    println!("cargo:rerun-if-changed=../**/*.rs");
+    println!("cargo:rerun-if-changed=../**/*.css");
     new_assets::tailwind::build_tailwind(true);
 
     //     // println!("Removing built folder");

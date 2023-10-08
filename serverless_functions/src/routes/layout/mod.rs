@@ -12,7 +12,7 @@ pub fn layout(content: Markup) -> Markup {
                 link rel="stylesheet" href="built.css";
             }
 
-            body class={(bg_background()) " dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75"} {
+            body class={(bg_background()) " bg-red-100 dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75"} {
                 nav class="flex gap-2 p-2 items-center justify-start w-full font-semibold text-lg" {
                     a href="/" class="flex gap-2 items-center" {
                         span class="text-4xl font-bold" { "🌸" }
