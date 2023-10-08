@@ -1,9 +1,11 @@
-// use assets::Assets;
 // use manifest;
 // use std::fs;
 
 fn main() {
-    //     let built_dir = manifest::dir().join("built");
+    println!("Running serverless_functions build.rs.");
+    let workspace_root_dir = new_assets::workspace_root::dir();
+    println!("{}", workspace_root_dir.to_string_lossy());
+    new_assets::tailwind::build_tailwind(true);
 
     //     // println!("Removing built folder");
     //     // if let Err(error) = fs::remove_dir_all(&built_dir) {

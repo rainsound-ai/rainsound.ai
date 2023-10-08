@@ -1,7 +1,6 @@
+use crate::non_image_asset::NonImageAsset;
 use std::path::{Path, PathBuf};
 use std::time::Duration;
-
-use crate::prelude::*;
 
 #[derive(PartialEq)]
 pub struct TextAsset {

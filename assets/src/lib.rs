@@ -1,5 +1,4 @@
-use crate::prelude::*;
-use arraygen::Arraygen;
+// use crate::prelude::*;
 use once_cell::sync::Lazy;
 use rayon::prelude::*;
 use std::any::Any;
@@ -7,11 +6,10 @@ use std::collections::HashSet;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
-use std::time::Duration;
 use struct_iterable::Iterable;
 
-mod path;
-pub use self::path::*;
+mod assets;
+pub use self::assets::*;
 
 mod css_asset;
 pub use self::css_asset::*;
@@ -28,8 +26,23 @@ pub use self::image_asset::*;
 mod js_asset;
 pub use self::js_asset::*;
 
+mod non_image_asset;
+pub use self::non_image_asset::*;
+
+mod non_html_assets;
+pub use self::non_html_assets::*;
+
+mod path;
+pub use self::path::*;
+
 mod performance_budget;
 pub use self::performance_budget::*;
+
+mod prelude;
+pub use self::prelude::*;
+
+pub mod tailwind;
+pub use self::tailwind::*;
 
 mod text_asset;
 pub use self::text_asset::*;
@@ -37,83 +50,38 @@ pub use self::text_asset::*;
 mod wasm_asset;
 pub use self::wasm_asset::*;
 
+mod workspace_root;
+pub use self::workspace_root::*;
+
 pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
 
-#[derive(Arraygen)]
-#[gen_array(fn html_assets_with_performance_budget: &dyn NonImageAsset, implicit_select_all: HtmlAsset)]
-pub struct Assets {
-    html_assets: Vec<HtmlAsset>,
-}
-
-// We have to separate out the non-html assets because
-// we want to reference them when generating html.
-//
-// If we didn't do this, we'd have a circular dependency.
-// This causes problems. For example, it can lead to
-// deadlocking if we're using a lazily initialized global variable.
-#[derive(PartialEq, Arraygen)]
-#[gen_array(fn assets_with_performance_budget: &dyn NonImageAsset, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
-pub struct NonHtmlAssets {
-    pub main_css: CssAsset,
-    pub browser_js: JsAsset,
-    pub browser_bg_wasm: WasmAsset,
-    pub build_time: TextAsset,
-    pub images: ImageAssets,
-}
 
 #[derive(PartialEq, Iterable)]
 pub struct ImageAssets {
     pub hasui_hero: LightDarkImageAsset,
 }
 
-pub trait NonImageAsset {
-    fn path(&self) -> &Path;
-
-    fn bytes(&self) -> Vec<u8>;
-
-    fn save_to_disk(&self, built_dir: &Path) {
-        println!("Saving asset: {:?}", self.path());
-        let path = self.path_on_disk(built_dir);
-
-        if let Err(error) = fs::remove_file(&path) {
-            println!("Error removing file: {}", error);
-        }
-
-        let bytes = self.bytes();
-        fs::create_dir_all(path.parent().unwrap()).unwrap();
-        fs::write(path, bytes).unwrap();
-    }
-
-    fn path_on_disk(&self, built_dir: &Path) -> PathBuf {
-        Assets::path_on_disk(built_dir, self.path())
-    }
-
-    fn check_performance_budget(&self) -> HowCloseToBudget {
-        HowCloseToBudget::new(self)
-    }
-
-    // Used for enforcing performance budgets.
-    fn load_time_budget(&self) -> Duration;
-}
 
 impl Assets {
     pub fn new() -> Assets {
-        let html_assets = HtmlAsset::get_pages();
-        Assets { html_assets }
+        // let html_assets = HtmlAsset::get_pages();
+        Assets { 
+            // html_assets
+        }
     }
 
     pub fn save_to_disk(&self, built_dir: &Path) {
-        dbg!(&self.html_assets);
+        // dbg!(&self.html_assets);
 
-        for html_asset in &self.html_assets {
-            println!("Saving asset: {:?}", html_asset.path());
-            html_asset.save_to_disk(built_dir);
-        }
-        non_html_assets.save_to_disk(built_dir);
+        // for html_asset in &self.html_assets {
+        //     println!("Saving asset: {:?}", html_asset.path());
+        //     html_asset.save_to_disk(built_dir);
+        // }
+        // non_html_assets.save_to_disk(built_dir);
     }
 
     pub fn built_dir() -> PathBuf {
-        crate::manifest::dir().join("built")
+        crate::workspace_root::dir().join("built")
     }
 
     fn path_on_disk(built_dir: &Path, asset_path: &Path) -> PathBuf {
@@ -136,55 +104,55 @@ impl Default for Assets {
 impl NonHtmlAssets {
     pub fn new() -> NonHtmlAssets {
         println!("main.css");
-        let main_css = CssAsset {
-            path: PathBuf::from_str("main.css").unwrap(),
-            contents: include_str!("../../../target/tailwind/built.css"),
-            load_time_budget: Duration::from_millis(1),
-        };
+        // let main_css = CssAsset {
+        //     path: PathBuf::from_str("main.css").unwrap(),
+        //     contents: include_str!("../../../target/tailwind/built.css"),
+        //     load_time_budget: Duration::from_millis(1),
+        // };
 
-        println!("browser.js");
-        let browser_js = JsAsset {
-            path: PathBuf::from_str("browser.js").unwrap(),
-            contents: include_str!("../../../target/browser/browser.js"),
-            load_time_budget: Duration::from_millis(1),
-        };
+        // println!("browser.js");
+        // let browser_js = JsAsset {
+        //     path: PathBuf::from_str("browser.js").unwrap(),
+        //     contents: include_str!("../../../target/browser/browser.js"),
+        //     load_time_budget: Duration::from_millis(1),
+        // };
 
-        println!("browser_bg.wasm");
-        let browser_bg_wasm = WasmAsset {
-            path: PathBuf::from_str("browser_bg.wasm").unwrap(),
-            bytes: include_bytes!("../../../target/browser/browser_bg.wasm"),
-            load_time_budget: Duration::from_millis(1),
-        };
+        // println!("browser_bg.wasm");
+        // let browser_bg_wasm = WasmAsset {
+        //     path: PathBuf::from_str("browser_bg.wasm").unwrap(),
+        //     bytes: include_bytes!("../../../target/browser/browser_bg.wasm"),
+        //     load_time_budget: Duration::from_millis(1),
+        // };
 
-        println!("build_time.txt");
-        let build_time = TextAsset {
-            path: PathBuf::from_str("site-build-time").unwrap(),
-            content: chrono::Local::now().to_rfc3339(),
-            load_time_budget: Duration::from_millis(1),
-        };
+        // println!("build_time.txt");
+        // let build_time = TextAsset {
+        //     path: PathBuf::from_str("site-build-time").unwrap(),
+        //     content: chrono::Local::now().to_rfc3339(),
+        //     load_time_budget: Duration::from_millis(1),
+        // };
 
         let images = ImageAssets::new();
 
         NonHtmlAssets {
-            main_css,
-            browser_js,
-            browser_bg_wasm,
-            build_time,
-            images,
+            // main_css,
+            // browser_js,
+            // browser_bg_wasm,
+            // build_time,
+            // images,
         }
     }
 
     fn save_to_disk(&self, built_dir: &Path) {
-        println!("main.css");
-        self.main_css.save_to_disk(built_dir);
-        println!("browser.js");
-        self.browser_js.save_to_disk(built_dir);
-        println!("browser_bg.wasm");
-        self.browser_bg_wasm.save_to_disk(built_dir);
-        println!("build-time.json");
-        self.build_time.save_to_disk(built_dir);
+        // println!("main.css");
+        // self.main_css.save_to_disk(built_dir);
+        // println!("browser.js");
+        // self.browser_js.save_to_disk(built_dir);
+        // println!("browser_bg.wasm");
+        // self.browser_bg_wasm.save_to_disk(built_dir);
+        // println!("build-time.json");
+        // self.build_time.save_to_disk(built_dir);
 
-        self.images.save_to_disk(built_dir);
+        // self.images.save_to_disk(built_dir);
     }
 }
 

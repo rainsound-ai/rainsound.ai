@@ -1,0 +1,14 @@
+[package]
+name = "new_assets"
+version = "0.1.0"
+edition = "2021"
+description = "Assets processing."
+license = "unlicensed"
+repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
+
+[features]
+build = []
+
+[dependencies]
+
+[build-dependencies]

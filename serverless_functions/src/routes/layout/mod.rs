@@ -9,7 +9,7 @@ pub fn layout(content: Markup) -> Markup {
                 meta charset="UTF-8";
                 meta name="viewport" content="width=device-width, initial-scale=1.0";
                 meta http_equiv="X-UA-Compatible" content="ie=edge";
-                link rel="stylesheet" href="main.css";
+                link rel="stylesheet" href="built.css";
             }
 
             body class={(bg_background()) " dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75"} {

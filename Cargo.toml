@@ -1,9 +1,10 @@
 [workspace]
 members = [
+    # 
     "browser",
     # "assets",
+    "new_assets",
     "shared",
-    # 
     "serverless_functions",
 ]
 

@@ -1,10 +1,9 @@
+use crate::non_image_asset::NonImageAsset;
 use std::path::{Path, PathBuf};
-use std::str::FromStr;
 use std::time::Duration;
-use strum::IntoEnumIterator;
+// use strum::IntoEnumIterator;
 
-use crate::prelude::*;
-use crate::routes::{Route, RouteNames};
+// use crate::routes::{Route, RouteNames};
 
 #[derive(Debug)]
 pub struct HtmlAsset {
@@ -14,28 +13,28 @@ pub struct HtmlAsset {
 }
 
 impl HtmlAsset {
-    pub fn get_pages() -> Vec<HtmlAsset> {
-        RouteNames::iter()
-            .map(|route_name| {
-                let route = route_name.route();
+    // pub fn get_pages() -> Vec<HtmlAsset> {
+    //     RouteNames::iter()
+    //         .map(|route_name| {
+    //             let route = route_name.route();
 
-                match route {
-                    Route::Page { path, html } => {
-                        let path_without_leading_slash = path.strip_prefix('/').unwrap();
-                        let path_buf = PathBuf::from_str(path_without_leading_slash)
-                            .unwrap()
-                            .join("index.html");
+    //             match route {
+    //                 Route::Page { path, html } => {
+    //                     let path_without_leading_slash = path.strip_prefix('/').unwrap();
+    //                     let path_buf = PathBuf::from_str(path_without_leading_slash)
+    //                         .unwrap()
+    //                         .join("index.html");
 
-                        HtmlAsset {
-                            path: path_buf,
-                            contents: html.into_string(),
-                            load_time_budget: Duration::from_millis(1),
-                        }
-                    }
-                }
-            })
-            .collect()
-    }
+    //                     HtmlAsset {
+    //                         path: path_buf,
+    //                         contents: html.into_string(),
+    //                         load_time_budget: Duration::from_millis(1),
+    //                     }
+    //                 }
+    //             }
+    //         })
+    //         .collect()
+    // }
 
     fn minified_contents(&self) -> Vec<u8> {
         let mut minify_html_config = minify_html::Cfg::new();

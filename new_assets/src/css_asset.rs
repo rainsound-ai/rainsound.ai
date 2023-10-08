@@ -23,4 +23,8 @@ impl NonImageAsset for CssAsset {
     fn load_time_budget(&self) -> Duration {
         self.load_time_budget
     }
+
+    fn content_type(&self) -> String {
+        "text/css".to_string()
+    }
 }

@@ -25,7 +25,7 @@ arraygen = "0.3.2"
 strum = "0.25.0"
 strum_macros = "0.25.2"
 maud = "0.25.0"
-# assets = { path = "../assets" }
+new_assets = { path = "../new_assets" }
 
 [profile.release]
 lto = true
@@ -33,4 +33,4 @@ strip = true
 codegen-units = 1
 
 [build-dependencies]
-# assets = { path = "../assets", features = ["build"] }
+new_assets = { path = "../new_assets", features = ["build"] }

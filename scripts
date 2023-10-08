@@ -170,7 +170,6 @@ build_tailwind_dev() {
 		--prefix ./target/node_modules tailwindcss \
 		-i ./serverless_functions/src/main.css \
 		-o ./target/tailwind/built.css
-	# --watch
 }
 
 build_tailwind_production() {

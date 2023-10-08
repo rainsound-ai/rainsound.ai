@@ -1,21 +1,46 @@
 #![allow(non_upper_case_globals)]
+use assets::non_html_assets_by_path;
 use routes::contact::form_submission::ContactFormSubmission;
 use worker::*;
 
+// change 1 2 3 4 5 6 7 8 9 10 11
+
+mod assets;
+mod extensions;
+use self::extensions::*;
 mod notion;
 mod routes;
 
 #[event(fetch)]
 pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Response> {
+    if let Some(response) = serve_assets(&req) {
+        return response;
+    }
+
     Router::new()
         .get_async("/pre-rendered", get_pre_rendered_home_page)
         .get_async("/dynamically-rendered", get_dynamically_rendered_home_page)
-        .get_async("/main.css", get_main_css)
+        // .get_async("/built.css", get_built_css)
         .get_async("/browser.js", get_browser_js)
         .get_async("/browser_bg.wasm", get_browser_bg_wasm)
         .post_async("/contact", post_contact)
+        // .get_async("/*asset", serve_assets)
         .run(req, env)
         .await
+}
+
+fn serve_assets(req: &Request) -> Option<Result<Response>> {
+    let path = req.path();
+    console_debug!("Path from request {}", path);
+
+    non_html_assets_by_path
+        .get(&path)
+        .map(|(content_type, bytes)| {
+            Response::from_bytes(bytes.clone()).map(|mut r| {
+                r.headers_mut().set("Content-Type", content_type).unwrap();
+                r
+            })
+        })
 }
 
 async fn get_pre_rendered_home_page(
@@ -30,16 +55,9 @@ async fn get_dynamically_rendered_home_page(
     _req: Request,
     _ctx: worker::RouteContext<()>,
 ) -> Result<Response> {
+    console_debug!("Rendering html dynamically.");
     let html = crate::routes::home_page().into_string();
     Response::from_html(html)
-}
-
-async fn get_main_css(_req: Request, _ctx: worker::RouteContext<()>) -> Result<Response> {
-    let bytes = include_str!("../../built/main.css");
-    Response::ok(bytes).map(|mut r| {
-        r.headers_mut().set("Content-Type", "text/css").unwrap();
-        r
-    })
 }
 
 async fn get_browser_js(_req: Request, _ctx: worker::RouteContext<()>) -> Result<Response> {
