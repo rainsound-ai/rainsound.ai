@@ -1,4 +1,4 @@
-use crate::ContactFormSubmission;
+use crate::routes::contact::form_submission::ContactFormSubmission;
 use serde::Serialize;
 use worker::{Fetch, Headers, Method, Request, RequestInit};
 

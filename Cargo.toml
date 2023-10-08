@@ -1,12 +1,11 @@
 [workspace]
 members = [
     "browser",
-    "html_generator",
+    # "assets",
     "shared",
     # 
     "serverless_functions",
 ]
-
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.

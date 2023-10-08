@@ -16,6 +16,9 @@ pub use self::path::*;
 mod css_asset;
 pub use self::css_asset::*;
 
+mod extensions;
+pub use self::extensions::*;
+
 mod html_asset;
 pub use self::html_asset::*;
 

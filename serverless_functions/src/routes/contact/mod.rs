@@ -1,5 +1,7 @@
 use maud::{html, Markup};
 
+pub mod form_submission;
+
 pub fn contact_page() -> Markup {
     html! {
         h1 { "Contact" }

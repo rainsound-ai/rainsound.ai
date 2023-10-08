@@ -215,7 +215,7 @@ pub struct ResizedImageAsset {
 
 impl ResizedImageAsset {
     pub fn save_to_disk(&self, built_dir: &Path, paths_of_files_in_built_dir: &HashSet<PathBuf>) {
-        println!("Deciding whether to save resized image to disk");
+        println!("Deciding whether to save resized image to disk.");
         let path = Assets::path_on_disk(built_dir, &self.path);
         if self.needs_to_be_recreated(&path, paths_of_files_in_built_dir) {
             let parent_dir = path.parent().unwrap();

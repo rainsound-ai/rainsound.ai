@@ -8,7 +8,7 @@
 // import init, { greet } from './browser.js'
 import init from './browser.js'
 
-function main () {
+async function main () {
   // First up we need to actually load the wasm file, so we use the
   // default export to inform it where the wasm file is located on the
   // server, and then we wait on the returned promise to wait for the

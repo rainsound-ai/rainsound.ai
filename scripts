@@ -61,7 +61,6 @@ build_rust_dev() {
 watch_rust() {
 	echo "✨ Watching Rust"
 	./target/cargo_install/bin/cargo-watch \
-		--watch ./html_generator \
 		--watch ./browser \
 		--watch ./shared \
 		--shell './scripts build_rust_dev'
@@ -169,7 +168,7 @@ build_tailwind_dev() {
 	echo "✨ Watching Tailwind"
 	npx \
 		--prefix ./target/node_modules tailwindcss \
-		-i ./html_generator/src/main.css \
+		-i ./serverless_functions/src/main.css \
 		-o ./target/tailwind/built.css
 	# --watch
 }
@@ -178,7 +177,7 @@ build_tailwind_production() {
 	echo "✨ Building Tailwind for production"
 	npx \
 		--prefix ./target/node_modules tailwindcss \
-		-i ./html_generator/src/main.css \
+		-i ./serverless_functions/src/main.css \
 		-o ./target/tailwind/built.css \
 		--minify
 }

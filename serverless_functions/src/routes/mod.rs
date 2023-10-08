@@ -4,11 +4,11 @@ use strum_macros::EnumIter;
 // mod components;
 // use components::*;
 
-mod contact;
+pub mod contact;
 use contact::*;
 
 mod css_class_groups;
-// use css_class_groups::*;
+use css_class_groups::*;
 
 mod layout;
 use layout::*;

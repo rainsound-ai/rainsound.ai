@@ -1,9 +1,9 @@
 #![allow(non_upper_case_globals)]
-use forms::ContactFormSubmission;
+use routes::contact::form_submission::ContactFormSubmission;
 use worker::*;
 
-mod forms;
 mod notion;
+mod routes;
 
 #[event(fetch)]
 pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Response> {
@@ -30,7 +30,7 @@ async fn get_dynamically_rendered_home_page(
     _req: Request,
     _ctx: worker::RouteContext<()>,
 ) -> Result<Response> {
-    let html = html_generator::routes::home_page().into_string();
+    let html = crate::routes::home_page().into_string();
     Response::from_html(html)
 }
 
