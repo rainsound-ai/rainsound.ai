@@ -1,5 +1,4 @@
 use crate::workspace_root;
-use std::io::Write;
 use std::process::Command;
 
 pub fn build_tailwind(production: bool) {
