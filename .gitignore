@@ -7,5 +7,6 @@
 node_modules
 .env
 .envrc
-/browser/target/**
-/browser/target
+browser/target/**
+browser/target
+browser/target/.rustc_info.json
