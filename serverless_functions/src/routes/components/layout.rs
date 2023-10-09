@@ -1,6 +1,7 @@
 use crate::assets::non_html_assets;
 use crate::routes::*;
 use maud::{html, Markup, PreEscaped, DOCTYPE};
+use new_assets::*;
 
 pub fn layout(content: Markup) -> Markup {
     html! {
@@ -13,7 +14,7 @@ pub fn layout(content: Markup) -> Markup {
                 (stylesheet(&non_html_assets.built_css))
             }
 
-            body class={(bg_background()) " bg-red-100 dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75"} {
+            body class={(bg_background()) " dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75"} {
                 nav class="flex gap-2 p-2 items-center justify-start w-full font-semibold text-lg" {
                     a href="/" class="flex gap-2 items-center" {
                         span class="text-4xl font-bold" { "🌸" }
@@ -48,7 +49,10 @@ pub fn layout(content: Markup) -> Markup {
 
 fn main_js() -> Markup {
     dbg!("MainJs");
-    let contents = include_str!("../../main.js");
+    let contents = include_str!("../../main.js").replace(
+        "{browser_js_filename}",
+        non_html_assets.browser_js.path().to_str().unwrap(),
+    );
     html! {
         script type="module" {
             (PreEscaped(contents))
