@@ -1,5 +1,12 @@
 #![allow(non_upper_case_globals)]
-use std::path::{Path, PathBuf};
+
+use crate::asset::Asset;
+use arraygen::Arraygen;
+use once_cell::sync::Lazy;
+use std::collections::HashMap;
+use std::path::PathBuf;
+use std::str::FromStr;
+use std::time::Duration;
 
 #[cfg(feature = "build")]
 pub mod build;
@@ -31,29 +38,17 @@ pub use self::wasm_asset::*;
 pub mod workspace_root;
 pub use self::workspace_root::*;
 
+pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
+pub static non_html_assets_by_path: Lazy<HashMap<String, (ContentType, Vec<u8>)>> =
+    Lazy::new(|| non_html_assets.by_path());
+type ContentType = String;
+
 pub fn built_assets_dir() -> PathBuf {
     workspace_root::dir().join("built")
 }
 
-fn path_for_asset_on_disk(asset_path: &Path) -> PathBuf {
-    built_assets_dir().join(asset_path)
-}
-
-use crate::asset::Asset;
-use arraygen::Arraygen;
-use once_cell::sync::Lazy;
-use std::collections::HashMap;
-use std::str::FromStr;
-use std::time::Duration;
-
-pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
-pub static non_html_assets_by_path: Lazy<HashMap<String, (ContentType, Vec<u8>)>> =
-    Lazy::new(|| non_html_assets.by_path());
-
-type ContentType = String;
-
 #[derive(PartialEq, Arraygen)]
-#[gen_array(pub fn all_assets: &dyn Asset, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
+#[gen_array(pub fn non_image_assets: &dyn Asset, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
 #[gen_array(pub fn images: &ImageAsset, implicit_select_all: ImageAsset)]
 #[gen_array(pub fn light_dark_images: &LightDarkImageAsset, implicit_select_all: LightDarkImageAsset)]
 pub struct NonHtmlAssets {
@@ -120,6 +115,40 @@ impl NonHtmlAssets {
             hashmap.insert(path, (content_type, bytes));
         }
         hashmap
+    }
+
+    pub fn save_to_disk(&self) {
+        self.all_assets()
+            .into_iter()
+            .par_bridge()
+            .for_each(|asset| {
+                asset.save_to_disk();
+            });
+    }
+
+    fn all_assets(&self) -> Vec<Box<dyn Asset>> {
+        let non_image_assets = self.non_image_assets();
+        let resized_image_assets = self.resized_image_assets();
+        non_image_assets
+            .into_iter()
+            .chain(resized_image_assets)
+            .collect()
+    }
+
+    fn resized_image_assets(&self) -> Vec<ResizedImageAsset> {
+        let resized_variants = non_html_assets
+            .images()
+            .iter()
+            .flat_map(|image_asset| image_asset.resized_variants.clone());
+
+        let light_dark_resized_variants = non_html_assets
+            .light_dark_images()
+            .iter()
+            .flat_map(|light_dark_image_asset| light_dark_image_asset.resized_variants());
+
+        resized_variants
+            .chain(light_dark_resized_variants)
+            .collect()
     }
 }
 

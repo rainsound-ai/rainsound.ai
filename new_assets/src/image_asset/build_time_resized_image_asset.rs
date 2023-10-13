@@ -1,7 +1,9 @@
-use crate::asset::Asset;
+use crate::extensions::dynamic_image::DynamicImageExtension;
+use crate::{asset::Asset, non_html_assets};
 use image::DynamicImage;
 use std::{
     collections::HashSet,
+    fs,
     path::{Path, PathBuf},
     sync::Arc,
 };
@@ -21,50 +23,47 @@ impl Asset for BuildTimeResizedImageAsset {
     }
 
     fn bytes(&self) -> Vec<u8> {
-        if self.needs_to_be_recreated(&path, paths_of_files_in_built_dir) {
-            let parent_dir = path.parent().unwrap();
-            if !parent_dir.exists() {
-                std::fs::create_dir_all(parent_dir).unwrap();
-            }
+        let path_to_resized_image_file = self.path_on_disk();
+        let already_exists =
+            super::paths_of_images_in_built_dir.contains(&path_to_resized_image_file);
 
-            println!("Saving resized image to disk: {:?}", &self.path);
-            self.image
-                .resize_to_width(self.width)
-                .save_with_format(path, image::ImageFormat::Jpeg)
-                .unwrap();
-
-            return;
+        if already_exists {
+            return fs::read(&path_to_resized_image_file).unwrap();
         }
+
+        println!("Resizing image: {:?}", &self.path);
+
+        let mut bytes = Vec::new();
+
+        let resized_image = self.image.resize_to_width(self.width);
+        resized_image.write_to(&mut bytes, image::ImageFormat::Jpeg);
+
+        bytes
     }
 }
 
-impl BuildTimeResizedImageAsset {
-    pub fn save_to_disk(&self, built_dir: &Path, paths_of_files_in_built_dir: &HashSet<PathBuf>) {
-        println!("Deciding whether to save resized image to disk.");
-        if self.needs_to_be_recreated(&path, paths_of_files_in_built_dir) {
-            let parent_dir = path.parent().unwrap();
-            if !parent_dir.exists() {
-                std::fs::create_dir_all(parent_dir).unwrap();
-            }
+fn save_resized_image_assets_to_disk(
+    built_dir: &Path,
+    paths_of_images_in_built_dir: &HashSet<PathBuf>,
+) {
+    let image_resized_variants = non_html_assets
+        .images()
+        .iter()
+        .flat_map(|image_asset| image_asset.resized_variants.clone());
 
-            println!("Saving resized image to disk: {:?}", &self.path);
-            self.image
-                .resize_to_width(self.width)
-                .save_with_format(path, image::ImageFormat::Jpeg)
-                .unwrap();
+    let light_dark_resized_variants = non_html_assets
+        .light_dark_images()
+        .iter()
+        .flat_map(|light_dark_image_asset| light_dark_image_asset.resized_variants());
 
-            return;
-        }
+    let resized_image_assets = image_resized_variants
+        .chain(light_dark_resized_variants)
+        .collect::<Vec<_>>();
 
-        println!(
-            "Resized image {} already exists, so skipping saving it to disk.",
-            &self.path.to_str().unwrap()
-        );
-    }
-
-    pub fn needs_to_be_recreated(&self, paths_of_files_in_built_dir: &HashSet<PathBuf>) -> bool {
-        let path_to_resized_image_file = self.path_on_disk();
-        let already_exists = paths_of_files_in_built_dir.contains(&path_to_resized_image_file);
-        !already_exists
-    }
+    resized_image_assets
+        .into_iter()
+        .par_bridge()
+        .for_each(|resized_image_asset| {
+            resized_image_asset.save_to_disk();
+        });
 }

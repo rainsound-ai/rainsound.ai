@@ -24,7 +24,14 @@ pub trait Asset {
     }
 
     fn path_on_disk(&self) -> PathBuf {
-        crate::path_for_asset_on_disk(self.path())
+        let path = self.path();
+
+        let parent_dir = path.parent().unwrap();
+        if !parent_dir.exists() {
+            std::fs::create_dir_all(parent_dir).unwrap();
+        }
+
+        crate::built_assets_dir().join(&path)
     }
 
     fn check_performance_budget(&self) -> HowCloseToBudget {

@@ -1,5 +1,7 @@
 use image::imageops::FilterType::Lanczos3;
+use once_cell::sync::Lazy;
 use std::collections::HashSet;
+use std::fs;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
 use std::sync::Arc;
@@ -12,7 +14,7 @@ use build_time_image_wrapper::ImageWrapper;
 #[cfg(feature = "build")]
 mod build_time_resized_image_asset;
 #[cfg(feature = "build")]
-use build_time_resized_image_asset::ResizedImageAsset;
+pub use build_time_resized_image_asset::ResizedImageAsset;
 
 mod light_dark_image_asset;
 pub use self::light_dark_image_asset::*;
@@ -36,6 +38,25 @@ use runtime_image_wrapper::ImageWrapper;
 // When instantiating an image asset:
 // - If it's runtime, read the generated placeholder from the file system.
 // - If it's build time, generate the placeholder and save it to the file system.
+
+pub static paths_of_images_in_built_dir: Lazy<HashSet<PathBuf>> =
+    Lazy::new(|| get_paths_of_images_in_built_dir);
+
+fn get_paths_of_images_in_built_dir() -> HashSet<PathBuf> {
+    let images_dir = crate::built_assets_dir().join("images");
+
+    fs::read_dir(&images_dir)
+        .unwrap_or_else(|error| {
+            println!(
+                "Error reading directory {:?}. Error message: {}",
+                images_dir, error
+            );
+            fs::create_dir_all(&images_dir).unwrap();
+            fs::read_dir(&images_dir).unwrap()
+        })
+        .map(|entry| entry.unwrap().path())
+        .collect::<HashSet<PathBuf>>()
+}
 
 #[derive(PartialEq)]
 pub struct ImageAsset {
