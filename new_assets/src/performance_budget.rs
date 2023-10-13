@@ -1,6 +1,6 @@
 use std::{fmt::Display, path::Path, time::Duration};
 
-use super::NonImageAsset;
+use super::Asset;
 
 pub static assumed_latency: Duration = Duration::from_millis(100);
 pub static assumed_bits_per_second: f64 = 5_000_000.0;
@@ -42,7 +42,7 @@ pub enum HowCloseToBudget<'asset> {
 }
 
 impl<'asset> HowCloseToBudget<'asset> {
-    pub fn new<Asset: NonImageAsset + ?Sized>(asset: &'asset Asset) -> HowCloseToBudget<'asset> {
+    pub fn new<Asset: Asset + ?Sized>(asset: &'asset Asset) -> HowCloseToBudget<'asset> {
         let asset_size = asset.bytes().len();
 
         let estimated_load_time = estimate_load_time(asset_size);
@@ -116,7 +116,7 @@ mod tests {
     //     let non_html_assets_with_performance_budget =
     //         non_html_assets.assets_with_performance_budget();
 
-    //     let assets_with_performance_budget: Vec<&dyn NonImageAsset> =
+    //     let assets_with_performance_budget: Vec<&dyn Asset> =
     //         html_assets_with_performance_budget
     //             .into_iter()
     //             .chain(non_html_assets_with_performance_budget.into_iter())

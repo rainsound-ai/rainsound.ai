@@ -1,4 +1,4 @@
-use crate::non_image_asset::NonImageAsset;
+use crate::asset::Asset;
 use std::{
     path::{Path, PathBuf},
     time::Duration,
@@ -11,7 +11,7 @@ pub struct CssAsset {
     pub load_time_budget: Duration,
 }
 
-impl NonImageAsset for CssAsset {
+impl Asset for CssAsset {
     fn path(&self) -> &Path {
         &self.path
     }

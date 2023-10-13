@@ -7,30 +7,30 @@ pub fn layout(content: Markup) -> Markup {
     html! {
     (DOCTYPE)
     html lang="en" {
-            head {
-                meta charset="UTF-8";
-                meta name="viewport" content="width=device-width, initial-scale=1.0";
-                meta http_equiv="X-UA-Compatible" content="ie=edge";
-                (stylesheet(&non_html_assets.built_css))
-            }
-
-            body class={(bg_background()) " dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75"} {
-                nav class="flex gap-2 p-2 items-center justify-start w-full font-semibold text-lg" {
-                    a href="/" class="flex gap-2 items-center" {
-                        span class="text-4xl font-bold" { "🌸" }
-                        span { "Hyperbloom.studio" }
-                    }
-                    a href="/" { "Home" }
-                    a href="/contact" { "Contact" }
-                }
-            }
-
-            main {
-                (content)
-            }
-
-            (main_js())
+        head {
+            meta charset="UTF-8";
+            meta name="viewport" content="width=device-width, initial-scale=1.0";
+            meta http_equiv="X-UA-Compatible" content="ie=edge";
+            (stylesheet(&non_html_assets.built_css))
         }
+
+        body class={(bg_background()) " dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75"} {
+            nav class="flex gap-2 p-2 items-center justify-start w-full font-semibold text-lg" {
+                a href="/" class="flex gap-2 items-center" {
+                    span class="text-4xl font-bold" { "🌸" }
+                    span { "Hyperbloom.studio" }
+                }
+                a href="/" { "Home" }
+                a href="/contact" { "Contact" }
+            }
+        }
+
+        main {
+            (content)
+        }
+
+        (main_js())
+    }
     }
 }
 

@@ -2,6 +2,8 @@
 // use std::fs;
 
 fn main() {
+    build_test::hi();
+
     println!("Running serverless_functions build.rs.");
 
     // If you change these, also change them in tailwind.config.js.

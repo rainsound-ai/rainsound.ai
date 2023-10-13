@@ -1,13 +1,9 @@
 #![allow(non_upper_case_globals)]
-use assets::non_html_assets_by_path;
+use new_assets::non_html_assets_by_path;
 use routes::contact::form_submission::ContactFormSubmission;
 use worker::*;
 
-// change 1 2 3 4 5 6 7 8 9 10 11
-
-mod assets;
 mod extensions;
-use self::extensions::*;
 mod notion;
 mod routes;
 

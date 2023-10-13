@@ -1,4 +1,4 @@
-use crate::non_image_asset::NonImageAsset;
+use crate::asset::Asset;
 use std::path::{Path, PathBuf};
 use std::time::Duration;
 
@@ -11,7 +11,7 @@ pub struct JsAsset {
 
 impl JsAsset {}
 
-impl NonImageAsset for JsAsset {
+impl Asset for JsAsset {
     fn path(&self) -> &Path {
         &self.path
     }

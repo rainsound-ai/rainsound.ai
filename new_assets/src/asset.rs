@@ -3,7 +3,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::time::Duration;
 
-pub trait NonImageAsset {
+pub trait Asset {
     fn path(&self) -> &Path;
 
     fn bytes(&self) -> Vec<u8>;

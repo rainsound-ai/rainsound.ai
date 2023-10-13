@@ -1,6 +1,6 @@
 use maud::{html, Markup};
+use new_assets::Asset;
 use new_assets::CssAsset;
-use new_assets::NonImageAsset;
 
 pub fn stylesheet(asset: &CssAsset) -> Markup {
     html! {
