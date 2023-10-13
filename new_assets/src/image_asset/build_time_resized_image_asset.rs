@@ -1,11 +1,11 @@
-use crate::asset::Asset;
-use crate::extensions::dynamic_image::DynamicImageExtension;
-use image::DynamicImage;
+use crate::{asset::Asset, extensions::DynamicImageExtension};
 use std::{
     fs,
     path::{Path, PathBuf},
     sync::Arc,
 };
+
+use super::build_time_image_wrapper::BuildTimeImageWrapper;
 
 pub type ResizedImageAsset = BuildTimeResizedImageAsset;
 
@@ -15,7 +15,7 @@ static resized_image_format: image::ImageFormat = image::ImageFormat::Jpeg;
 pub struct BuildTimeResizedImageAsset {
     pub path: PathBuf,
     pub width: u32,
-    pub image: Arc<DynamicImage>,
+    pub image: Arc<BuildTimeImageWrapper>,
 }
 
 impl Asset for BuildTimeResizedImageAsset {
@@ -34,12 +34,9 @@ impl Asset for BuildTimeResizedImageAsset {
 
         println!("Resizing image: {:?}", &self.path);
 
-        let mut bytes = Vec::new();
-
-        let resized_image = self.image.resize_to_width(self.width);
-        resized_image.write_to(&mut bytes, resized_image_format);
-
-        bytes
+        self.image
+            .dynamic_image
+            .into_bytes_with_format(resized_image_format)
     }
 
     fn content_type(&self) -> String {

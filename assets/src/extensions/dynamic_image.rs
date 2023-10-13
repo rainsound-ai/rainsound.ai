@@ -25,10 +25,8 @@ impl DynamicImageExtension for DynamicImage {
     }
 
     fn to_data_uri(&self) -> DataUriAndMimeType {
-        let mut bytes: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-        self.write_to(&mut bytes, ImageFormat::Jpeg)
-            .expect("Error encoding low quality image placeholder.");
-        let base64_encoded = base64::engine::general_purpose::STANDARD.encode(bytes.into_inner());
+        let bytes = self.into_bytes_with_format(ImageFormat::Jpeg);
+        let base64_encoded = base64::engine::general_purpose::STANDARD.encode(bytes);
 
         let mime_type = "format/jpeg";
 

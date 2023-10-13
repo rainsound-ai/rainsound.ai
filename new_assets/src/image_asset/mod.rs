@@ -17,6 +17,8 @@ mod build_time_resized_image_asset;
 pub use build_time_resized_image_asset::ResizedImageAsset;
 
 mod light_dark_image_asset;
+use crate::asset::Asset;
+
 pub use self::light_dark_image_asset::*;
 
 #[cfg(not(feature = "build"))]
@@ -40,7 +42,7 @@ use runtime_image_wrapper::ImageWrapper;
 // - If it's build time, generate the placeholder and save it to the file system.
 
 pub static paths_of_images_in_built_dir: Lazy<HashSet<PathBuf>> =
-    Lazy::new(|| get_paths_of_images_in_built_dir);
+    Lazy::new(get_paths_of_images_in_built_dir);
 
 fn get_paths_of_images_in_built_dir() -> HashSet<PathBuf> {
     let images_dir = crate::built_assets_dir().join("images");

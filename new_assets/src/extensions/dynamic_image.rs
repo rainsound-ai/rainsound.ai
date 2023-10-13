@@ -6,6 +6,7 @@ use std::io::Cursor;
 pub trait DynamicImageExtension {
     fn resize_to_width(&self, new_width: u32) -> Self;
     fn to_data_uri(&self) -> DataUriAndMimeType;
+    fn into_bytes_with_format(&self, format: ImageFormat) -> Vec<u8>;
 }
 
 impl DynamicImageExtension for DynamicImage {
@@ -25,10 +26,8 @@ impl DynamicImageExtension for DynamicImage {
     }
 
     fn to_data_uri(&self) -> DataUriAndMimeType {
-        let mut bytes: Cursor<Vec<u8>> = Cursor::new(Vec::new());
-        self.write_to(&mut bytes, ImageFormat::Jpeg)
-            .expect("Error encoding low quality image placeholder.");
-        let base64_encoded = base64::engine::general_purpose::STANDARD.encode(bytes.into_inner());
+        let bytes = self.into_bytes_with_format(ImageFormat::Jpeg);
+        let base64_encoded = base64::engine::general_purpose::STANDARD.encode(bytes);
 
         let mime_type = "format/jpeg";
 
@@ -42,6 +41,13 @@ impl DynamicImageExtension for DynamicImage {
             mime_type,
             data_uri,
         }
+    }
+
+    fn into_bytes_with_format(&self, format: ImageFormat) -> Vec<u8> {
+        let mut bytes: Cursor<Vec<u8>> = Cursor::new(Vec::new());
+        self.write_to(&mut bytes, format)
+            .expect("Error encoding low quality image placeholder.");
+        bytes.into_inner()
     }
 }
 

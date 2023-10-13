@@ -8,7 +8,7 @@ pub type ImageWrapper = BuildTimeImageWrapper;
 
 #[derive(PartialEq)]
 pub struct BuildTimeImageWrapper {
-    dynamic_image: DynamicImage,
+    pub dynamic_image: DynamicImage,
 }
 
 impl BuildTimeImageWrapper {}
