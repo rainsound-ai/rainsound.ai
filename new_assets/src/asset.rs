@@ -1,7 +1,5 @@
-use crate::performance_budget::HowCloseToBudget;
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::time::Duration;
 
 pub trait Asset {
     fn path(&self) -> &Path;
@@ -33,11 +31,4 @@ pub trait Asset {
 
         crate::built_assets_dir().join(&path)
     }
-
-    fn check_performance_budget(&self) -> HowCloseToBudget {
-        HowCloseToBudget::new(self)
-    }
-
-    // Used for enforcing performance budgets.
-    fn load_time_budget(&self) -> Duration;
 }

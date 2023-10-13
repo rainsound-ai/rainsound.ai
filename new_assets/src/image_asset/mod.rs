@@ -118,7 +118,7 @@ impl ImageAsset {
         self.resized_variants
             .first()
             .unwrap()
-            .path
+            .path()
             .to_str()
             .unwrap()
     }
@@ -135,7 +135,6 @@ impl ImageAsset {
         let original_width = original_image.width();
 
         Self::available_widths(original_width)
-            // .into_par_iter()
             .into_iter()
             .map(|target_width| ResizedImageAsset {
                 path: Self::path_with_width(path, target_width),

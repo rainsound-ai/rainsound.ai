@@ -1,8 +1,7 @@
+use crate::asset::Asset;
 use crate::extensions::dynamic_image::DynamicImageExtension;
-use crate::{asset::Asset, non_html_assets};
 use image::DynamicImage;
 use std::{
-    collections::HashSet,
     fs,
     path::{Path, PathBuf},
     sync::Arc,
@@ -10,11 +9,13 @@ use std::{
 
 pub type ResizedImageAsset = BuildTimeResizedImageAsset;
 
+static resized_image_format: image::ImageFormat = image::ImageFormat::Jpeg;
+
 #[derive(PartialEq, Clone)]
 pub struct BuildTimeResizedImageAsset {
-    path: PathBuf,
-    width: u32,
-    image: Arc<DynamicImage>,
+    pub path: PathBuf,
+    pub width: u32,
+    pub image: Arc<DynamicImage>,
 }
 
 impl Asset for BuildTimeResizedImageAsset {
@@ -36,34 +37,26 @@ impl Asset for BuildTimeResizedImageAsset {
         let mut bytes = Vec::new();
 
         let resized_image = self.image.resize_to_width(self.width);
-        resized_image.write_to(&mut bytes, image::ImageFormat::Jpeg);
+        resized_image.write_to(&mut bytes, resized_image_format);
 
         bytes
     }
+
+    fn content_type(&self) -> String {
+        get_content_type(resized_image_format)
+    }
 }
 
-fn save_resized_image_assets_to_disk(
-    built_dir: &Path,
-    paths_of_images_in_built_dir: &HashSet<PathBuf>,
-) {
-    let image_resized_variants = non_html_assets
-        .images()
-        .iter()
-        .flat_map(|image_asset| image_asset.resized_variants.clone());
-
-    let light_dark_resized_variants = non_html_assets
-        .light_dark_images()
-        .iter()
-        .flat_map(|light_dark_image_asset| light_dark_image_asset.resized_variants());
-
-    let resized_image_assets = image_resized_variants
-        .chain(light_dark_resized_variants)
-        .collect::<Vec<_>>();
-
-    resized_image_assets
-        .into_iter()
-        .par_bridge()
-        .for_each(|resized_image_asset| {
-            resized_image_asset.save_to_disk();
-        });
+fn get_content_type(format: image::ImageFormat) -> String {
+    match format {
+        image::ImageFormat::Jpeg => "image/jpeg".to_string(),
+        image::ImageFormat::Png => "image/png".to_string(),
+        image::ImageFormat::Gif => "image/gif".to_string(),
+        image::ImageFormat::WebP => "image/webp".to_string(),
+        image::ImageFormat::Avif => "image/avif".to_string(),
+        image::ImageFormat::Tiff => "image/tiff".to_string(),
+        image::ImageFormat::Bmp => "image/bmp".to_string(),
+        image::ImageFormat::Ico => "image/x-icon".to_string(),
+        _ => panic!("Unsupported image format: {:?}", format),
+    }
 }

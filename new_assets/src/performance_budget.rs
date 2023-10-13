@@ -42,7 +42,9 @@ pub enum HowCloseToBudget<'asset> {
 }
 
 impl<'asset> HowCloseToBudget<'asset> {
-    pub fn new<Asset: Asset + ?Sized>(asset: &'asset Asset) -> HowCloseToBudget<'asset> {
+    pub fn new<Asset: HasPerformanceBudget + ?Sized>(
+        asset: &'asset Asset,
+    ) -> HowCloseToBudget<'asset> {
         let asset_size = asset.bytes().len();
 
         let estimated_load_time = estimate_load_time(asset_size);
@@ -139,4 +141,13 @@ mod tests {
     //         }
     //     }
     // }
+}
+
+pub trait HasPerformanceBudget: Asset {
+    fn check_performance_budget(&self) -> HowCloseToBudget {
+        HowCloseToBudget::new(self)
+    }
+
+    // Used for enforcing performance budgets.
+    fn load_time_budget(&self) -> Duration;
 }

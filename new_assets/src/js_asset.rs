@@ -1,4 +1,5 @@
 use crate::asset::Asset;
+use crate::HasPerformanceBudget;
 use std::path::{Path, PathBuf};
 use std::time::Duration;
 
@@ -8,8 +9,6 @@ pub struct JsAsset {
     pub contents: &'static str,
     pub load_time_budget: Duration,
 }
-
-impl JsAsset {}
 
 impl Asset for JsAsset {
     fn path(&self) -> &Path {
@@ -24,11 +23,13 @@ impl Asset for JsAsset {
         // self.minified_contents()
     }
 
-    fn load_time_budget(&self) -> Duration {
-        self.load_time_budget
-    }
-
     fn content_type(&self) -> String {
         "application/javascript".to_string()
+    }
+}
+
+impl HasPerformanceBudget for JsAsset {
+    fn load_time_budget(&self) -> Duration {
+        self.load_time_budget
     }
 }

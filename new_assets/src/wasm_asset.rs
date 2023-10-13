@@ -1,4 +1,5 @@
 use crate::asset::Asset;
+use crate::HasPerformanceBudget;
 use std::path::{Path, PathBuf};
 use std::time::Duration;
 
@@ -18,11 +19,13 @@ impl Asset for WasmAsset {
         self.bytes.to_vec()
     }
 
-    fn load_time_budget(&self) -> Duration {
-        self.load_time_budget
-    }
-
     fn content_type(&self) -> String {
         "application/wasm".to_string()
+    }
+}
+
+impl HasPerformanceBudget for WasmAsset {
+    fn load_time_budget(&self) -> Duration {
+        self.load_time_budget
     }
 }

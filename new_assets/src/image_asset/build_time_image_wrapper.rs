@@ -1,9 +1,7 @@
 use super::*;
-use crate::non_html_assets;
 use base64::Engine;
 use image::imageops::FilterType;
 use image::{DynamicImage, GenericImageView, ImageFormat};
-use std::fs;
 use std::io::Cursor;
 
 pub type ImageWrapper = BuildTimeImageWrapper;

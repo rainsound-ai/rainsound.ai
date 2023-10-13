@@ -1,4 +1,4 @@
-use crate::asset::Asset;
+use crate::{asset::Asset, HasPerformanceBudget};
 use std::{
     path::{Path, PathBuf},
     time::Duration,
@@ -20,11 +20,13 @@ impl Asset for CssAsset {
         self.contents.as_bytes().to_vec()
     }
 
-    fn load_time_budget(&self) -> Duration {
-        self.load_time_budget
-    }
-
     fn content_type(&self) -> String {
         "text/css".to_string()
+    }
+}
+
+impl HasPerformanceBudget for CssAsset {
+    fn load_time_budget(&self) -> Duration {
+        self.load_time_budget
     }
 }
