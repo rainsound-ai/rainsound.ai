@@ -1,5 +1,5 @@
 use crate::asset::Asset;
-use crate::HasPerformanceBudget;
+use crate::{CanSaveToDisk, HasPerformanceBudget};
 use std::path::{Path, PathBuf};
 use std::time::Duration;
 
@@ -8,6 +8,12 @@ pub struct WasmAsset {
     pub path: PathBuf,
     pub bytes: &'static [u8],
     pub load_time_budget: Duration,
+}
+
+impl CanSaveToDisk for WasmAsset {
+    fn save_to_disk(&self) {
+        Asset::save_to_disk(self);
+    }
 }
 
 impl Asset for WasmAsset {

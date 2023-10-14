@@ -1,30 +1,22 @@
-use image::imageops::FilterType::Lanczos3;
+use cfg_if::cfg_if;
 use once_cell::sync::Lazy;
+use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
 use std::sync::Arc;
 
-#[cfg(feature = "build")]
-mod build_time_image_wrapper;
-#[cfg(feature = "build")]
-use build_time_image_wrapper::ImageWrapper;
-
-#[cfg(feature = "build")]
-mod build_time_resized_image_asset;
-#[cfg(feature = "build")]
-pub use build_time_resized_image_asset::ResizedImageAsset;
-
 mod light_dark_image_asset;
-use crate::asset::Asset;
+use crate::CanSaveToDisk;
 
 pub use self::light_dark_image_asset::*;
 
-#[cfg(not(feature = "build"))]
-mod runtime_image_wrapper;
-#[cfg(not(feature = "build"))]
-use runtime_image_wrapper::ImageWrapper;
+pub mod image_wrapper;
+use image_wrapper::*;
+
+mod resized_image_asset;
+pub use self::resized_image_asset::ResizedImageAsset;
 
 // Things that have to happen at build time:
 // - Generating placeholders.
@@ -44,8 +36,12 @@ use runtime_image_wrapper::ImageWrapper;
 pub static paths_of_images_in_built_dir: Lazy<HashSet<PathBuf>> =
     Lazy::new(get_paths_of_images_in_built_dir);
 
+pub fn built_images_dir() -> PathBuf {
+    crate::built_assets_dir().join("images")
+}
+
 fn get_paths_of_images_in_built_dir() -> HashSet<PathBuf> {
-    let images_dir = crate::built_assets_dir().join("images");
+    let images_dir = built_images_dir().join("images");
 
     fs::read_dir(&images_dir)
         .unwrap_or_else(|error| {
@@ -84,10 +80,7 @@ impl ImageAsset {
         bytes: &'static [u8],
         placeholder: Placeholder,
     ) -> ImageAsset {
-        #[cfg(feature = "build")]
-        let image = build_time_image_wrapper::BuildTimeImageWrapper::new(bytes);
-        #[cfg(not(feature = "build"))]
-        let image = runtime_image_wrapper::RunTimeImageWrapper::new(bytes);
+        let image = ImageWrapper::new(bytes, path.clone());
         let image: Arc<ImageWrapper> = Arc::new(image);
 
         let (width, height) = image.dimensions();
@@ -120,7 +113,7 @@ impl ImageAsset {
         self.resized_variants
             .first()
             .unwrap()
-            .path()
+            .path
             .to_str()
             .unwrap()
     }
@@ -175,15 +168,47 @@ impl ImageAsset {
         let new_file_name = format!("{}-{}w.{}", old_file_stem, width, old_file_extension);
         path.with_file_name(new_file_name)
     }
+
+    fn serialized_image_wrapper(&self) -> SerializedImageWrapper {
+        SerializedImageWrapper {
+            dimensions: (self.width, self.height),
+            generated_placeholder: self.placeholder.clone(),
+        }
+    }
 }
 
+cfg_if! {
+if #[cfg(feature = "build")] {
+    impl CanSaveToDisk for ImageAsset {
+        fn save_to_disk(&self) {
+            self.serialized_image_wrapper().save_to_disk(&self.path);
+            for resized_variant in &self.resized_variants {
+                resized_variant.save_to_disk();
+            }
+        }
+    }
+}
+}
+
+#[derive(Debug)]
 pub enum Placeholder {
     Lqip,
     AutomaticColor,
     Color { css_string: String },
 }
 
-#[derive(PartialEq)]
+impl Placeholder {
+    fn matches(&self, generated_placeholder: &GeneratedPlaceholder) -> bool {
+        match (self, generated_placeholder) {
+            (Placeholder::Lqip, GeneratedPlaceholder::Lqip { .. }) => true,
+            (Placeholder::Color { .. }, GeneratedPlaceholder::Color { .. }) => true,
+            (Placeholder::AutomaticColor, GeneratedPlaceholder::Color { .. }) => true,
+            _ => false,
+        }
+    }
+}
+
+#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 pub enum GeneratedPlaceholder {
     Lqip {
         data_uri: String,
@@ -192,13 +217,4 @@ pub enum GeneratedPlaceholder {
     Color {
         css_string: String,
     },
-}
-
-trait ImageWrapperMethods: Sync + Send + PartialEq {
-    fn new(bytes: &'static [u8]) -> Self
-    where
-        Self: Sized;
-    fn dimensions(&self) -> (u32, u32);
-    fn generate_placeholder(&self, placeholder: Placeholder) -> GeneratedPlaceholder;
-    fn width(&self) -> u32;
 }

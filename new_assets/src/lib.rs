@@ -1,8 +1,8 @@
 #![allow(non_upper_case_globals)]
 
-use crate::asset::Asset;
 use arraygen::Arraygen;
 use once_cell::sync::Lazy;
+use rayon::prelude::*;
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::str::FromStr;
@@ -13,6 +13,9 @@ pub mod build;
 
 pub mod css_asset;
 pub use self::css_asset::*;
+
+pub mod content_type;
+pub use self::content_type::*;
 
 pub mod extensions;
 pub use self::extensions::*;
@@ -118,12 +121,18 @@ impl NonHtmlAssets {
     }
 
     pub fn save_to_disk(&self) {
-        self.all_assets()
+        self.all_assets_that_can_be_saved_to_disk()
             .into_iter()
             .par_bridge()
             .for_each(|asset| {
                 asset.save_to_disk();
             });
+    }
+
+    fn all_assets_that_can_be_saved_to_disk(&self) -> Vec<Box<dyn CanSaveToDisk>> {
+        let non_image_assets = self.non_image_assets();
+        let image_assets = self.image_assets();
+        non_image_assets.into_iter().chain(image_assets).collect()
     }
 
     fn all_assets(&self) -> Vec<Box<dyn Asset>> {
@@ -135,16 +144,27 @@ impl NonHtmlAssets {
             .collect()
     }
 
-    fn resized_image_assets(&self) -> Vec<ResizedImageAsset> {
+    fn image_assets(&self) -> Vec<Box<dyn CanSaveToDisk>> {
+        let images = non_html_assets.images().into_iter().map(Box::new);
+
+        let light_dark_images = non_html_assets
+            .light_dark_images()
+            .into_iter()
+            .map(Box::new);
+
+        images.chain(light_dark_images).collect()
+    }
+
+    fn resized_image_assets(&self) -> Vec<Box<ResizedImageAsset>> {
         let resized_variants = non_html_assets
             .images()
-            .iter()
+            .into_iter()
             .flat_map(|image_asset| image_asset.resized_variants.clone());
 
         let light_dark_resized_variants = non_html_assets
             .light_dark_images()
-            .iter()
-            .flat_map(|light_dark_image_asset| light_dark_image_asset.resized_variants());
+            .into_iter()
+            .flat_map(|light_dark_image_asset| light_dark_image_asset.resized_variants().clone());
 
         resized_variants
             .chain(light_dark_resized_variants)

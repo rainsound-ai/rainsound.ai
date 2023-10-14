@@ -4,8 +4,6 @@ use image::imageops::FilterType;
 use image::{DynamicImage, GenericImageView, ImageFormat};
 use std::io::Cursor;
 
-pub type ImageWrapper = BuildTimeImageWrapper;
-
 #[derive(PartialEq)]
 pub struct BuildTimeImageWrapper {
     pub dynamic_image: DynamicImage,
@@ -14,7 +12,7 @@ pub struct BuildTimeImageWrapper {
 impl BuildTimeImageWrapper {}
 
 impl ImageWrapperMethods for BuildTimeImageWrapper {
-    fn new(bytes: &'static [u8]) -> Self {
+    fn new(bytes: &'static [u8], _path: PathBuf) -> Self {
         let dynamic_image = image::load_from_memory(bytes).unwrap();
         Self { dynamic_image }
     }
@@ -46,7 +44,7 @@ impl ImageWrapperMethods for BuildTimeImageWrapper {
             Placeholder::AutomaticColor => {
                 let [red, green, blue, alpha] = self
                     .dynamic_image
-                    .resize_exact(1, 1, Lanczos3)
+                    .resize_exact(1, 1, image::imageops::Lanczos3)
                     .get_pixel(0, 0)
                     .0;
 

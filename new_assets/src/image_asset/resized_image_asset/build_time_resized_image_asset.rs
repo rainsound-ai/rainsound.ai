@@ -1,21 +1,22 @@
-use crate::{asset::Asset, extensions::DynamicImageExtension};
+use super::build_time_image_wrapper::BuildTimeImageWrapper;
+use crate::{asset::Asset, extensions::DynamicImageExtension, CanSaveToDisk};
 use std::{
     fs,
     path::{Path, PathBuf},
     sync::Arc,
 };
 
-use super::build_time_image_wrapper::BuildTimeImageWrapper;
-
-pub type ResizedImageAsset = BuildTimeResizedImageAsset;
-
-static resized_image_format: image::ImageFormat = image::ImageFormat::Jpeg;
-
 #[derive(PartialEq, Clone)]
 pub struct BuildTimeResizedImageAsset {
     pub path: PathBuf,
     pub width: u32,
     pub image: Arc<BuildTimeImageWrapper>,
+}
+
+impl CanSaveToDisk for BuildTimeResizedImageAsset {
+    fn save_to_disk(&self) {
+        Asset::save_to_disk(self);
+    }
 }
 
 impl Asset for BuildTimeResizedImageAsset {
@@ -43,6 +44,8 @@ impl Asset for BuildTimeResizedImageAsset {
         get_content_type(resized_image_format)
     }
 }
+
+static resized_image_format: image::ImageFormat = image::ImageFormat::Jpeg;
 
 fn get_content_type(format: image::ImageFormat) -> String {
     match format {

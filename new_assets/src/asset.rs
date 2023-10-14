@@ -1,12 +1,18 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 
-pub trait Asset {
+use crate::ContentType;
+
+pub trait CanSaveToDisk {
+    fn save_to_disk(&self);
+}
+
+pub trait Asset: Send + Sync + CanSaveToDisk {
     fn path(&self) -> &Path;
 
     fn bytes(&self) -> Vec<u8>;
 
-    fn content_type(&self) -> String;
+    fn content_type(&self) -> ContentType;
 
     fn save_to_disk(&self) {
         println!("Saving asset: {:?}", self.path());

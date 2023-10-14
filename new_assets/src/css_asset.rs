@@ -1,4 +1,4 @@
-use crate::{asset::Asset, HasPerformanceBudget};
+use crate::{asset::Asset, CanSaveToDisk, HasPerformanceBudget};
 use std::{
     path::{Path, PathBuf},
     time::Duration,
@@ -9,6 +9,12 @@ pub struct CssAsset {
     pub path: PathBuf,
     pub contents: &'static str,
     pub load_time_budget: Duration,
+}
+
+impl CanSaveToDisk for CssAsset {
+    fn save_to_disk(&self) {
+        Asset::save_to_disk(self);
+    }
 }
 
 impl Asset for CssAsset {
