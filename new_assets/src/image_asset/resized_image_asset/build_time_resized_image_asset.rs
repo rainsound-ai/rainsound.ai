@@ -1,5 +1,5 @@
-use super::build_time_image_wrapper::BuildTimeImageWrapper;
-use crate::{asset::Asset, extensions::DynamicImageExtension, CanSaveToDisk};
+use crate::image_asset::image_wrapper::BuildTimeImageWrapper;
+use crate::{asset::Asset, CanSaveToDisk, DynamicImageExtension};
 use std::{
     fs,
     path::{Path, PathBuf},
@@ -27,7 +27,7 @@ impl Asset for BuildTimeResizedImageAsset {
     fn bytes(&self) -> Vec<u8> {
         let path_to_resized_image_file = self.path_on_disk();
         let already_exists =
-            super::paths_of_images_in_built_dir.contains(&path_to_resized_image_file);
+            crate::paths_of_images_in_built_dir.contains(&path_to_resized_image_file);
 
         if already_exists {
             return fs::read(&path_to_resized_image_file).unwrap();

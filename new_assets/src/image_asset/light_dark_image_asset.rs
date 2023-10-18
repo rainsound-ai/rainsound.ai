@@ -1,4 +1,5 @@
 use super::*;
+use cfg_if::cfg_if;
 
 #[derive(PartialEq)]
 pub struct LightDarkImageAsset {
@@ -25,14 +26,24 @@ impl LightDarkImageAsset {
         }
     }
 
-    pub fn resized_variants(&self) -> Vec<ResizedImageAsset> {
+    pub fn resized_variants(&self) -> Vec<&ResizedImageAsset> {
         self.light_mode
             .resized_variants
             .iter()
             .chain(self.dark_mode.resized_variants.iter())
-            .cloned()
             .collect()
     }
+}
+
+cfg_if! {
+if #[cfg(feature = "build")] {
+    impl CanSaveToDisk for LightDarkImageAsset {
+        fn save_to_disk(&self) {
+            self.light_mode.save_to_disk();
+            self.dark_mode.save_to_disk();
+        }
+    }
+}
 }
 
 #[derive(PartialEq)]

@@ -3,11 +3,11 @@ use std::path::{Path, PathBuf};
 
 use crate::ContentType;
 
-pub trait CanSaveToDisk {
+pub trait CanSaveToDisk: Send + Sync {
     fn save_to_disk(&self);
 }
 
-pub trait Asset: Send + Sync + CanSaveToDisk {
+pub trait Asset: CanSaveToDisk {
     fn path(&self) -> &Path;
 
     fn bytes(&self) -> Vec<u8>;

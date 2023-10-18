@@ -52,6 +52,7 @@ pub fn built_assets_dir() -> PathBuf {
 
 #[derive(PartialEq, Arraygen)]
 #[gen_array(pub fn non_image_assets: &dyn Asset, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
+#[gen_array(pub fn non_image_assets_can_save_to_disk: &dyn CanSaveToDisk, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
 #[gen_array(pub fn images: &ImageAsset, implicit_select_all: ImageAsset)]
 #[gen_array(pub fn light_dark_images: &LightDarkImageAsset, implicit_select_all: LightDarkImageAsset)]
 pub struct NonHtmlAssets {
@@ -129,45 +130,67 @@ impl NonHtmlAssets {
             });
     }
 
-    fn all_assets_that_can_be_saved_to_disk(&self) -> Vec<Box<dyn CanSaveToDisk>> {
-        let non_image_assets = self.non_image_assets();
-        let image_assets = self.image_assets();
-        non_image_assets.into_iter().chain(image_assets).collect()
+    fn all_assets_that_can_be_saved_to_disk(&self) -> Vec<&dyn CanSaveToDisk> {
+        let non_image_assets = self
+            .non_image_assets_can_save_to_disk()
+            .into_iter()
+            .map(|asset| {
+                let asset: &dyn CanSaveToDisk = asset;
+                asset
+            });
+        let image_assets = self.image_assets().into_iter();
+        non_image_assets.chain(image_assets).collect()
     }
 
-    fn all_assets(&self) -> Vec<Box<dyn Asset>> {
+    fn all_assets(&self) -> Vec<&dyn Asset> {
         let non_image_assets = self.non_image_assets();
-        let resized_image_assets = self.resized_image_assets();
+        let resized_image_assets =
+            self.resized_image_assets()
+                .into_iter()
+                .map(|resized_image_asset| {
+                    let resized_image_asset: &dyn Asset = resized_image_asset;
+                    resized_image_asset
+                });
         non_image_assets
             .into_iter()
             .chain(resized_image_assets)
             .collect()
     }
 
-    fn image_assets(&self) -> Vec<Box<dyn CanSaveToDisk>> {
-        let images = non_html_assets.images().into_iter().map(Box::new);
+    fn image_assets(&self) -> Vec<&dyn CanSaveToDisk> {
+        let images = non_html_assets.images().into_iter().map(|image_asset| {
+            let image_asset: &dyn CanSaveToDisk = image_asset;
+            image_asset
+        });
 
-        let light_dark_images = non_html_assets
-            .light_dark_images()
-            .into_iter()
-            .map(Box::new);
+        let light_dark_images =
+            non_html_assets
+                .light_dark_images()
+                .into_iter()
+                .map(|light_dark_image_asset| {
+                    let light_dark_image_asset: &dyn CanSaveToDisk = light_dark_image_asset;
+                    light_dark_image_asset
+                });
 
         images.chain(light_dark_images).collect()
     }
 
-    fn resized_image_assets(&self) -> Vec<Box<ResizedImageAsset>> {
-        let resized_variants = non_html_assets
+    fn resized_image_assets(&self) -> Vec<&ResizedImageAsset> {
+        let resized_variants: Vec<&ResizedImageAsset> = non_html_assets
             .images()
             .into_iter()
-            .flat_map(|image_asset| image_asset.resized_variants.clone());
+            .flat_map(|image_asset| &image_asset.resized_variants)
+            .collect::<Vec<_>>();
 
-        let light_dark_resized_variants = non_html_assets
+        let light_dark_resized_variants: Vec<&ResizedImageAsset> = non_html_assets
             .light_dark_images()
             .into_iter()
-            .flat_map(|light_dark_image_asset| light_dark_image_asset.resized_variants().clone());
+            .flat_map(|light_dark_image_asset| light_dark_image_asset.resized_variants())
+            .collect::<Vec<_>>();
 
         resized_variants
-            .chain(light_dark_resized_variants)
+            .into_iter()
+            .chain(light_dark_resized_variants.into_iter())
             .collect()
     }
 }

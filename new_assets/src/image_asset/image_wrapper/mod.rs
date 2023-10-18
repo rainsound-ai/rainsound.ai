@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 cfg_if! {
 if #[cfg(feature = "build")] {
     mod build_time_image_wrapper;
-    use build_time_image_wrapper::BuildTimeImageWrapper;
+    pub use build_time_image_wrapper::BuildTimeImageWrapper;
     pub type ImageWrapper = BuildTimeImageWrapper;
 } else {
     mod run_time_image_wrapper;
