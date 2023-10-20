@@ -1,5 +1,6 @@
 use crate::image_asset::image_wrapper::BuildTimeImageWrapper;
 use crate::{asset::Asset, CanSaveToDisk, DynamicImageExtension};
+use std::io::ErrorKind;
 use std::{
     fs,
     path::{Path, PathBuf},
@@ -26,11 +27,16 @@ impl Asset for BuildTimeResizedImageAsset {
 
     fn bytes(&self) -> Vec<u8> {
         let path_to_resized_image_file = self.path_on_disk();
-        let already_exists =
-            crate::paths_of_images_in_built_dir.contains(&path_to_resized_image_file);
+        let maybe_bytes = fs::read(&path_to_resized_image_file);
 
-        if already_exists {
-            return fs::read(&path_to_resized_image_file).unwrap();
+        match maybe_bytes {
+            Ok(bytes) => return bytes,
+            Err(error) => {
+                println!(
+                    "Error reading resized image file {:?}. Error message: {}",
+                    &path_to_resized_image_file, error
+                );
+            }
         }
 
         println!("Resizing image: {:?}", &self.path);
