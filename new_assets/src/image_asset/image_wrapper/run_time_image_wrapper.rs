@@ -1,4 +1,5 @@
 use super::*;
+use crate::log;
 use crate::mime_type::MimeType;
 
 #[derive(PartialEq)]
@@ -9,6 +10,7 @@ pub struct RunTimeImageWrapper {
 
 impl ImageWrapperMethods for RunTimeImageWrapper {
     fn new(_bytes: &'static [u8], path: PathBuf) -> Self {
+        log("Loading image wrapper from disk.");
         let serialized = SerializedImageWrapper::load_from_disk(&path);
         Self { path, serialized }
     }
@@ -35,6 +37,6 @@ impl ImageWrapperMethods for RunTimeImageWrapper {
     }
 
     fn mime_type(&self) -> MimeType {
-        serialized.mime_type
+        self.serialized.mime_type
     }
 }
