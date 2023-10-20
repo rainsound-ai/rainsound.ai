@@ -1,6 +1,5 @@
 use crate::image_asset::image_wrapper::BuildTimeImageWrapper;
 use crate::{asset::Asset, CanSaveToDisk, DynamicImageExtension};
-use std::io::ErrorKind;
 use std::{
     fs,
     path::{Path, PathBuf},
@@ -16,6 +15,10 @@ pub struct BuildTimeResizedImageAsset {
 
 impl CanSaveToDisk for BuildTimeResizedImageAsset {
     fn save_to_disk(&self) {
+        if self.path_on_disk().exists() {
+            return;
+        }
+
         Asset::save_to_disk(self);
     }
 }

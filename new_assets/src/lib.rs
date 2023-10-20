@@ -1,6 +1,7 @@
 #![allow(non_upper_case_globals)]
 
 use arraygen::Arraygen;
+use cfg_if::cfg_if;
 use once_cell::sync::Lazy;
 use rayon::prelude::*;
 use std::collections::HashMap;
@@ -28,6 +29,9 @@ pub use self::image_asset::*;
 
 pub mod js_asset;
 pub use self::js_asset::*;
+
+pub mod log;
+pub use self::log::*;
 
 pub mod mime_type;
 pub use self::mime_type::*;
@@ -71,24 +75,29 @@ pub struct NonHtmlAssets {
 // deadlocking if we're using a lazily initialized global variable.
 impl NonHtmlAssets {
     pub fn new() -> Self {
+        log("Generating non-html assets.");
+        log("Generating non-html assets: built_css.");
         let built_css = CssAsset {
             path: PathBuf::from_str("built.css").unwrap(),
             contents: include_str!("../../target/tailwind/built.css"),
             load_time_budget: Duration::from_millis(1),
         };
 
+        log("Generating non-html assets: browser_js.");
         let browser_js = JsAsset {
             path: PathBuf::from_str("browser.js").unwrap(),
             contents: include_str!("../../target/browser/browser.js"),
             load_time_budget: Duration::from_millis(1),
         };
 
+        log("Generating non-html assets: browser_bg_wasm.");
         let browser_bg_wasm = WasmAsset {
             path: PathBuf::from_str("browser_bg.wasm").unwrap(),
             bytes: include_bytes!("../../target/browser/browser_bg.wasm"),
             load_time_budget: Duration::from_millis(1),
         };
 
+        log("Generating non-html assets: hasui_hero.");
         let hasui_hero = ImageAsset::new(
             PathBuf::from_str("hasui_hero.jpg").unwrap(),
             "A woodblock print by Kawase Hasui",
@@ -96,6 +105,7 @@ impl NonHtmlAssets {
             Placeholder::Lqip,
         );
 
+        log("Finished generating non-html assets.");
         NonHtmlAssets {
             built_css,
             browser_js,
@@ -105,6 +115,8 @@ impl NonHtmlAssets {
     }
 
     fn by_path(&self) -> HashMap<String, (ContentType, Vec<u8>)> {
+        log("Generating non-html assets by path.");
+
         let all_assets = self.all_assets();
         let mut hashmap = HashMap::new();
         for asset in all_assets {
@@ -118,27 +130,6 @@ impl NonHtmlAssets {
             hashmap.insert(path, (content_type, bytes));
         }
         hashmap
-    }
-
-    pub fn save_to_disk(&self) {
-        self.all_assets_that_can_be_saved_to_disk()
-            .into_iter()
-            .par_bridge()
-            .for_each(|asset| {
-                asset.save_to_disk();
-            });
-    }
-
-    fn all_assets_that_can_be_saved_to_disk(&self) -> Vec<&dyn CanSaveToDisk> {
-        let non_image_assets = self
-            .non_image_assets_can_save_to_disk()
-            .into_iter()
-            .map(|asset| {
-                let asset: &dyn CanSaveToDisk = asset;
-                asset
-            });
-        let image_assets = self.image_assets().into_iter();
-        non_image_assets.chain(image_assets).collect()
     }
 
     fn all_assets(&self) -> Vec<&dyn Asset> {
@@ -156,24 +147,6 @@ impl NonHtmlAssets {
             .collect()
     }
 
-    fn image_assets(&self) -> Vec<&dyn CanSaveToDisk> {
-        let images = non_html_assets.images().into_iter().map(|image_asset| {
-            let image_asset: &dyn CanSaveToDisk = image_asset;
-            image_asset
-        });
-
-        let light_dark_images =
-            non_html_assets
-                .light_dark_images()
-                .into_iter()
-                .map(|light_dark_image_asset| {
-                    let light_dark_image_asset: &dyn CanSaveToDisk = light_dark_image_asset;
-                    light_dark_image_asset
-                });
-
-        images.chain(light_dark_images).collect()
-    }
-
     fn resized_image_assets(&self) -> Vec<&ResizedImageAsset> {
         let resized_variants: Vec<&ResizedImageAsset> = non_html_assets
             .images()
@@ -189,9 +162,54 @@ impl NonHtmlAssets {
 
         resized_variants
             .into_iter()
-            .chain(light_dark_resized_variants.into_iter())
+            .chain(light_dark_resized_variants)
             .collect()
     }
+}
+
+cfg_if! {
+if #[cfg(feature = "build")] {
+    impl NonHtmlAssets {
+        pub fn save_to_disk(&self) {
+            self.all_assets_that_can_be_saved_to_disk()
+                .into_iter()
+                .par_bridge()
+                .for_each(|asset| {
+                    asset.save_to_disk();
+                });
+        }
+
+        fn all_assets_that_can_be_saved_to_disk(&self) -> Vec<&dyn CanSaveToDisk> {
+            let non_image_assets = self
+                .non_image_assets_can_save_to_disk()
+                .into_iter()
+                .map(|asset| {
+                    let asset: &dyn CanSaveToDisk = asset;
+                    asset
+                });
+            let image_assets = self.image_assets().into_iter();
+            non_image_assets.chain(image_assets).collect()
+        }
+
+        fn image_assets(&self) -> Vec<&dyn CanSaveToDisk> {
+            let images = non_html_assets.images().into_iter().map(|image_asset| {
+                let image_asset: &dyn CanSaveToDisk = image_asset;
+                image_asset
+            });
+
+            let light_dark_images =
+                non_html_assets
+                    .light_dark_images()
+                    .into_iter()
+                    .map(|light_dark_image_asset| {
+                        let light_dark_image_asset: &dyn CanSaveToDisk = light_dark_image_asset;
+                        light_dark_image_asset
+                    });
+
+            images.chain(light_dark_images).collect()
+        }
+    }
+}
 }
 
 impl Default for NonHtmlAssets {

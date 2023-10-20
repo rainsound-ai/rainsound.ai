@@ -1,3 +1,4 @@
+use crate::log;
 use serde::{Deserialize, Serialize};
 
 cfg_if! {
@@ -33,8 +34,13 @@ pub struct SerializedImageWrapper {
 
 impl SerializedImageWrapper {
     pub fn load_from_disk(image_path: &Path) -> Self {
+        log("Loading serialized image wrapper from disk.");
+        log(&format!("Image path: {:?}", image_path));
         let path_on_disk = SerializedImageWrapper::path_on_disk(image_path);
+        log(&format!("Path on disk: {:?}", path_on_disk));
         let serialized = fs::read_to_string(path_on_disk).unwrap();
+        log(&format!("Serialized: {:?}", serialized));
+        log("Deserializing.");
         serde_json::from_str(&serialized).unwrap()
     }
 
@@ -57,7 +63,11 @@ impl SerializedImageWrapper {
             .to_owned()
             .into_string()
             .unwrap();
+        crate::log(&format!("Original file name: {:?}", original_file_name));
         let file_name = original_file_name + ".json";
-        crate::built_images_dir().join(file_name)
+        crate::log(&format!("File name: {:?}", file_name));
+        let path = crate::built_images_dir().join(file_name);
+        crate::log(&format!("Path: {:?}", path));
+        path
     }
 }

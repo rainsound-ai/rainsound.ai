@@ -26,8 +26,8 @@ impl Asset for RunTimeResizedImageAsset {
 
     fn bytes(&self) -> Vec<u8> {
         let path_to_resized_image_file = self.path_on_disk();
-        return fs::read(&path_to_resized_image_file)
-            .expect("Expected resized image to exist at path: {:?}", &self.path);
+        let error_message = format!("Expected resized image to exist at path: {:?}", &self.path);
+        return fs::read(&path_to_resized_image_file).expect(&error_message);
     }
 
     fn content_type(&self) -> String {

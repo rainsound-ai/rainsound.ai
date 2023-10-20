@@ -917,6 +917,7 @@ dependencies = [
  "serde",
  "serde_json",
  "tree_magic",
+ "worker",
 ]
 
 [[package]]

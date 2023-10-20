@@ -8,12 +8,16 @@ mod routes;
 
 #[event(fetch)]
 pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Response> {
+    console_debug!("Reading browser.js");
+    std::fs::read_to_string("built/browser.js").unwrap();
+    console_debug!("Done reading browser.js");
+
     if let Some(response) = serve_assets(&req) {
         return response;
     }
 
     Router::new()
-        .get_async("/", get_dynamically_rendered_home_page)
+        .get_async("/", get_home_page)
         // .get_async("/built.css", get_built_css)
         .get_async("/browser.js", get_browser_js)
         .get_async("/browser_bg.wasm", get_browser_bg_wasm)
@@ -30,6 +34,7 @@ fn serve_assets(req: &Request) -> Option<Result<Response>> {
     non_html_assets_by_path
         .get(&path)
         .map(|(content_type, bytes)| {
+            console_debug!("Generating response for asset {}", path);
             Response::from_bytes(bytes.clone()).map(|mut r| {
                 r.headers_mut().set("Content-Type", content_type).unwrap();
                 r
@@ -37,10 +42,7 @@ fn serve_assets(req: &Request) -> Option<Result<Response>> {
         })
 }
 
-async fn get_dynamically_rendered_home_page(
-    _req: Request,
-    _ctx: worker::RouteContext<()>,
-) -> Result<Response> {
+async fn get_home_page(_req: Request, _ctx: worker::RouteContext<()>) -> Result<Response> {
     console_debug!("Rendering html dynamically.");
     let html = crate::routes::home_page().into_string();
     Response::from_html(html)
