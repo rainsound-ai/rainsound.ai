@@ -3,7 +3,6 @@ use new_assets::non_html_assets_by_path;
 use routes::contact::form_submission::ContactFormSubmission;
 use worker::*;
 
-mod extensions;
 mod notion;
 mod routes;
 
@@ -14,8 +13,7 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
     }
 
     Router::new()
-        .get_async("/pre-rendered", get_pre_rendered_home_page)
-        .get_async("/dynamically-rendered", get_dynamically_rendered_home_page)
+        .get_async("/", get_dynamically_rendered_home_page)
         // .get_async("/built.css", get_built_css)
         .get_async("/browser.js", get_browser_js)
         .get_async("/browser_bg.wasm", get_browser_bg_wasm)
@@ -37,14 +35,6 @@ fn serve_assets(req: &Request) -> Option<Result<Response>> {
                 r
             })
         })
-}
-
-async fn get_pre_rendered_home_page(
-    _req: Request,
-    _ctx: worker::RouteContext<()>,
-) -> Result<Response> {
-    let html = include_str!("../../built/index.html");
-    Response::from_html(html)
 }
 
 async fn get_dynamically_rendered_home_page(

@@ -23,10 +23,7 @@ pub fn Image<'a>(cx: Scope<'a, ImageProps<'a>>) -> Element<'a> {
             }
         ),
 
-        GeneratedPlaceholder::Lqip {
-            data_uri,
-            mime_type: _mime_type,
-        } => {
+        GeneratedPlaceholder::Lqip { data_uri } => {
             render!(ImageWithLqip {
                 asset: asset,
                 class: class,

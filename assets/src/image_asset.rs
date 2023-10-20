@@ -46,9 +46,9 @@ impl LightDarkImageAsset {
 pub enum LightDarkPlaceholder {
     Lqip {
         light_mode_data_uri: String,
-        light_mode_mime_type: &'static str,
+        light_mode_mime_type: MimeType,
         dark_mode_data_uri: String,
-        dark_mode_mime_type: &'static str,
+        dark_mode_mime_type: MimeType,
     },
     Color {
         light_mode_css_string: String,
@@ -102,7 +102,7 @@ pub struct ImageAsset {
     pub bytes: &'static [u8],
     pub placeholder: GeneratedPlaceholder,
 
-    mime_type: String,
+    mime_type: MimeType,
 
     pub width: u32,
     pub height: u32,

@@ -1,4 +1,5 @@
 use super::*;
+use crate::mime_type::MimeType;
 
 #[derive(PartialEq)]
 pub struct RunTimeImageWrapper {
@@ -31,5 +32,9 @@ impl ImageWrapperMethods for RunTimeImageWrapper {
 
     fn width(&self) -> u32 {
         self.dimensions().0
+    }
+
+    fn mime_type(&self) -> MimeType {
+        serialized.mime_type
     }
 }

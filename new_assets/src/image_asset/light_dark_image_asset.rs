@@ -1,3 +1,5 @@
+use crate::mime_type::MimeType;
+
 use super::*;
 use cfg_if::cfg_if;
 
@@ -50,9 +52,7 @@ if #[cfg(feature = "build")] {
 pub enum LightDarkPlaceholder {
     Lqip {
         light_mode_data_uri: String,
-        light_mode_mime_type: &'static str,
         dark_mode_data_uri: String,
-        dark_mode_mime_type: &'static str,
     },
     Color {
         light_mode_css_string: String,
@@ -69,17 +69,13 @@ impl LightDarkPlaceholder {
             (
                 GeneratedPlaceholder::Lqip {
                     data_uri: light_mode_data_uri,
-                    mime_type: light_mode_mime_type,
                 },
                 GeneratedPlaceholder::Lqip {
                     data_uri: dark_mode_data_uri,
-                    mime_type: dark_mode_mime_type,
                 },
             ) => LightDarkPlaceholder::Lqip {
                 light_mode_data_uri: light_mode_data_uri.clone(),
-                light_mode_mime_type,
                 dark_mode_data_uri: dark_mode_data_uri.clone(),
-                dark_mode_mime_type,
             },
             (
                 GeneratedPlaceholder::Color {

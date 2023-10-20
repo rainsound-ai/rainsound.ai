@@ -6,15 +6,18 @@ use std::io::Cursor;
 
 #[derive(PartialEq)]
 pub struct BuildTimeImageWrapper {
+    mime_type: MimeType,
     pub dynamic_image: DynamicImage,
 }
-
-impl BuildTimeImageWrapper {}
 
 impl ImageWrapperMethods for BuildTimeImageWrapper {
     fn new(bytes: &'static [u8], _path: PathBuf) -> Self {
         let dynamic_image = image::load_from_memory(bytes).unwrap();
-        Self { dynamic_image }
+        let mime_type = MimeType::from_bytes(bytes);
+        Self {
+            mime_type,
+            dynamic_image,
+        }
     }
 
     fn dimensions(&self) -> (u32, u32) {
@@ -28,14 +31,10 @@ impl ImageWrapperMethods for BuildTimeImageWrapper {
     fn generate_placeholder(&self, placeholder: Placeholder) -> GeneratedPlaceholder {
         match placeholder {
             Placeholder::Lqip => {
-                let DataUriAndMimeType {
-                    data_uri,
-                    mime_type,
-                } = self.dynamic_image.resize_to_width(40).to_data_uri();
+                let data_uri_and_mime_type = self.dynamic_image.resize_to_width(40).to_data_uri();
 
                 GeneratedPlaceholder::Lqip {
-                    data_uri,
-                    mime_type,
+                    data_uri: data_uri_and_mime_type.data_uri,
                 }
             }
 
@@ -59,6 +58,10 @@ impl ImageWrapperMethods for BuildTimeImageWrapper {
                 GeneratedPlaceholder::Color { css_string }
             }
         }
+    }
+
+    fn mime_type(&self) -> MimeType {
+        self.mime_type
     }
 }
 
@@ -89,11 +92,11 @@ impl DynamicImageExtension for DynamicImage {
             .expect("Error encoding low quality image placeholder.");
         let base64_encoded = base64::engine::general_purpose::STANDARD.encode(bytes.into_inner());
 
-        let mime_type = "format/jpeg";
+        let mime_type = MimeType::ImageJpeg;
 
         let data_uri = format!(
             "data:{mime_type};base64,{base64}",
-            mime_type = mime_type,
+            mime_type = mime_type.to_string(),
             base64 = base64_encoded
         );
 
@@ -105,9 +108,6 @@ impl DynamicImageExtension for DynamicImage {
 }
 
 pub struct DataUriAndMimeType {
-    pub mime_type: &'static str,
+    pub mime_type: MimeType,
     pub data_uri: String,
 }
-
-pub type MimeType = &'static str;
-pub type DataUri = String;

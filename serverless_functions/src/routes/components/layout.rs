@@ -1,6 +1,6 @@
-use crate::assets::non_html_assets;
 use crate::routes::*;
 use maud::{html, Markup, PreEscaped, DOCTYPE};
+use new_assets::non_html_assets;
 use new_assets::*;
 
 pub fn layout(content: Markup) -> Markup {

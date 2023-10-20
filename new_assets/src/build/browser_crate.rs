@@ -1,4 +1,4 @@
-use crate::workspace_root;
+use crate::workspace_root_dir;
 use std::process::Command;
 
 pub fn build_browser_crate(production: bool) {
@@ -8,9 +8,9 @@ pub fn build_browser_crate(production: bool) {
 }
 
 fn run_wasm_pack(production: bool) {
-    println!("Building browser crate.");
+    println!("Running wasm-pack.");
 
-    let wasm_pack = workspace_root::dir()
+    let wasm_pack = workspace_root_dir()
         .join("target")
         .join("cargo_install")
         .join("bin")
@@ -18,7 +18,7 @@ fn run_wasm_pack(production: bool) {
         .to_string_lossy()
         .to_string();
 
-    let out_dir = workspace_root::dir().join("target").join("browser");
+    let out_dir = workspace_root_dir().join("target").join("browser");
     let out_dir = out_dir.to_str().unwrap();
 
     let mut run_wasm_pack = Command::new(wasm_pack);
@@ -35,7 +35,7 @@ fn run_wasm_pack(production: bool) {
         run_wasm_pack.args(["--dev"]);
     }
 
-    let browser_crate = workspace_root::dir().join("browser");
+    let browser_crate = workspace_root_dir().join("browser");
     let browser_crate = browser_crate.to_str().unwrap();
     run_wasm_pack.arg(browser_crate);
 
@@ -58,9 +58,9 @@ fn run_wasm_pack(production: bool) {
 }
 
 fn run_wasm_opt() {
-    println!("Building browser crate.");
+    println!("Running wasm-opt.");
 
-    let wasm_opt = workspace_root::dir()
+    let wasm_opt = workspace_root_dir()
         .join("target")
         .join("cargo_install")
         .join("bin")
@@ -68,7 +68,7 @@ fn run_wasm_opt() {
         .to_string_lossy()
         .to_string();
 
-    let input_file = workspace_root::dir()
+    let input_file = workspace_root_dir()
         .join("target")
         .join("browser")
         .join("browser_bg.wasm")
@@ -97,7 +97,7 @@ fn run_wasm_opt() {
 }
 
 fn minify_js() {
-    let browser_js = workspace_root::dir()
+    let browser_js = workspace_root_dir()
         .join("target")
         .join("browser")
         .join("browser.js")

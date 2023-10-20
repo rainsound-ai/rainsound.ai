@@ -26,14 +26,8 @@ impl Asset for RunTimeResizedImageAsset {
 
     fn bytes(&self) -> Vec<u8> {
         let path_to_resized_image_file = self.path_on_disk();
-        let already_exists =
-            crate::image_asset::paths_of_images_in_built_dir.contains(&path_to_resized_image_file);
-
-        if already_exists {
-            return fs::read(&path_to_resized_image_file).unwrap();
-        }
-
-        panic!("Expected resized image to exist at path: {:?}", &self.path);
+        return fs::read(&path_to_resized_image_file)
+            .expect("Expected resized image to exist at path: {:?}", &self.path);
     }
 
     fn content_type(&self) -> String {

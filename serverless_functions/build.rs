@@ -2,8 +2,6 @@
 // use std::fs;
 
 fn main() {
-    build_test::hi();
-
     println!("Running serverless_functions build.rs.");
 
     // If you change these, also change them in tailwind.config.js.
@@ -13,6 +11,7 @@ fn main() {
 
     new_assets::build::tailwind::build_tailwind(true);
     new_assets::build::browser_crate::build_browser_crate(true);
+    new_assets::non_html_assets.save_to_disk();
 
     //     // println!("Removing built folder");
     //     // if let Err(error) = fs::remove_dir_all(&built_dir) {

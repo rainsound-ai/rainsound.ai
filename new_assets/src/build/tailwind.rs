@@ -1,22 +1,22 @@
-use crate::workspace_root;
+use crate::workspace_root_dir;
 use std::process::Command;
 
 pub fn build_tailwind(production: bool) {
     println!("Building Tailwind.");
 
-    let npx_prefix = workspace_root::dir().join("target").join("node_modules");
+    let npx_prefix = workspace_root_dir().join("target").join("node_modules");
     let npx_prefix = npx_prefix.to_str().unwrap();
 
-    let config = workspace_root::dir().join("tailwind.config.js");
+    let config = workspace_root_dir().join("tailwind.config.js");
     let config = config.to_str().unwrap();
 
-    let input_file = workspace_root::dir()
+    let input_file = workspace_root_dir()
         .join("serverless_functions")
         .join("src")
         .join("main.css");
     let input_file = input_file.to_str().unwrap();
 
-    let output_file = workspace_root::dir()
+    let output_file = workspace_root_dir()
         .join("target")
         .join("tailwind")
         .join("built.css");

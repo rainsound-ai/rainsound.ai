@@ -8,6 +8,7 @@ use std::str::FromStr;
 use std::sync::Arc;
 
 mod light_dark_image_asset;
+use crate::mime_type::MimeType;
 use crate::CanSaveToDisk;
 
 pub use self::light_dark_image_asset::*;
@@ -33,28 +34,24 @@ pub use self::resized_image_asset::ResizedImageAsset;
 // - If it's runtime, read the generated placeholder from the file system.
 // - If it's build time, generate the placeholder and save it to the file system.
 
-pub static paths_of_images_in_built_dir: Lazy<HashSet<PathBuf>> =
-    Lazy::new(get_paths_of_images_in_built_dir);
+// pub static paths_of_images_in_built_dir: Lazy<HashSet<PathBuf>> =
+//     Lazy::new(get_paths_of_images_in_built_dir);
 
-pub fn built_images_dir() -> PathBuf {
-    crate::built_assets_dir().join("images")
-}
+// fn get_paths_of_images_in_built_dir() -> HashSet<PathBuf> {
+//     let images_dir = crate::built_images_dir();
 
-fn get_paths_of_images_in_built_dir() -> HashSet<PathBuf> {
-    let images_dir = built_images_dir().join("images");
-
-    fs::read_dir(&images_dir)
-        .unwrap_or_else(|error| {
-            println!(
-                "Error reading directory {:?}. Error message: {}",
-                images_dir, error
-            );
-            fs::create_dir_all(&images_dir).unwrap();
-            fs::read_dir(&images_dir).unwrap()
-        })
-        .map(|entry| entry.unwrap().path())
-        .collect::<HashSet<PathBuf>>()
-}
+//     fs::read_dir(&images_dir)
+//         .unwrap_or_else(|error| {
+//             println!(
+//                 "Error reading directory {:?}. Error message: {}",
+//                 images_dir, error
+//             );
+//             fs::create_dir_all(&images_dir).unwrap();
+//             fs::read_dir(&images_dir).unwrap()
+//         })
+//         .map(|entry| entry.unwrap().path())
+//         .collect::<HashSet<PathBuf>>()
+// }
 
 #[derive(PartialEq)]
 pub struct ImageAsset {
@@ -62,7 +59,7 @@ pub struct ImageAsset {
     pub path: PathBuf,
     pub alt: &'static str,
     srcset: String,
-    mime_type: String,
+    mime_type: MimeType,
     pub placeholder: GeneratedPlaceholder,
 
     pub bytes: &'static [u8],
@@ -81,15 +78,14 @@ impl ImageAsset {
         placeholder: Placeholder,
     ) -> ImageAsset {
         let image = ImageWrapper::new(bytes, path.clone());
-        let image: Arc<ImageWrapper> = Arc::new(image);
+        let image = Arc::new(image);
 
         let (width, height) = image.dimensions();
+        let mime_type = image.mime_type();
 
         let path = PathBuf::from_str("images/").unwrap().join(path);
         let srcset = Self::create_srcset(&path, width);
         let resized_variants = Self::resized_variants(&path, &image);
-
-        let mime_type = tree_magic::from_u8(bytes);
 
         ImageAsset {
             path,
@@ -122,8 +118,8 @@ impl ImageAsset {
         &self.srcset
     }
 
-    pub fn mime_type(&self) -> &str {
-        &self.mime_type
+    pub fn mime_type(&self) -> MimeType {
+        self.mime_type
     }
 
     fn resized_variants(path: &Path, original_image: &Arc<ImageWrapper>) -> Vec<ResizedImageAsset> {
@@ -168,13 +164,6 @@ impl ImageAsset {
         let new_file_name = format!("{}-{}w.{}", old_file_stem, width, old_file_extension);
         path.with_file_name(new_file_name)
     }
-
-    fn serialized_image_wrapper(&self) -> SerializedImageWrapper {
-        SerializedImageWrapper {
-            dimensions: (self.width, self.height),
-            generated_placeholder: self.placeholder.clone(),
-        }
-    }
 }
 
 cfg_if! {
@@ -184,6 +173,16 @@ if #[cfg(feature = "build")] {
             self.serialized_image_wrapper().save_to_disk(&self.path);
             for resized_variant in &self.resized_variants {
                 resized_variant.save_to_disk();
+            }
+        }
+    }
+
+    impl ImageAsset {
+        fn serialized_image_wrapper(&self) -> SerializedImageWrapper {
+            SerializedImageWrapper {
+                dimensions: (self.width, self.height),
+                generated_placeholder: self.placeholder.clone(),
+                mime_type: self.mime_type,
             }
         }
     }
@@ -199,22 +198,23 @@ pub enum Placeholder {
 
 impl Placeholder {
     fn matches(&self, generated_placeholder: &GeneratedPlaceholder) -> bool {
-        match (self, generated_placeholder) {
-            (Placeholder::Lqip, GeneratedPlaceholder::Lqip { .. }) => true,
-            (Placeholder::Color { .. }, GeneratedPlaceholder::Color { .. }) => true,
-            (Placeholder::AutomaticColor, GeneratedPlaceholder::Color { .. }) => true,
-            _ => false,
-        }
+        matches!(
+            (self, generated_placeholder),
+            (Placeholder::Lqip, GeneratedPlaceholder::Lqip { .. })
+                | (
+                    Placeholder::Color { .. },
+                    GeneratedPlaceholder::Color { .. }
+                )
+                | (
+                    Placeholder::AutomaticColor,
+                    GeneratedPlaceholder::Color { .. }
+                )
+        )
     }
 }
 
 #[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 pub enum GeneratedPlaceholder {
-    Lqip {
-        data_uri: String,
-        mime_type: &'static str,
-    },
-    Color {
-        css_string: String,
-    },
+    Lqip { data_uri: String },
+    Color { css_string: String },
 }

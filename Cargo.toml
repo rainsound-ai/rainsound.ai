@@ -18,11 +18,16 @@ exclude = [
     # finish building.
     "browser",
 ]
+resolve = "2"
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.
 opt-level = "s"
+# Turn on link time optimizations for faster code.
 lto = true
+# This speeds up the resulting code, but takes longer to compile.
+codegen-units = 1
+
 
 # For cargo-commander.
 [commands]

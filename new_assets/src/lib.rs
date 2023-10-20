@@ -8,6 +8,9 @@ use std::path::PathBuf;
 use std::str::FromStr;
 use std::time::Duration;
 
+pub mod asset;
+pub use self::asset::*;
+
 #[cfg(feature = "build")]
 pub mod build;
 
@@ -26,8 +29,11 @@ pub use self::image_asset::*;
 pub mod js_asset;
 pub use self::js_asset::*;
 
-pub mod asset;
-pub use self::asset::*;
+pub mod mime_type;
+pub use self::mime_type::*;
+
+pub mod paths;
+pub use self::paths::*;
 
 pub mod performance_budget;
 pub use self::performance_budget::*;
@@ -38,17 +44,10 @@ pub use self::prelude::*;
 pub mod wasm_asset;
 pub use self::wasm_asset::*;
 
-pub mod workspace_root;
-pub use self::workspace_root::*;
-
 pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
 pub static non_html_assets_by_path: Lazy<HashMap<String, (ContentType, Vec<u8>)>> =
     Lazy::new(|| non_html_assets.by_path());
 type ContentType = String;
-
-pub fn built_assets_dir() -> PathBuf {
-    workspace_root::dir().join("built")
-}
 
 #[derive(PartialEq, Arraygen)]
 #[gen_array(pub fn non_image_assets: &dyn Asset, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
