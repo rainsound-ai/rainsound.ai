@@ -1,0 +1,10 @@
+/Users/photon-garden/dev/creative-computing-website/serverless_functions_test/target/wasm32-unknown-unknown/release/deps/idna-99c8df933ee0edcc.rmeta: /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/lib.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/punycode.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46_mapping_table.rs
+
+/Users/photon-garden/dev/creative-computing-website/serverless_functions_test/target/wasm32-unknown-unknown/release/deps/libidna-99c8df933ee0edcc.rlib: /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/lib.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/punycode.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46_mapping_table.rs
+
+/Users/photon-garden/dev/creative-computing-website/serverless_functions_test/target/wasm32-unknown-unknown/release/deps/idna-99c8df933ee0edcc.d: /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/lib.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/punycode.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46_mapping_table.rs
+
+/Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/lib.rs:
+/Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/punycode.rs:
+/Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46.rs:
+/Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46_mapping_table.rs:

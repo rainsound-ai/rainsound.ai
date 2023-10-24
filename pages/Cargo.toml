@@ -1,0 +1,14 @@
+[package]
+name = "pages"
+version = "0.1.0"
+edition = "2021"
+description = "Serverless functions for this project for handling back end logic."
+license = "unlicensed"
+repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+
+[build-dependencies]
