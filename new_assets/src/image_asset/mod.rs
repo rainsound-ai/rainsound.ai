@@ -17,43 +17,8 @@ use image_wrapper::*;
 mod resized_image_asset;
 pub use self::resized_image_asset::ResizedImageAsset;
 
-// Things that have to happen at build time:
-// - Generating placeholders.
-//   - LQIPs.
-//   - Automatic placeholder colors.
-// - Image resizing.
-// - Mime type detection?
-//
-// Things that have to happen at runtime:
-// - Serving images.
-// - Generating HTML.
-//
-// When instantiating an image asset:
-// - If it's runtime, read the generated placeholder from the file system.
-// - If it's build time, generate the placeholder and save it to the file system.
-
-// pub static paths_of_images_in_built_dir: Lazy<HashSet<PathBuf>> =
-//     Lazy::new(get_paths_of_images_in_built_dir);
-
-// fn get_paths_of_images_in_built_dir() -> HashSet<PathBuf> {
-//     let images_dir = crate::built_images_dir();
-
-//     fs::read_dir(&images_dir)
-//         .unwrap_or_else(|error| {
-//             println!(
-//                 "Error reading directory {:?}. Error message: {}",
-//                 images_dir, error
-//             );
-//             fs::create_dir_all(&images_dir).unwrap();
-//             fs::read_dir(&images_dir).unwrap()
-//         })
-//         .map(|entry| entry.unwrap().path())
-//         .collect::<HashSet<PathBuf>>()
-// }
-
 #[derive(PartialEq)]
 pub struct ImageAsset {
-    // For runtime.
     pub path: PathBuf,
     pub alt: &'static str,
     srcset: String,
@@ -70,21 +35,21 @@ pub struct ImageAsset {
 
 impl ImageAsset {
     pub fn new(
-        path: PathBuf,
+        file_name: PathBuf,
         alt: &'static str,
         bytes: &'static [u8],
         placeholder: Placeholder,
     ) -> ImageAsset {
         println!("Creating image wrapper.");
-        let image = ImageWrapper::new(bytes, path.clone());
+        let image = ImageWrapper::new(bytes, file_name.clone());
         let image = Arc::new(image);
 
-        println!("Getting image dimensions and mime type");
+        println!("Getting image dimensions and mime type.");
         let (width, height) = image.dimensions();
         let mime_type = image.mime_type();
 
         println!("Creating srcset.");
-        let path = PathBuf::from_str("images/").unwrap().join(path);
+        let path = PathBuf::from_str("images/").unwrap().join(file_name);
         let srcset = Self::create_srcset(&path, width);
 
         println!("Creating resized variants.");
