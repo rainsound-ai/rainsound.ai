@@ -1,4 +1,3 @@
-use crate::log;
 use cfg_if::cfg_if;
 use serde::{Deserialize, Serialize};
 use std::fs;
@@ -76,19 +75,19 @@ impl ImageAsset {
         bytes: &'static [u8],
         placeholder: Placeholder,
     ) -> ImageAsset {
-        log("Creating image wrapper.");
+        println!("Creating image wrapper.");
         let image = ImageWrapper::new(bytes, path.clone());
         let image = Arc::new(image);
 
-        log("Getting image dimensions and mime type");
+        println!("Getting image dimensions and mime type");
         let (width, height) = image.dimensions();
         let mime_type = image.mime_type();
 
-        log("Creating srcset.");
+        println!("Creating srcset.");
         let path = PathBuf::from_str("images/").unwrap().join(path);
         let srcset = Self::create_srcset(&path, width);
 
-        log("Creating resized variants.");
+        println!("Creating resized variants.");
         let resized_variants = Self::resized_variants(&path, &image);
 
         ImageAsset {

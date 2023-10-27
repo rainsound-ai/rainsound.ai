@@ -9,7 +9,6 @@ repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
 [features]
 default = []
 build = ["minify-js", "tree_magic", "image", "base64"]
-run = ["worker"]
 
 [dependencies]
 arraygen = "0.3.2"
@@ -22,7 +21,6 @@ base64 = { version = "0.21.4", optional = true }
 cfg-if = "1.0.0"
 serde = { version = "1.0.189", features = ["derive"] }
 serde_json = "1.0.107"
-worker = { version = "^0.0.18", optional = true }
 
 # # Always build the image crate with optimizations enabled, even in debug mode.
 # [profile.dev.package.image]

@@ -1,0 +1,6 @@
+thread '<unnamed>' panicked at 'called `Result::unwrap()` on an `Err` value: Custom { kind: Uncategorized, error: "failed to find a pre-opened file descriptor through which \"/Users/photon-garden/dev/creative-computing-website/built/images/hasui_hero.jpg.json\" could be opened" }', new_assets/src/image_asset/image_wrapper/mod.rs:40:59
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+thread '<unnamed>' panicked at 'called `Result::unwrap()` on an `Err` value: Custom { kind: Uncategorized, error: "failed to find a pre-opened file descriptor through which \"/Users/photon-garden/dev/creative-computing-website/built/images/hasui_hero.jpg.json\" could be opened" }', new_assets/src/image_asset/image_wrapper/mod.rs:40:59
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+thread '<unnamed>' panicked at 'called `Result::unwrap()` on an `Err` value: Custom { kind: Uncategorized, error: "failed to find a pre-opened file descriptor through which \"/Users/photon-garden/dev/creative-computing-website/built/images/hasui_hero.jpg.json\" could be opened" }', new_assets/src/image_asset/image_wrapper/mod.rs:40:59
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
