@@ -46,6 +46,7 @@ impl Asset for BuildTimeResizedImageAsset {
 
         self.image
             .dynamic_image
+            .resize_to_width(self.width)
             .into_bytes_with_format(resized_image_format)
     }
 

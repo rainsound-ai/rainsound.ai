@@ -48,7 +48,7 @@ impl DynamicImageExtension for DynamicImage {
     fn into_bytes_with_format(&self, format: ImageFormat) -> Vec<u8> {
         let mut bytes: Cursor<Vec<u8>> = Cursor::new(Vec::new());
         self.write_to(&mut bytes, format)
-            .expect("Error encoding low quality image placeholder.");
+            .expect("Error encoding image.");
         bytes.into_inner()
     }
 }
