@@ -17,7 +17,21 @@ files = [
 route = "/..."
 [component.build]
 command = "cargo build --target wasm32-wasi --release"
-watch = ["**/*.rs", "**/*.html", "**/*.css", "Cargo.toml"]
+watch = [
+    "serverless_functions/**/*.rs",
+    "serverless_functions/**/*.html",
+    "serverless_functions/**/*.css",
+    "new_assets/**/*.rs",
+    "new_assets/**/*.html",
+    "new_assets/**/*.css",
+    "browser/**/*.rs",
+    "browser/**/*.html",
+    "browser/**/*.css",
+    "shared/**/*.rs",
+    "shared/**/*.html",
+    "shared/**/*.css",
+    "Cargo.toml",
+]
 
 [[component]]
 id = "static_files"
