@@ -1,6 +1,6 @@
 use maud::{html, Markup};
 
-pub mod form_submission;
+// pub mod form_submission;
 
 pub fn contact_page() -> Markup {
     html! {
@@ -10,7 +10,7 @@ pub fn contact_page() -> Markup {
 
         form
             class="flex flex-col gap-2 w-full max-w-2xl py-4"
-            action="http://localhost:8787/contact"
+            action="http://localhost:3000/contact"
             method="POST"
         {
             label {

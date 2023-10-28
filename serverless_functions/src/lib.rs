@@ -1,24 +1,19 @@
 use anyhow::Result;
+use routes::Route;
 use spin_sdk::{
     http::{Request, Response},
     http_component,
 };
 
-// use new_assets::non_html_assets_by_path;
-// use routes::contact::form_submission::ContactFormSubmission;
-
+mod extensions;
 // mod notion;
-// mod routes;
+mod prelude;
+use prelude::*;
+mod routes;
 
 #[http_component]
-fn main(_req: Request) -> Result<Response> {
-    let body = "Hello, static html!".into();
-
-    let response = http::Response::builder()
-        .status(200)
-        // .header("Content-Type", "image/jpeg")
-        .header("Content-Type", "text/html")
-        .body(Some(body))?;
-
+fn main(req: Request) -> Result<Response> {
+    let route_name = Route::from_request(&req);
+    let response = route_name.html().into_response();
     Ok(response)
 }

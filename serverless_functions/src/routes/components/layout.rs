@@ -15,44 +15,53 @@ pub fn layout(content: Markup) -> Markup {
         }
 
         body class={(bg_background()) " dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75"} {
-            nav class="flex gap-2 p-2 items-center justify-start w-full font-semibold text-lg" {
-                a href="/" class="flex gap-2 items-center" {
-                    span class="text-4xl font-bold" { "🌸" }
-                    span { "Hyperbloom.studio" }
-                }
-                a href="/" { "Home" }
-                a href="/contact" { "Contact" }
+            (nav_links())
+
+            main {
+                (content)
             }
-        }
 
-        main {
-            (content)
+            (main_js())
         }
-
-        (main_js())
     }
     }
 }
 
-// body { class: "{bg_background()} dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75",
-//     nav { class: " flex gap-2 p-2 items-center justify-start w-full font-semibold text-lg",
-//         Link { class: "flex gap-2 items-center", to: Route::Home {},
-//             span { class: "text-4xl font-bold", "🌸" }
-//             span { "Hyperbloom.studio" }
-//         }
-//         Link { to: Route::Home {}, "Home" }
-//         Link { to: Route::Contact {}, "Contact" }
-//     }
-//     main { Outlet::<Route> {} }
-//     MainJs {}
-// }
+fn nav_links() -> Markup {
+    html! {
+        nav class="flex gap-2 p-2 items-center justify-start w-full font-semibold text-lg" {
+            (link(
+                "flex gap-2 items-center",
+                Route::Home,
+                html! {
+                    span class="text-4xl font-bold" { "🌸" }
+                    span { "Hyperbloom.studio" }
+                }
+            ))
+
+            (link(
+                "",
+                Route::Home,
+                html! {
+                    "Home"
+                }
+            ))
+
+            (link(
+                "",
+                Route::Contact,
+                html! {
+                    "Contact"
+                }
+            ))
+        }
+    }
+}
 
 fn main_js() -> Markup {
     dbg!("MainJs");
-    let contents = include_str!("../../main.js").replace(
-        "{browser_js_filename}",
-        non_html_assets.browser_js.path().to_str().unwrap(),
-    );
+    let browser_js_path = non_html_assets.browser_js.path().to_str().unwrap();
+    let contents = include_str!("../../main.js").replace("{browser_js_filename}", browser_js_path);
     html! {
         script type="module" {
             (PreEscaped(contents))

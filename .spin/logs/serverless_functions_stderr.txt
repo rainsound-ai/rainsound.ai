@@ -4,3 +4,11 @@ thread '<unnamed>' panicked at 'called `Result::unwrap()` on an `Err` value: Cus
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 thread '<unnamed>' panicked at 'called `Result::unwrap()` on an `Err` value: Custom { kind: Uncategorized, error: "failed to find a pre-opened file descriptor through which \"/Users/photon-garden/dev/creative-computing-website/built/images/hasui_hero.jpg.json\" could be opened" }', new_assets/src/image_asset/image_wrapper/mod.rs:40:59
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+[serverless_functions/src/routes/router.rs:19] &uri_path = "/"
+[serverless_functions/src/routes/mod.rs:19] "Body" = "Body"
+[serverless_functions/src/routes/components/layout.rs:51] "MainJs" = "MainJs"
+[serverless_functions/src/routes/router.rs:19] &uri_path = "/built.css"
+[serverless_functions/src/routes/components/layout.rs:51] "MainJs" = "MainJs"
+[serverless_functions/src/routes/router.rs:19] &uri_path = "/browser.js"
+[serverless_functions/src/routes/components/layout.rs:51] "MainJs" = "MainJs"
+[serverless_functions/src/routes/router.rs:19] &uri_path = "/contact"

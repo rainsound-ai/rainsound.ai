@@ -1,9 +1,8 @@
-use dioxus::prelude::*;
+use super::*;
+use maud::{html, Markup};
 
-#[inline_props]
-pub fn NotFound(cx: Scope, segments: Vec<String>) -> Element {
-    render! {
-        h1 { "404" }
-        p { "Page not found." }
-    }
+pub fn not_found_page() -> Markup {
+    layout(html! {
+        "Couldn't find that thing you were looking for."
+    })
 }
