@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use maud::Markup;
 use spin_sdk::http::Request;
 use strum_macros::EnumIter;
@@ -23,14 +25,6 @@ impl Route {
         }
     }
 
-    pub fn to_string(&self) -> String {
-        match self {
-            Route::Home => "/".to_string(),
-            Route::Contact => "/contact".to_string(),
-            Route::NotFound => "/not-found".to_string(),
-        }
-    }
-
     pub fn html(&self) -> Markup {
         match self {
             Route::Home => home_page(),
@@ -42,6 +36,18 @@ impl Route {
             //     path: "/contact".to_string(),
             // },
         }
+    }
+}
+
+impl Display for Route {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let string = match self {
+            Route::Home => "/".to_string(),
+            Route::Contact => "/contact".to_string(),
+            Route::NotFound => "/not-found".to_string(),
+        };
+
+        write!(f, "{}", string)
     }
 }
 
