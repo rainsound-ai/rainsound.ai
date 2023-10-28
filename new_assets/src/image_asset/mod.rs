@@ -19,7 +19,7 @@ pub use self::resized_image_asset::ResizedImageAsset;
 
 #[derive(PartialEq)]
 pub struct ImageAsset {
-    pub path: PathBuf,
+    pub file_name: PathBuf,
     pub alt: &'static str,
     srcset: String,
     mime_type: MimeType,
@@ -49,14 +49,13 @@ impl ImageAsset {
         let mime_type = image.mime_type();
 
         println!("Creating srcset.");
-        let path = PathBuf::from_str("images/").unwrap().join(file_name);
-        let srcset = Self::create_srcset(&path, width);
+        let srcset = Self::create_srcset(&file_name, width);
 
         println!("Creating resized variants.");
-        let resized_variants = Self::resized_variants(&path, &image);
+        let resized_variants = Self::resized_variants(&file_name, &image);
 
         ImageAsset {
-            path,
+            file_name,
             alt,
             bytes,
             placeholder: image.generate_placeholder(placeholder),
@@ -77,7 +76,7 @@ impl ImageAsset {
         self.resized_variants
             .first()
             .unwrap()
-            .path
+            .file_name
             .to_str()
             .unwrap()
     }
@@ -90,26 +89,29 @@ impl ImageAsset {
         self.mime_type
     }
 
-    fn resized_variants(path: &Path, original_image: &Arc<ImageWrapper>) -> Vec<ResizedImageAsset> {
+    fn resized_variants(
+        file_name: &Path,
+        original_image: &Arc<ImageWrapper>,
+    ) -> Vec<ResizedImageAsset> {
         let original_width = original_image.width();
 
         Self::available_widths(original_width)
             .into_iter()
             .map(|target_width| ResizedImageAsset {
-                path: Self::path_with_width(path, target_width),
+                file_name: Self::file_name_with_width(file_name, target_width),
                 width: target_width,
                 image: original_image.clone(),
             })
             .collect()
     }
 
-    fn create_srcset(path: &Path, image_width: u32) -> String {
+    fn create_srcset(file_name: &Path, image_width: u32) -> String {
         Self::available_widths(image_width)
             .into_iter()
             .map(|width| {
-                let path_with_width = Self::path_with_width(path, width);
-                let path_string = path_with_width.to_str().unwrap();
-                format!("{path_string} {width}w")
+                let file_name_with_width = Self::file_name_with_width(file_name, width);
+                let file_name_string = file_name_with_width.to_str().unwrap();
+                format!("{file_name_string} {width}w")
             })
             .collect::<Vec<String>>()
             .join(", ")
@@ -126,11 +128,11 @@ impl ImageAsset {
         (100..=4000).step_by(100).collect()
     }
 
-    fn path_with_width(path: &Path, width: u32) -> PathBuf {
-        let old_file_stem = path.file_stem().unwrap().to_str().unwrap();
-        let old_file_extension = path.extension().unwrap().to_str().unwrap();
+    fn file_name_with_width(file_name: &Path, width: u32) -> PathBuf {
+        let old_file_stem = file_name.file_stem().unwrap().to_str().unwrap();
+        let old_file_extension = file_name.extension().unwrap().to_str().unwrap();
         let new_file_name = format!("{}-{}w.{}", old_file_stem, width, old_file_extension);
-        path.with_file_name(new_file_name)
+        PathBuf::from_str(&new_file_name).unwrap()
     }
 }
 
@@ -138,7 +140,7 @@ cfg_if! {
 if #[cfg(feature = "build")] {
     impl CanSaveToDisk for ImageAsset {
         fn save_to_disk(&self) {
-            self.serialized_image_wrapper().save_to_disk(&self.path);
+            self.serialized_image_wrapper().save_to_disk(&self.file_name);
             for resized_variant in &self.resized_variants {
                 resized_variant.save_to_disk();
             }

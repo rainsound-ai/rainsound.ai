@@ -6,7 +6,7 @@ use std::{
 
 #[derive(PartialEq)]
 pub struct CssAsset {
-    pub path: PathBuf,
+    pub file_name: PathBuf,
     pub contents: &'static str,
     pub load_time_budget: Duration,
 }
@@ -18,8 +18,8 @@ impl CanSaveToDisk for CssAsset {
 }
 
 impl Asset for CssAsset {
-    fn path(&self) -> &Path {
-        &self.path
+    fn file_name(&self) -> &Path {
+        &self.file_name
     }
 
     fn bytes(&self) -> Vec<u8> {

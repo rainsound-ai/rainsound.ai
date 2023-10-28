@@ -8,7 +8,7 @@ use std::{
 
 #[derive(PartialEq, Clone)]
 pub struct BuildTimeResizedImageAsset {
-    pub path: PathBuf,
+    pub file_name: PathBuf,
     pub width: u32,
     pub image: Arc<BuildTimeImageWrapper>,
 }
@@ -24,8 +24,8 @@ impl CanSaveToDisk for BuildTimeResizedImageAsset {
 }
 
 impl Asset for BuildTimeResizedImageAsset {
-    fn path(&self) -> &Path {
-        &self.path
+    fn file_name(&self) -> &Path {
+        &self.file_name
     }
 
     fn bytes(&self) -> Vec<u8> {
@@ -42,7 +42,7 @@ impl Asset for BuildTimeResizedImageAsset {
             }
         }
 
-        println!("Resizing image: {:?}", &self.path);
+        println!("Resizing image: {:?}", &self.file_name);
 
         self.image
             .dynamic_image

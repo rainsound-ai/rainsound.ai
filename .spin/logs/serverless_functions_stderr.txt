@@ -32,3 +32,5 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 [serverless_functions/src/routes/components/layout.rs:62] "MainJs" = "MainJs"
 [serverless_functions/src/routes/components/layout.rs:62] "MainJs" = "MainJs"
 [serverless_functions/src/routes/components/layout.rs:62] "MainJs" = "MainJs"
+[serverless_functions/src/routes/mod.rs:19] "Body" = "Body"
+[serverless_functions/src/routes/components/layout.rs:62] "MainJs" = "MainJs"

@@ -75,21 +75,21 @@ impl NonHtmlAssets {
         println!("Generating non-html assets.");
         println!("Generating non-html assets: built_css.");
         let built_css = CssAsset {
-            path: PathBuf::from_str("built.css").unwrap(),
+            file_name: PathBuf::from_str("built.css").unwrap(),
             contents: include_str!("../../target/tailwind/built.css"),
             load_time_budget: Duration::from_millis(1),
         };
 
         println!("Generating non-html assets: browser_js.");
         let browser_js = JsAsset {
-            path: PathBuf::from_str("browser.js").unwrap(),
+            file_name: PathBuf::from_str("browser.js").unwrap(),
             contents: include_str!("../../target/browser/browser.js"),
             load_time_budget: Duration::from_millis(1),
         };
 
         println!("Generating non-html assets: browser_bg_wasm.");
         let browser_bg_wasm = WasmAsset {
-            path: PathBuf::from_str("browser_bg.wasm").unwrap(),
+            file_name: PathBuf::from_str("browser_bg.wasm").unwrap(),
             bytes: include_bytes!("../../target/browser/browser_bg.wasm"),
             load_time_budget: Duration::from_millis(1),
         };

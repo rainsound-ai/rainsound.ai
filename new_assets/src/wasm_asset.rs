@@ -5,7 +5,7 @@ use std::time::Duration;
 
 #[derive(PartialEq)]
 pub struct WasmAsset {
-    pub path: PathBuf,
+    pub file_name: PathBuf,
     pub bytes: &'static [u8],
     pub load_time_budget: Duration,
 }
@@ -17,8 +17,8 @@ impl CanSaveToDisk for WasmAsset {
 }
 
 impl Asset for WasmAsset {
-    fn path(&self) -> &Path {
-        &self.path
+    fn file_name(&self) -> &Path {
+        &self.file_name
     }
 
     fn bytes(&self) -> Vec<u8> {

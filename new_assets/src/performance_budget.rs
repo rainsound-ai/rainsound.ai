@@ -1,4 +1,4 @@
-use std::{fmt::Display, path::Path, time::Duration};
+use std::{fmt::Display, path::PathBuf, time::Duration};
 
 use super::Asset;
 
@@ -27,24 +27,22 @@ pub fn estimate_load_time(num_bytes: usize) -> Duration {
     num_seconds + assumed_latency
 }
 
-pub enum HowCloseToBudget<'asset> {
+pub enum HowCloseToBudget {
     WellBelowBudget,
     CloseToBudget {
-        path: &'asset Path,
+        path: PathBuf,
         estimated_load_time: Duration,
         budgeted_load_time: Duration,
     },
     OverBudget {
-        path: &'asset Path,
+        path: PathBuf,
         estimated_load_time: Duration,
         budgeted_load_time: Duration,
     },
 }
 
-impl<'asset> HowCloseToBudget<'asset> {
-    pub fn new<Asset: HasPerformanceBudget + ?Sized>(
-        asset: &'asset Asset,
-    ) -> HowCloseToBudget<'asset> {
+impl HowCloseToBudget {
+    pub fn new<Asset: HasPerformanceBudget + ?Sized>(asset: &Asset) -> HowCloseToBudget {
         let asset_size = asset.bytes().len();
 
         let estimated_load_time = estimate_load_time(asset_size);
@@ -76,7 +74,7 @@ impl<'asset> HowCloseToBudget<'asset> {
     }
 }
 
-impl Display for HowCloseToBudget<'_> {
+impl Display for HowCloseToBudget {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             HowCloseToBudget::WellBelowBudget => Ok(()),

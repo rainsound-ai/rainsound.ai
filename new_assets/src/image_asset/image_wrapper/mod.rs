@@ -65,7 +65,7 @@ impl SerializedImageWrapper {
         println!("Original file name: {:?}", original_file_name);
         let file_name = original_file_name + ".json";
         println!("File name: {:?}", file_name);
-        let path = crate::built_images_dir().join(file_name);
+        let path = crate::built_assets_dir().join(file_name);
         println!("Path: {:?}", path);
         path
     }

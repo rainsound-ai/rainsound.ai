@@ -12,17 +12,4 @@ fn main() {
     new_assets::build::tailwind::build_tailwind(true);
     new_assets::build::browser_crate::build_browser_crate(true);
     new_assets::non_html_assets.save_to_disk();
-
-    //     // println!("Removing built folder");
-    //     // if let Err(error) = fs::remove_dir_all(&built_dir) {
-    //     //     println!("Error removing ./built folder: {}", error);
-    //     // }
-
-    //     println!("Creating built folder.");
-    //     if let Err(error) = fs::create_dir(&built_dir) {
-    //         println!("Error creating built folder: {}", error);
-    //     }
-
-    //     println!("Saving assets to disk.");
-    //     Assets::new().save_to_disk(&built_dir);
 }

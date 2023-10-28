@@ -5,7 +5,7 @@ use std::time::Duration;
 
 #[derive(PartialEq)]
 pub struct JsAsset {
-    pub path: PathBuf,
+    pub file_name: PathBuf,
     pub contents: &'static str,
     pub load_time_budget: Duration,
 }
@@ -17,8 +17,8 @@ impl CanSaveToDisk for JsAsset {
 }
 
 impl Asset for JsAsset {
-    fn path(&self) -> &Path {
-        &self.path
+    fn file_name(&self) -> &Path {
+        &self.file_name
     }
 
     fn bytes(&self) -> Vec<u8> {

@@ -8,7 +8,7 @@ use std::{
 
 #[derive(PartialEq, Clone)]
 pub struct RunTimeResizedImageAsset {
-    pub path: PathBuf,
+    pub file_name: PathBuf,
     pub width: u32,
     pub image: Arc<RunTimeImageWrapper>,
 }
@@ -20,13 +20,16 @@ impl CanSaveToDisk for RunTimeResizedImageAsset {
 }
 
 impl Asset for RunTimeResizedImageAsset {
-    fn path(&self) -> &Path {
-        &self.path
+    fn file_name(&self) -> &Path {
+        &self.file_name
     }
 
     fn bytes(&self) -> Vec<u8> {
         let path_to_resized_image_file = self.path_on_disk();
-        let error_message = format!("Expected resized image to exist at path: {:?}", &self.path);
+        let error_message = format!(
+            "Expected resized image to exist at path: {:?}",
+            &path_to_resized_image_file
+        );
         return fs::read(&path_to_resized_image_file).expect(&error_message);
     }
 

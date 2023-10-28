@@ -13,9 +13,5 @@ pub fn workspace_root_dir() -> PathBuf {
 }
 
 pub fn built_assets_dir() -> PathBuf {
-    workspace_root_dir().join("built")
-}
-
-pub fn built_images_dir() -> PathBuf {
-    built_assets_dir().join("images")
+    workspace_root_dir().join("built_assets")
 }
