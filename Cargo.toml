@@ -5,6 +5,7 @@ members = [
     # "assets",
     # "new_assets",
     # "shared",
+    "new_assets",
     "serverless_functions",
 ]
 exclude = [
@@ -18,7 +19,6 @@ exclude = [
     # finish building.
     "browser",
     "assets",
-    "new_assets",
     "shared",
 ]
 resolver = "2"
@@ -30,7 +30,6 @@ opt-level = "s"
 lto = true
 # This speeds up the resulting code, but takes longer to compile.
 codegen-units = 1
-
 
 # For cargo-commander.
 [commands]

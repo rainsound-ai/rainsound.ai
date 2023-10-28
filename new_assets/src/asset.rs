@@ -10,8 +10,9 @@ pub trait CanSaveToDisk: Send + Sync {
 pub trait Asset: CanSaveToDisk {
     fn file_name(&self) -> &Path;
 
+    /// The path used when loading assets in the browser.
     fn path(&self) -> PathBuf {
-        PathBuf::from("built-assets").join(self.file_name())
+        crate::built_assets_browser_prefix().join(self.file_name())
     }
 
     fn bytes(&self) -> Vec<u8>;
