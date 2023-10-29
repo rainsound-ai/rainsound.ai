@@ -201,8 +201,11 @@ impl ImageAsset {
     fn path_with_width(path: &Path, width: u32) -> PathBuf {
         let old_file_stem = path.file_stem().unwrap().to_str().unwrap();
         let old_file_extension = path.extension().unwrap().to_str().unwrap();
-        let new_file_name = format!("{}-{}w.{}", old_file_stem, width, old_file_extension);
-        path.with_file_name(new_file_name)
+        let new_file_name_string = format!("{}-{}w.{}", old_file_stem, width, old_file_extension);
+        let new_file_name_path = PathBuf::from_str(&new_file_name_string).unwrap();
+        let path_with_width = asset_path_from_file_name(new_file_name_path);
+        dbg!(path_with_width);
+        path_with_width
     }
 }
 

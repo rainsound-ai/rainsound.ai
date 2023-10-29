@@ -12,7 +12,7 @@ pub trait Asset: CanSaveToDisk {
 
     /// The path used when loading assets in the browser.
     fn path(&self) -> PathBuf {
-        crate::built_assets_browser_prefix().join(self.file_name())
+        asset_path_from_file_name(self.file_name())
     }
 
     fn bytes(&self) -> Vec<u8>;
@@ -40,4 +40,8 @@ pub trait Asset: CanSaveToDisk {
     fn path_on_disk(&self) -> PathBuf {
         crate::built_assets_dir().join(self.file_name())
     }
+}
+
+pub fn asset_path_from_file_name(file_name: &Path) -> PathBuf {
+    crate::built_assets_browser_prefix().join(file_name)
 }

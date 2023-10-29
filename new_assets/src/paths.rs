@@ -94,7 +94,6 @@ mod tests {
 
     fn get_spin_toml_components() -> Vec<toml::Table> {
         let spin_toml = parse_spin_toml();
-        dbg!(&spin_toml);
         spin_toml
             .get("component")
             .unwrap()

@@ -7,7 +7,7 @@ use std::sync::Arc;
 
 mod light_dark_image_asset;
 use crate::mime_type::MimeType;
-use crate::CanSaveToDisk;
+use crate::{asset_path_from_file_name, CanSaveToDisk};
 
 pub use self::light_dark_image_asset::*;
 
@@ -109,8 +109,8 @@ impl ImageAsset {
         Self::available_widths(image_width)
             .into_iter()
             .map(|width| {
-                let file_name_with_width = Self::file_name_with_width(file_name, width);
-                let file_name_string = file_name_with_width.to_str().unwrap();
+                let path_with_width = Self::path_with_width(file_name, width);
+                let file_name_string = path_with_width.to_str().unwrap();
                 format!("{file_name_string} {width}w")
             })
             .collect::<Vec<String>>()
@@ -131,8 +131,13 @@ impl ImageAsset {
     fn file_name_with_width(file_name: &Path, width: u32) -> PathBuf {
         let old_file_stem = file_name.file_stem().unwrap().to_str().unwrap();
         let old_file_extension = file_name.extension().unwrap().to_str().unwrap();
-        let new_file_name = format!("{}-{}w.{}", old_file_stem, width, old_file_extension);
-        PathBuf::from_str(&new_file_name).unwrap()
+        let new_file_name_string = format!("{}-{}w.{}", old_file_stem, width, old_file_extension);
+        PathBuf::from_str(&new_file_name_string).unwrap()
+    }
+
+    fn path_with_width(file_name: &Path, width: u32) -> PathBuf {
+        let file_name_with_width = Self::file_name_with_width(file_name, width);
+        asset_path_from_file_name(&file_name_with_width)
     }
 }
 

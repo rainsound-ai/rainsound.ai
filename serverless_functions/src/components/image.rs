@@ -2,7 +2,6 @@ use maud::{html, Markup};
 use new_assets::{GeneratedPlaceholder, ImageAsset};
 
 pub fn image<'class>(class: impl Into<&'class str>, asset: &ImageAsset) -> Markup {
-    dbg!("Image");
     let class = class.into();
 
     match &asset.placeholder {

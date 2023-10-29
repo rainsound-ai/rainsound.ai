@@ -60,7 +60,6 @@ fn nav_links() -> Markup {
 }
 
 fn main_js() -> Markup {
-    dbg!("MainJs");
     let browser_js_path = non_html_assets
         .browser_js
         .path()
