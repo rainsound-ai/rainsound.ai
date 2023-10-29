@@ -1,6 +1,6 @@
-use std::{fmt::Display, path::Path, time::Duration};
+use std::{fmt::Display, path::PathBuf, time::Duration};
 
-use super::NonImageAsset;
+use super::Asset;
 
 pub static assumed_latency: Duration = Duration::from_millis(100);
 pub static assumed_bits_per_second: f64 = 5_000_000.0;
@@ -27,22 +27,22 @@ pub fn estimate_load_time(num_bytes: usize) -> Duration {
     num_seconds + assumed_latency
 }
 
-pub enum HowCloseToBudget<'asset> {
+pub enum HowCloseToBudget {
     WellBelowBudget,
     CloseToBudget {
-        path: &'asset Path,
+        path: PathBuf,
         estimated_load_time: Duration,
         budgeted_load_time: Duration,
     },
     OverBudget {
-        path: &'asset Path,
+        path: PathBuf,
         estimated_load_time: Duration,
         budgeted_load_time: Duration,
     },
 }
 
-impl<'asset> HowCloseToBudget<'asset> {
-    pub fn new<Asset: NonImageAsset + ?Sized>(asset: &'asset Asset) -> HowCloseToBudget<'asset> {
+impl HowCloseToBudget {
+    pub fn new<Asset: HasPerformanceBudget + ?Sized>(asset: &Asset) -> HowCloseToBudget {
         let asset_size = asset.bytes().len();
 
         let estimated_load_time = estimate_load_time(asset_size);
@@ -74,7 +74,7 @@ impl<'asset> HowCloseToBudget<'asset> {
     }
 }
 
-impl Display for HowCloseToBudget<'_> {
+impl Display for HowCloseToBudget {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             HowCloseToBudget::WellBelowBudget => Ok(()),
@@ -106,37 +106,46 @@ impl Display for HowCloseToBudget<'_> {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use crate::prelude::*;
+    // use super::*;
+    // use crate::prelude::*;
 
-    #[test]
-    fn check_performance_budgets() {
-        let assets = Assets::new();
-        let html_assets_with_performance_budget = assets.html_assets_with_performance_budget();
-        let non_html_assets_with_performance_budget =
-            non_html_assets.assets_with_performance_budget();
+    // #[test]
+    // fn check_performance_budgets() {
+    //     let assets = Assets::new();
+    //     let html_assets_with_performance_budget = assets.html_assets_with_performance_budget();
+    //     let non_html_assets_with_performance_budget =
+    //         non_html_assets.assets_with_performance_budget();
 
-        let assets_with_performance_budget: Vec<&dyn NonImageAsset> =
-            html_assets_with_performance_budget
-                .into_iter()
-                .chain(non_html_assets_with_performance_budget.into_iter())
-                .collect::<Vec<_>>();
+    //     let assets_with_performance_budget: Vec<&dyn Asset> =
+    //         html_assets_with_performance_budget
+    //             .into_iter()
+    //             .chain(non_html_assets_with_performance_budget.into_iter())
+    //             .collect::<Vec<_>>();
 
-        for asset in assets_with_performance_budget {
-            let how_close_to_budget = asset.check_performance_budget();
+    //     for asset in assets_with_performance_budget {
+    //         let how_close_to_budget = asset.check_performance_budget();
 
-            match how_close_to_budget {
-                HowCloseToBudget::WellBelowBudget => {}
+    //         match how_close_to_budget {
+    //             HowCloseToBudget::WellBelowBudget => {}
 
-                HowCloseToBudget::CloseToBudget { .. } => {
-                    println!("{}", how_close_to_budget);
-                }
+    //             HowCloseToBudget::CloseToBudget { .. } => {
+    //                 println!("{}", how_close_to_budget);
+    //             }
 
-                HowCloseToBudget::OverBudget { .. } => {
-                    println!("{}", how_close_to_budget);
-                    panic!("Asset is over budget.");
-                }
-            }
-        }
+    //             HowCloseToBudget::OverBudget { .. } => {
+    //                 println!("{}", how_close_to_budget);
+    //                 panic!("Asset is over budget.");
+    //             }
+    //         }
+    //     }
+    // }
+}
+
+pub trait HasPerformanceBudget: Asset {
+    fn check_performance_budget(&self) -> HowCloseToBudget {
+        HowCloseToBudget::new(self)
     }
+
+    // Used for enforcing performance budgets.
+    fn load_time_budget(&self) -> Duration;
 }

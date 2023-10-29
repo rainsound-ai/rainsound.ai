@@ -1,5 +1,5 @@
+use assets::{GeneratedPlaceholder, ImageAsset};
 use maud::{html, Markup};
-use new_assets::{GeneratedPlaceholder, ImageAsset};
 
 pub fn image<'class>(class: impl Into<&'class str>, asset: &ImageAsset) -> Markup {
     let class = class.into();

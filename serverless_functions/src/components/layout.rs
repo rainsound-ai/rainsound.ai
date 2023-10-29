@@ -1,8 +1,8 @@
 use crate::components::*;
 use crate::css_class_groups::*;
 use crate::routes::Route;
+use assets::*;
 use maud::{html, Markup, PreEscaped, DOCTYPE};
-use new_assets::*;
 
 pub fn layout(content: Markup) -> Markup {
     html! {

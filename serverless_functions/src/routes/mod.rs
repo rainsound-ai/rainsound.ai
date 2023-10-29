@@ -1,6 +1,6 @@
 use crate::components::*;
+use assets::non_html_assets;
 use maud::{html, Markup};
-use new_assets::non_html_assets;
 
 mod contact;
 pub use self::contact::*;

@@ -47,6 +47,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "assets"
+version = "0.1.0"
+dependencies = [
+ "arraygen",
+ "base64",
+ "cfg-if 1.0.0",
+ "image",
+ "minify-js",
+ "once_cell",
+ "rayon",
+ "serde",
+ "serde_json",
+ "toml",
+ "tree_magic",
+]
+
+[[package]]
 name = "autocfg"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -778,23 +795,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "new_assets"
-version = "0.1.0"
-dependencies = [
- "arraygen",
- "base64",
- "cfg-if 1.0.0",
- "image",
- "minify-js",
- "once_cell",
- "rayon",
- "serde",
- "serde_json",
- "toml",
- "tree_magic",
-]
-
-[[package]]
 name = "nom"
 version = "3.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1148,9 +1148,9 @@ name = "serverless_functions"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "assets",
  "http",
  "maud",
- "new_assets",
  "shared",
  "spin-sdk",
  "strum",

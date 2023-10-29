@@ -1,5 +1,5 @@
 #![allow(non_upper_case_globals)]
-use new_assets::non_html_assets_by_path;
+use assets::non_html_assets_by_path;
 use routes::contact::form_submission::ContactFormSubmission;
 use worker::*;
 

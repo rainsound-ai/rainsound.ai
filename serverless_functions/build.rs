@@ -9,7 +9,7 @@ fn main() {
     println!("cargo:rerun-if-changed=../**/*.rs");
     println!("cargo:rerun-if-changed=../**/*.css");
 
-    new_assets::build::tailwind::build_tailwind(true);
-    new_assets::build::browser_crate::build_browser_crate(true);
-    new_assets::non_html_assets.save_to_disk();
+    assets::build::tailwind::build_tailwind(true);
+    assets::build::browser_crate::build_browser_crate(true);
+    assets::non_html_assets.save_to_disk();
 }
