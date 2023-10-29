@@ -4,6 +4,7 @@
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
+use gloo::console;
 use prelude::*;
 // use serde::de::DeserializeOwned;
 // use shared::prelude::*;
@@ -19,6 +20,8 @@ mod prelude;
 fn main() -> Result<(), JsValue> {
     #[cfg(feature = "dev")]
     dev::main();
+
+    console::debug!("Hello from Rust!!!");
 
     // load_more_poems_on_link_click();
 
