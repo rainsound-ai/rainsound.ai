@@ -1,5 +1,5 @@
-// mod image;
-// pub use self::image::*;
+mod image;
+pub use self::image::*;
 
 mod layout;
 pub use self::layout::*;

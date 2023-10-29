@@ -1,6 +1,7 @@
-use crate::routes::*;
+use crate::components::*;
+use crate::css_class_groups::*;
+use crate::routes::Route;
 use maud::{html, Markup, PreEscaped, DOCTYPE};
-use new_assets::non_html_assets;
 use new_assets::*;
 
 pub fn layout(content: Markup) -> Markup {
@@ -65,7 +66,7 @@ fn main_js() -> Markup {
         .path()
         .to_string_lossy()
         .to_string();
-    let contents = include_str!("../../main.js").replace("{browser_js_filename}", &browser_js_path);
+    let contents = include_str!("../main.js").replace("{browser_js_filename}", &browser_js_path);
     html! {
         script type="module" {
             (PreEscaped(contents))
