@@ -21,7 +21,7 @@ fn main() -> Result<(), JsValue> {
     #[cfg(feature = "dev")]
     dev::main();
 
-    console::debug!("Hello from Rust!!!");
+    console::debug!(shared::message);
 
     // load_more_poems_on_link_click();
 

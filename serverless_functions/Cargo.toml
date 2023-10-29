@@ -10,7 +10,7 @@ repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
 crate-type = ["cdylib"]
 
 [dependencies]
-# shared = { path = "../shared", features = ["server"] }
+shared = { path = "../shared", features = ["server"] }
 new_assets = { path = "../new_assets" }
 strum = "0.25.0"
 strum_macros = "0.25.2"
