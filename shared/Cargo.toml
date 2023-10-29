@@ -31,3 +31,4 @@ web-sys = { version = "0.3.4", optional = true, features = [
     "Window",
     "DomTokenList",
 ] }
+maud = "0.25.0"

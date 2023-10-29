@@ -1162,6 +1162,7 @@ name = "shared"
 version = "0.1.0"
 dependencies = [
  "gloo",
+ "maud",
  "serde",
  "wasm-bindgen",
  "web-sys",

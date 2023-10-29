@@ -1442,3 +1442,383 @@ Getting image dimensions and mime type.
 Creating srcset.
 Creating resized variants.
 Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.
+Generating non-html assets.
+Generating non-html assets: built_css.
+Generating non-html assets: browser_js.
+Generating non-html assets: browser_bg_wasm.
+Generating non-html assets: hasui_hero.
+Creating image wrapper.
+Loading image wrapper from disk.
+Loading serialized image wrapper from disk.
+Image path: "hasui_hero.jpg"
+Original file name: "hasui_hero.jpg"
+File name: "hasui_hero.jpg.json"
+Path: "/built_assets/hasui_hero.jpg.json"
+Path on disk: "/built_assets/hasui_hero.jpg.json"
+Serialized: "{\n  \"dimensions\": [\n    3584,\n    2298\n  ],\n  \"generated_placeholder\": {\n    \"Lqip\": {\n      \"data_uri\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAAaACgDAREAAhEBAxEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0v7O0jEod2Dg7ecH0roUkcbixy2Ux6KaOdByMDZTDkg496OdB7ORlPqlmLr7OZG4ODJt+TP1rKOIhKVkdMsFVjDmlb0vqXlizkoysB6EGtOZMw5JLdHzukd3atuhlmjIbcDG5Ug+vHf3qLG9zoD498WtDHA2sT7IwB8yKSfcnGTSdNMuNRx1RsWnxU1mO2htpbW2mjjOH25Qsv09fep9lHYp123drXuXLzxxptxKkxspd+OPNztHpkDrXRDlirIxk3J3ZYsfEs9ykhh8jym5bypMAfUHpVWgkJuTd2X20Twy2QZJCfXzR/hWSizncjl9W1PwvaSz2ttp91cXCfIGaVRH/AOO8n9KiU2tDeELq7MVtS0oPi60+2Rc8APIzYx7His+eRpyoaLvR3kIiZkUn7u8hQPTmp5phyl2O5trcfuEjGeMg5NZz5pbsEin4hkdLSLY7Ll+cHFdlRuxlSSuc4eCaxOggi5kyeuaALoHApCFHDDHFIZ//2Q==\"\n    }\n  },\n  \"mime_type\": \"ImageJpeg\"\n}"
+Deserializing.
+Getting image dimensions and mime type.
+Creating srcset.
+Creating resized variants.
+Finished generating non-html assets.

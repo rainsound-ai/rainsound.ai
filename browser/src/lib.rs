@@ -23,6 +23,18 @@ fn main() -> Result<(), JsValue> {
 
     console::debug!(shared::message);
 
+    let window = web_sys::window().expect("web_sys::window() failed.");
+    let document = window.document().expect("window.document() failed.");
+    let body = document.body().expect("document.body() failed.");
+
+    let shared_component = shared::shared_component().into_string();
+    body.insert_adjacent_html("beforeend", &shared_component)
+        .expect("insert_adjacent_html() failed.");
+
+    let another_shared_component = shared::another_shared_component().into_string();
+    body.insert_adjacent_html("beforeend", &another_shared_component)
+        .expect("insert_adjacent_html() failed.");
+
     // load_more_poems_on_link_click();
 
     // mount_component(show_if_scrolled::name, hydrate_show_if_scrolled);
