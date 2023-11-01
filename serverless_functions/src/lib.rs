@@ -19,7 +19,6 @@ mod routes;
 
 #[http_component]
 fn main(req: Request) -> Result<Response> {
-    dbg!(shared::message);
     let route = Route::from_request(&req);
     let response = route.html().into_response();
     Ok(response)

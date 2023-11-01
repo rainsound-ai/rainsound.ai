@@ -33,13 +33,8 @@ pub struct SerializedImageWrapper {
 
 impl SerializedImageWrapper {
     pub fn load_from_disk(image_path: &Path) -> Self {
-        println!("Loading serialized image wrapper from disk.");
-        println!("Image path: {:?}", image_path);
         let path_on_disk = SerializedImageWrapper::path_on_disk(image_path);
-        println!("Path on disk: {:?}", path_on_disk);
         let serialized = fs::read_to_string(path_on_disk).unwrap();
-        println!("Serialized: {:?}", serialized);
-        println!("Deserializing.");
         serde_json::from_str(&serialized).unwrap()
     }
 
@@ -62,11 +57,8 @@ impl SerializedImageWrapper {
             .to_owned()
             .into_string()
             .unwrap();
-        println!("Original file name: {:?}", original_file_name);
         let file_name = original_file_name + ".json";
-        println!("File name: {:?}", file_name);
         let path = crate::built_assets_dir().join(file_name);
-        println!("Path: {:?}", path);
         path
     }
 }

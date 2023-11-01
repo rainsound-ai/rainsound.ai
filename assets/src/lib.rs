@@ -72,29 +72,24 @@ pub struct NonHtmlAssets {
 // deadlocking if we're using a lazily initialized global variable.
 impl NonHtmlAssets {
     pub fn new() -> Self {
-        println!("Generating non-html assets.");
-        println!("Generating non-html assets: built_css.");
         let built_css = CssAsset {
             file_name: PathBuf::from_str("built.css").unwrap(),
             contents: include_str!("../../target/tailwind/built.css"),
             load_time_budget: Duration::from_millis(1),
         };
 
-        println!("Generating non-html assets: browser_js.");
         let browser_js = JsAsset {
             file_name: PathBuf::from_str("browser.js").unwrap(),
             contents: include_str!("../../target/browser/browser.js"),
             load_time_budget: Duration::from_millis(1),
         };
 
-        println!("Generating non-html assets: browser_bg_wasm.");
         let browser_bg_wasm = WasmAsset {
             file_name: PathBuf::from_str("browser_bg.wasm").unwrap(),
             bytes: include_bytes!("../../target/browser/browser_bg.wasm"),
             load_time_budget: Duration::from_millis(1),
         };
 
-        println!("Generating non-html assets: hasui_hero.");
         let hasui_hero = ImageAsset::new(
             PathBuf::from_str("hasui_hero.jpg").unwrap(),
             "A woodblock print by Kawase Hasui",
@@ -102,7 +97,6 @@ impl NonHtmlAssets {
             Placeholder::Lqip,
         );
 
-        println!("Finished generating non-html assets.");
         NonHtmlAssets {
             built_css,
             browser_js,
@@ -112,8 +106,6 @@ impl NonHtmlAssets {
     }
 
     fn by_path(&self) -> HashMap<String, (ContentType, Vec<u8>)> {
-        println!("Generating non-html assets by path.");
-
         let all_assets = self.all_assets();
         let mut hashmap = HashMap::new();
         for asset in all_assets {

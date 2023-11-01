@@ -20,7 +20,6 @@ pub trait Asset: CanSaveToDisk {
     fn content_type(&self) -> ContentType;
 
     fn save_to_disk(&self) {
-        println!("Saving asset: {:?}", self.path());
         let path = self.path_on_disk();
 
         let parent_dir = path.parent().unwrap();

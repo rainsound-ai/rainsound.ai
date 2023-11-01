@@ -9,7 +9,6 @@ pub struct RunTimeImageWrapper {
 
 impl ImageWrapperMethods for RunTimeImageWrapper {
     fn new(_bytes: &'static [u8], path: PathBuf) -> Self {
-        println!("Loading image wrapper from disk.");
         let serialized = SerializedImageWrapper::load_from_disk(&path);
         Self { path, serialized }
     }

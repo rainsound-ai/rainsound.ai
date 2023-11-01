@@ -42,8 +42,6 @@ impl Asset for BuildTimeResizedImageAsset {
             }
         }
 
-        println!("Resizing image: {:?}", &self.file_name);
-
         self.image
             .dynamic_image
             .resize_to_width(self.width)

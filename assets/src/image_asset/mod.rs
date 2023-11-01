@@ -40,18 +40,14 @@ impl ImageAsset {
         bytes: &'static [u8],
         placeholder: Placeholder,
     ) -> ImageAsset {
-        println!("Creating image wrapper.");
         let image = ImageWrapper::new(bytes, file_name.clone());
         let image = Arc::new(image);
 
-        println!("Getting image dimensions and mime type.");
         let (width, height) = image.dimensions();
         let mime_type = image.mime_type();
 
-        println!("Creating srcset.");
         let srcset = Self::create_srcset(&file_name, width);
 
-        println!("Creating resized variants.");
         let resized_variants = Self::resized_variants(&file_name, &image);
 
         ImageAsset {
