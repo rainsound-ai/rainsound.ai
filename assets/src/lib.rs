@@ -3,7 +3,6 @@
 use arraygen::Arraygen;
 use cfg_if::cfg_if;
 use once_cell::sync::Lazy;
-use rayon::prelude::*;
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::str::FromStr;
@@ -158,6 +157,8 @@ impl NonHtmlAssets {
 
 cfg_if! {
 if #[cfg(feature = "build")] {
+    use rayon::prelude::*;
+
     impl NonHtmlAssets {
         pub fn save_to_disk(&self) {
             self.all_assets_that_can_be_saved_to_disk()

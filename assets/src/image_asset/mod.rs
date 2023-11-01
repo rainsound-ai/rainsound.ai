@@ -6,8 +6,8 @@ use std::str::FromStr;
 use std::sync::Arc;
 
 mod light_dark_image_asset;
+use crate::asset_path_from_file_name;
 use crate::mime_type::MimeType;
-use crate::{asset_path_from_file_name, CanSaveToDisk};
 
 pub use self::light_dark_image_asset::*;
 
@@ -139,6 +139,8 @@ impl ImageAsset {
 
 cfg_if! {
 if #[cfg(feature = "build")] {
+    use crate::CanSaveToDisk;
+
     impl CanSaveToDisk for ImageAsset {
         fn save_to_disk(&self) {
             self.serialized_image_wrapper().save_to_disk(&self.file_name);
@@ -167,21 +169,25 @@ pub enum Placeholder {
     Color { css_string: String },
 }
 
-impl Placeholder {
-    fn matches(&self, generated_placeholder: &GeneratedPlaceholder) -> bool {
-        matches!(
-            (self, generated_placeholder),
-            (Placeholder::Lqip, GeneratedPlaceholder::Lqip { .. })
-                | (
-                    Placeholder::Color { .. },
-                    GeneratedPlaceholder::Color { .. }
-                )
-                | (
-                    Placeholder::AutomaticColor,
-                    GeneratedPlaceholder::Color { .. }
-                )
-        )
+cfg_if! {
+if #[cfg(not(feature = "build"))] {
+    impl Placeholder {
+        fn matches(&self, generated_placeholder: &GeneratedPlaceholder) -> bool {
+            matches!(
+                (self, generated_placeholder),
+                (Placeholder::Lqip, GeneratedPlaceholder::Lqip { .. })
+                    | (
+                        Placeholder::Color { .. },
+                        GeneratedPlaceholder::Color { .. }
+                    )
+                    | (
+                        Placeholder::AutomaticColor,
+                        GeneratedPlaceholder::Color { .. }
+                    )
+            )
+        }
     }
+}
 }
 
 #[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]

@@ -1,5 +1,3 @@
-use crate::mime_type::MimeType;
-
 use super::*;
 use cfg_if::cfg_if;
 
