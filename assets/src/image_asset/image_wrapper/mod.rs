@@ -58,7 +58,6 @@ impl SerializedImageWrapper {
             .into_string()
             .unwrap();
         let file_name = original_file_name + ".json";
-        let path = crate::built_assets_dir().join(file_name);
-        path
+        crate::built_assets_dir().join(file_name)
     }
 }
