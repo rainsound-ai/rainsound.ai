@@ -2,9 +2,7 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 pub fn main() {
-    println!("cargo:rerun-if-changed=../**/*.html");
-    println!("cargo:rerun-if-changed=../**/*.rs");
-    println!("cargo:rerun-if-changed=../**/*.css");
+    println!("cargo:rerun-if-changed=../browser/**");
 
     run_wasm_pack(true);
     minify_js();
