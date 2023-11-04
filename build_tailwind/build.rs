@@ -9,13 +9,12 @@ pub fn main() {
     println!("cargo:rerun-if-changed=../**/*.css");
 
     println!("Building Tailwind.");
+    let build_tailwind_dir = workspace_root_dir().join("build_tailwind");
 
-    let npx_prefix = workspace_root_dir().join("target").join("node_modules");
+    let npx_prefix = build_tailwind_dir.join("node_modules");
     let npx_prefix = npx_prefix.to_str().unwrap();
 
-    let config = workspace_root_dir()
-        .join("build_tailwind")
-        .join("tailwind.config.js");
+    let config = build_tailwind_dir.join("tailwind.config.js");
     let config = config.to_str().unwrap();
 
     let input_file = workspace_root_dir()
@@ -24,10 +23,7 @@ pub fn main() {
         .join("main.css");
     let input_file = input_file.to_str().unwrap();
 
-    let output_file = workspace_root_dir()
-        .join("target")
-        .join("tailwind")
-        .join("built.css");
+    let output_file = build_tailwind_dir.join("target").join("built.css");
     let output_file = output_file.to_str().unwrap();
 
     let mut run_tailwind = Command::new("npx");

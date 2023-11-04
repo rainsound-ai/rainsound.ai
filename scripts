@@ -31,9 +31,10 @@ setup() {
 	cargo install cargo-watch --version 8.4.0 --root ./target/cargo_install &&
 		cargo install wasm-pack --version 0.12.1 --root ./target/cargo_install &&
 		cargo install twiggy --version 0.7.0 --root ./target/cargo_install &&
-		rm -rf ./target/node_modules &&
+		rm -rf ./build_tailwind/node_modules &&
+		cd build_tailwind &&
 		npm install &&
-		mv node_modules ./target/node_modules &&
+		&& cd ..
 		# Install Spin.
 		brew tap fermyon/tap &&
 		brew install fermyon/tap/spin

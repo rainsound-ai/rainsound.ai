@@ -19,9 +19,8 @@ fn run_wasm_pack(production: bool) {
         .to_string_lossy()
         .to_string();
 
-    let out_dir = workspace_root_dir().join("target").join("browser");
+    let out_dir = out_dir();
     let out_dir = out_dir.to_str().unwrap();
-
     let mut run_wasm_pack = Command::new(wasm_pack);
 
     run_wasm_pack
@@ -61,19 +60,19 @@ fn run_wasm_pack(production: bool) {
 }
 
 fn minify_js() {
-    let browser_js = workspace_root_dir()
-        .join("target")
-        .join("browser")
-        .join("browser.js")
-        .to_string_lossy()
-        .to_string();
+    let browser_js = out_dir().join("browser.js");
+    let browser_js = browser_js.to_str().unwrap();
 
     let browser_js_source =
-        std::fs::read_to_string(&browser_js).expect("Failed to read browser.js.");
+        std::fs::read_to_string(browser_js).expect("Failed to read browser.js.");
 
     let minified = minify_string(&browser_js_source);
 
-    std::fs::write(&browser_js, minified).expect("Failed to write browser.js.");
+    std::fs::write(browser_js, minified).expect("Failed to write browser.js.");
+}
+
+fn out_dir() -> PathBuf {
+    workspace_root_dir().join("build_browser").join("target")
 }
 
 pub fn minify_string(source: &str) -> Vec<u8> {
