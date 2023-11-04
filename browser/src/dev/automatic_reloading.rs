@@ -5,6 +5,7 @@ use gloo::net::http::Request;
 use gloo::timers::callback::Interval;
 use once_cell::sync::OnceCell;
 use wasm_bindgen_futures::spawn_local;
+use shared::Route;
 
 pub fn start_checking_for_updates() {
     Interval::new(1_000, || {
@@ -49,7 +50,8 @@ async fn new_version_available() -> bool {
 }
 
 async fn get_most_recent_build_time() -> Result<DateTime<Local>, gloo::net::Error> {
-    let response = Request::get("/site-build-time").send().await?;
+    let url = Route::BuildTime.to_string();
+    let response = Request::get(&url).send().await?;
 
     if !response.ok() {
         let status_code = response.status();

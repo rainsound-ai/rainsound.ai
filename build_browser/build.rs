@@ -1,10 +1,12 @@
+use std::env;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
 pub fn main() {
     println!("cargo:rerun-if-changed=../browser/**");
+    let production = env::var("PROFILE").unwrap() == "release";
 
-    run_wasm_pack(true);
+    run_wasm_pack(production);
     minify_js();
 }
 

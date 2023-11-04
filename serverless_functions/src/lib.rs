@@ -1,5 +1,7 @@
+#![allow(non_upper_case_globals)]
+
 use anyhow::Result;
-use routes::Route;
+use routes::*;
 use spin_sdk::{
     http::{Request, Response},
     http_component,
@@ -13,7 +15,7 @@ mod extensions;
 // mod notion;
 
 mod prelude;
-use prelude::*;
+use self::prelude::*;
 
 mod routes;
 

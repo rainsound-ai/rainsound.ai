@@ -2,11 +2,13 @@
 
 use maud::{html, Markup};
 
+pub mod prelude;
+pub use self::prelude::*;
+
+pub mod router;
+
 // pub mod components;
 // pub mod extensions;
-// pub mod prelude;
-
-// pub use prelude::*;
 
 pub static message: &str = "Hello, shared!";
 

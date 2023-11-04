@@ -1,8 +1,9 @@
+use std::env;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
 pub fn main() {
-    let production = true;
+    let production = env::var("PROFILE").unwrap() == "release";
 
     println!("cargo:rerun-if-changed=../**/*.html");
     println!("cargo:rerun-if-changed=../**/*.rs");
