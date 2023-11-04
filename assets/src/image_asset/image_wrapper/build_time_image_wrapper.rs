@@ -11,9 +11,10 @@ pub struct BuildTimeImageWrapper {
 }
 
 impl ImageWrapperMethods for BuildTimeImageWrapper {
-    fn new(bytes: &'static [u8], _path: PathBuf) -> Self {
+    fn new(bytes: &'static [u8], path: PathBuf) -> Self {
         let dynamic_image = image::load_from_memory(bytes).unwrap();
-        let mime_type = MimeType::from_bytes(bytes);
+        // let mime_type = MimeType::from_bytes(bytes);
+        let mime_type = MimeType::from_path(&path);
         Self {
             mime_type,
             dynamic_image,
