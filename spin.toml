@@ -39,5 +39,5 @@ files = [{ source = "built_assets", destination = "/" }]
 [component.trigger]
 route = "/built-assets/..."
 [component.build]
-command = "sleep 5"
+command = ""
 watch = ["built_assets/**/*"]

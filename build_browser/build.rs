@@ -25,12 +25,13 @@ fn run_wasm_pack(production: bool) {
 
     let out_dir = workspace_root_dir().join("target").join("browser");
     let out_dir = out_dir.to_str().unwrap();
-    dbg!(&out_dir);
 
     let mut run_wasm_pack = Command::new(wasm_pack);
 
     run_wasm_pack
+        .args(["-vv"])
         .args(["build"])
+        .args(["--no-pack"]) // For some reason generating a package.json causes errors when running `spin build`: Error: invalid type: sequence, expected a string at line 3 column 19
         .args(["--target", "web"])
         .args(["--out-dir", out_dir])
         .args(["--out-name", "browser"]);
@@ -43,15 +44,12 @@ fn run_wasm_pack(production: bool) {
 
     let browser_crate = workspace_root_dir().join("browser");
     let browser_crate = browser_crate.to_str().unwrap();
-    dbg!(&browser_crate);
     run_wasm_pack.arg(browser_crate);
 
     // cargo arguments
     if !production {
         run_wasm_pack.args(["--features", "dev"]);
     }
-
-    dbg!(&run_wasm_pack);
 
     println!("Invoking wasm-pack command.");
     let exit_status = run_wasm_pack

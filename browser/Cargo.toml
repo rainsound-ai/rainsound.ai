@@ -55,7 +55,3 @@ chrono = "0.4.26"
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.34"
-
-# Temporarily disable wasm-opt since it's erroring when we try to build.
-[package.metadata.wasm-pack.profile.release]
-wasm-opt = false
