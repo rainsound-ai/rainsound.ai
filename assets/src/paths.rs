@@ -6,6 +6,7 @@ pub fn workspace_root_dir() -> PathBuf {
     Path::new(&cargo_workspace_dir).to_path_buf()
 }
 
+// At runtime, built assets get mounted to /built_assets.
 #[cfg(not(feature = "build"))]
 pub fn workspace_root_dir() -> PathBuf {
     // If you change this, you also need to change the files mount path in spin.toml.

@@ -51,7 +51,6 @@ pub static non_html_assets_by_path: Lazy<HashMap<String, (ContentType, Vec<u8>)>
     Lazy::new(|| non_html_assets.by_path());
 type ContentType = String;
 
-// #[gen_array(pub fn non_image_assets_as_can_save_to_disk: &dyn CanSaveToDisk, implicit_select_all: CssAsset, JsAsset, WasmAsset)]
 #[derive(PartialEq, Arraygen)]
 #[gen_array(pub fn image_assets: &ImageAsset, implicit_select_all: ImageAsset)]
 #[gen_array(pub fn light_dark_image_assets: &LightDarkImageAsset, implicit_select_all: LightDarkImageAsset)]
@@ -193,7 +192,7 @@ if #[cfg(feature = "build")] {
                 .non_image_assets_as_can_save_to_disk()
                 .into_iter()
                 .map(|asset| asset as &dyn CanSaveToDisk);
-            let image_assets = self.image_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
+            let image_assets = self.all_image_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
             non_image_assets.chain(image_assets).collect()
         }
 
