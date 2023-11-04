@@ -8,7 +8,7 @@ impl StringExtension for String {
             return self;
         }
 
-        self.insert_str(0, "/");
+        self.insert(0, '/');
         self
     }
 }
