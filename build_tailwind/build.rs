@@ -13,7 +13,9 @@ pub fn main() {
     let npx_prefix = workspace_root_dir().join("target").join("node_modules");
     let npx_prefix = npx_prefix.to_str().unwrap();
 
-    let config = workspace_root_dir().join("tailwind.config.js");
+    let config = workspace_root_dir()
+        .join("build_tailwind")
+        .join("tailwind.config.js");
     let config = config.to_str().unwrap();
 
     let input_file = workspace_root_dir()
