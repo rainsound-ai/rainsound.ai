@@ -1,9 +1,14 @@
-use crate::workspace_root_dir;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
-pub fn build_browser_crate(production: bool) {
-    run_wasm_pack(production);
-    run_wasm_opt();
+pub fn main() {
+    println!("cargo:rerun-if-changed=../**/*.html");
+    println!("cargo:rerun-if-changed=../**/*.rs");
+    println!("cargo:rerun-if-changed=../**/*.css");
+
+    run_wasm_pack(true);
+    // Looks like wasm-pack already runs wasm-opt.
+    // run_wasm_opt();
     minify_js();
 }
 
@@ -20,6 +25,7 @@ fn run_wasm_pack(production: bool) {
 
     let out_dir = workspace_root_dir().join("target").join("browser");
     let out_dir = out_dir.to_str().unwrap();
+    dbg!(&out_dir);
 
     let mut run_wasm_pack = Command::new(wasm_pack);
 
@@ -32,11 +38,12 @@ fn run_wasm_pack(production: bool) {
     if production {
         run_wasm_pack.arg("--release");
     } else {
-        run_wasm_pack.args(["--dev"]);
+        run_wasm_pack.arg("--dev");
     }
 
     let browser_crate = workspace_root_dir().join("browser");
     let browser_crate = browser_crate.to_str().unwrap();
+    dbg!(&browser_crate);
     run_wasm_pack.arg(browser_crate);
 
     // cargo arguments
@@ -44,6 +51,9 @@ fn run_wasm_pack(production: bool) {
         run_wasm_pack.args(["--features", "dev"]);
     }
 
+    dbg!(&run_wasm_pack);
+
+    println!("Invoking wasm-pack command.");
     let exit_status = run_wasm_pack
         .spawn()
         .expect("Failed to execute process.")
@@ -124,4 +134,9 @@ pub fn minify_string(source: &str) -> Vec<u8> {
     )
     .unwrap();
     out
+}
+
+pub fn workspace_root_dir() -> PathBuf {
+    let cargo_workspace_dir = std::env!("CARGO_WORKSPACE_DIR");
+    Path::new(&cargo_workspace_dir).to_path_buf()
 }

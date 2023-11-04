@@ -1,7 +1,13 @@
-use crate::workspace_root_dir;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
-pub fn build_tailwind(production: bool) {
+pub fn main() {
+    let production = true;
+
+    println!("cargo:rerun-if-changed=../**/*.html");
+    println!("cargo:rerun-if-changed=../**/*.rs");
+    println!("cargo:rerun-if-changed=../**/*.css");
+
     println!("Building Tailwind.");
 
     let npx_prefix = workspace_root_dir().join("target").join("node_modules");
@@ -46,4 +52,9 @@ pub fn build_tailwind(production: bool) {
     } else {
         panic!("Failed to build Tailwind.");
     }
+}
+
+pub fn workspace_root_dir() -> PathBuf {
+    let cargo_workspace_dir = std::env!("CARGO_WORKSPACE_DIR");
+    Path::new(&cargo_workspace_dir).to_path_buf()
 }

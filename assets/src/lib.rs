@@ -11,9 +11,6 @@ use std::time::Duration;
 pub mod asset;
 pub use self::asset::*;
 
-#[cfg(feature = "build")]
-pub mod build;
-
 pub mod css_asset;
 pub use self::css_asset::*;
 
@@ -44,6 +41,11 @@ pub use self::prelude::*;
 pub mod wasm_asset;
 pub use self::wasm_asset::*;
 
+// Desired order:
+// 1. Build Tailwind + browser crate.
+// 2. Build non_html_assets. Evaluate include_str!() and include_bytes!().
+// 3. Save non_html_assets to disk.
+
 pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
 pub static non_html_assets_by_path: Lazy<HashMap<String, (ContentType, Vec<u8>)>> =
     Lazy::new(|| non_html_assets.by_path());
@@ -73,19 +75,19 @@ impl NonHtmlAssets {
     pub fn new() -> Self {
         let built_css = CssAsset {
             file_name: PathBuf::from_str("built.css").unwrap(),
-            contents: include_str!("../../target/tailwind/built.css"),
+            contents: build_tailwind::built_css,
             load_time_budget: Duration::from_millis(1),
         };
 
         let browser_js = JsAsset {
             file_name: PathBuf::from_str("browser.js").unwrap(),
-            contents: include_str!("../../target/browser/browser.js"),
+            contents: build_browser::built_js,
             load_time_budget: Duration::from_millis(1),
         };
 
         let browser_bg_wasm = WasmAsset {
             file_name: PathBuf::from_str("browser_bg.wasm").unwrap(),
-            bytes: include_bytes!("../../target/browser/browser_bg.wasm"),
+            bytes: build_browser::built_wasm,
             load_time_budget: Duration::from_millis(1),
         };
 

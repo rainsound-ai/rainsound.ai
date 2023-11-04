@@ -38,3 +38,6 @@ files = [{ source = "built_assets", destination = "/" }]
 # environment = { CACHE_CONTROl = "no-cache" }
 [component.trigger]
 route = "/built-assets/..."
+[component.build]
+command = "sleep 5"
+watch = ["built_assets/**/*"]

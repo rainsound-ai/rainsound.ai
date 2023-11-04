@@ -1,7 +1,6 @@
 [workspace]
 members = [
     # 
-    "assets",
     "serverless_functions",
     "shared",
 ]
@@ -14,6 +13,7 @@ exclude = [
     # serverless_functions crate to finish building, but the
     # serverless_functions crate is waiting for the browser crate to
     # finish building.
+    "assets",
     "browser",
 ]
 resolver = "2"
