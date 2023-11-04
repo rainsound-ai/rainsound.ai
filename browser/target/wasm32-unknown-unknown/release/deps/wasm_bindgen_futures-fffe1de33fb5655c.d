@@ -1,9 +1,0 @@
-/Users/photon-garden/dev/creative-computing-website/browser/target/wasm32-unknown-unknown/release/deps/wasm_bindgen_futures-fffe1de33fb5655c.rmeta: /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wasm-bindgen-futures-0.4.37/src/lib.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wasm-bindgen-futures-0.4.37/src/queue.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wasm-bindgen-futures-0.4.37/src/task/singlethread.rs
-
-/Users/photon-garden/dev/creative-computing-website/browser/target/wasm32-unknown-unknown/release/deps/libwasm_bindgen_futures-fffe1de33fb5655c.rlib: /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wasm-bindgen-futures-0.4.37/src/lib.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wasm-bindgen-futures-0.4.37/src/queue.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wasm-bindgen-futures-0.4.37/src/task/singlethread.rs
-
-/Users/photon-garden/dev/creative-computing-website/browser/target/wasm32-unknown-unknown/release/deps/wasm_bindgen_futures-fffe1de33fb5655c.d: /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wasm-bindgen-futures-0.4.37/src/lib.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wasm-bindgen-futures-0.4.37/src/queue.rs /Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wasm-bindgen-futures-0.4.37/src/task/singlethread.rs
-
-/Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wasm-bindgen-futures-0.4.37/src/lib.rs:
-/Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wasm-bindgen-futures-0.4.37/src/queue.rs:
-/Users/photon-garden/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wasm-bindgen-futures-0.4.37/src/task/singlethread.rs:
