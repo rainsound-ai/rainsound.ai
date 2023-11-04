@@ -3,7 +3,6 @@
 use arraygen::Arraygen;
 use cfg_if::cfg_if;
 use once_cell::sync::Lazy;
-use std::collections::HashMap;
 use std::path::PathBuf;
 use std::str::FromStr;
 use std::time::Duration;
@@ -41,14 +40,7 @@ pub use self::prelude::*;
 pub mod wasm_asset;
 pub use self::wasm_asset::*;
 
-// Desired order:
-// 1. Build Tailwind + browser crate.
-// 2. Build non_html_assets. Evaluate include_str!() and include_bytes!().
-// 3. Save non_html_assets to disk.
-
 pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
-pub static non_html_assets_by_path: Lazy<HashMap<String, (ContentType, Vec<u8>)>> =
-    Lazy::new(|| non_html_assets.by_path());
 type ContentType = String;
 
 #[derive(PartialEq, Arraygen)]
@@ -62,7 +54,6 @@ pub struct NonHtmlAssets {
     pub browser_js: JsAsset,
     pub browser_bg_wasm: WasmAsset,
     pub hasui_hero: ImageAsset,
-    // pub build_time: TextAsset,
 }
 
 // We have to separate out the non-html assets because
@@ -106,22 +97,7 @@ impl NonHtmlAssets {
         }
     }
 
-    fn by_path(&self) -> HashMap<String, (ContentType, Vec<u8>)> {
-        let all_assets = self.all_assets();
-        let mut hashmap = HashMap::new();
-        for asset in all_assets {
-            let path = asset
-                .path()
-                .to_string_lossy()
-                .to_string()
-                .with_leading_slash();
-            let content_type = asset.content_type().to_owned();
-            let bytes = asset.bytes().to_owned();
-            hashmap.insert(path, (content_type, bytes));
-        }
-        hashmap
-    }
-
+    #[allow(dead_code)]
     fn all_assets(&self) -> Vec<&dyn Asset> {
         let non_image_assets = self.non_image_assets();
         let resized_image_assets =
