@@ -8,14 +8,18 @@ members = [
     "build_tailwind",
 ]
 exclude = [
-    # We have to exclude the browser crate from the workspace because
-    # we build it as part of serverless_functions/build.rs.
+    # If we add the browser crate to the workspace, building causes
+    # a deadlock. This is because:
     #
-    # If it's part of the workspace, build.rs deadlocks because the cargo
-    # process that's building the browser crate is waiting for the
-    # serverless_functions crate to finish building, but the
-    # serverless_functions crate is waiting for the browser crate to
-    # finish building.
+    # We kick off cargo build. The cargo process for the workspace
+    # gets file locks for the browser crate.
+    #
+    # We start another cargo process in the build script for the build_browser crate.
+    # This cargo process can't complete because the workspace cargo process already
+    # has the file locks for the browser crate.
+    #
+    # But the workspace cargo process also can't complete because it's waiting on
+    # build_browser's build script to complete.
     "browser",
 ]
 resolver = "2"

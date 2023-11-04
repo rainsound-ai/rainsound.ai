@@ -7,8 +7,6 @@ pub fn main() {
     println!("cargo:rerun-if-changed=../**/*.css");
 
     run_wasm_pack(true);
-    // Looks like wasm-pack already runs wasm-opt.
-    // run_wasm_opt();
     minify_js();
 }
 
@@ -62,45 +60,6 @@ fn run_wasm_pack(production: bool) {
         println!("Successfully built browser crate.");
     } else {
         panic!("Failed to build browser crate.");
-    }
-}
-
-fn run_wasm_opt() {
-    println!("Running wasm-opt.");
-
-    let wasm_opt = workspace_root_dir()
-        .join("target")
-        .join("cargo_install")
-        .join("bin")
-        .join("wasm-opt")
-        .to_string_lossy()
-        .to_string();
-
-    let input_file = workspace_root_dir()
-        .join("target")
-        .join("browser")
-        .join("browser_bg.wasm")
-        .to_string_lossy()
-        .to_string();
-
-    let output_file = input_file.clone();
-
-    let mut run_wasm_opt = Command::new(wasm_opt);
-    run_wasm_opt
-        .arg("-Os") // Optimize for code size. Note, this is a capital "O", not a zero.
-        .args(["--output", &output_file])
-        .arg(input_file);
-
-    let exit_status = run_wasm_opt
-        .spawn()
-        .expect("Failed to execute process.")
-        .wait()
-        .expect("Failed to wait for process.");
-
-    if exit_status.success() {
-        println!("Successfully optimized browser crate.");
-    } else {
-        panic!("Failed to optimize browser crate.");
     }
 }
 

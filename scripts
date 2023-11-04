@@ -30,7 +30,6 @@ setup() {
 	echo "✨ Setting up libraries."
 	cargo install cargo-watch --version 8.4.0 --root ./target/cargo_install &&
 		cargo install wasm-pack --version 0.12.1 --root ./target/cargo_install &&
-		cargo install wasm-opt --version 0.114.0 --root ./target/cargo_install &&
 		cargo install twiggy --version 0.7.0 --root ./target/cargo_install &&
 		rm -rf ./target/node_modules &&
 		npm install &&

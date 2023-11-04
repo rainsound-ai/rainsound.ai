@@ -51,18 +51,19 @@ pub static non_html_assets_by_path: Lazy<HashMap<String, (ContentType, Vec<u8>)>
     Lazy::new(|| non_html_assets.by_path());
 type ContentType = String;
 
+// #[gen_array(pub fn non_image_assets_as_can_save_to_disk: &dyn CanSaveToDisk, implicit_select_all: CssAsset, JsAsset, WasmAsset)]
 #[derive(PartialEq, Arraygen)]
-#[gen_array(pub fn non_image_assets: &dyn Asset, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
-#[gen_array(pub fn non_image_assets_can_save_to_disk: &dyn CanSaveToDisk, implicit_select_all: CssAsset, JsAsset, WasmAsset, TextAsset)]
-#[gen_array(pub fn images: &ImageAsset, implicit_select_all: ImageAsset)]
-#[gen_array(pub fn light_dark_images: &LightDarkImageAsset, implicit_select_all: LightDarkImageAsset)]
+#[gen_array(pub fn image_assets: &ImageAsset, implicit_select_all: ImageAsset)]
+#[gen_array(pub fn light_dark_image_assets: &LightDarkImageAsset, implicit_select_all: LightDarkImageAsset)]
+#[gen_array(pub fn css_assets: &CssAsset, implicit_select_all: CssAsset)]
+#[gen_array(pub fn js_assets: &JsAsset, implicit_select_all: JsAsset)]
+#[gen_array(pub fn wasm_assets: &WasmAsset, implicit_select_all: WasmAsset)]
 pub struct NonHtmlAssets {
     pub built_css: CssAsset,
     pub browser_js: JsAsset,
     pub browser_bg_wasm: WasmAsset,
     pub hasui_hero: ImageAsset,
     // pub build_time: TextAsset,
-    // pub images: ImageAssets,
 }
 
 // We have to separate out the non-html assets because
@@ -139,13 +140,13 @@ impl NonHtmlAssets {
 
     fn resized_image_assets(&self) -> Vec<&ResizedImageAsset> {
         let resized_variants: Vec<&ResizedImageAsset> = non_html_assets
-            .images()
+            .image_assets()
             .into_iter()
             .flat_map(|image_asset| &image_asset.resized_variants)
             .collect::<Vec<_>>();
 
         let light_dark_resized_variants: Vec<&ResizedImageAsset> = non_html_assets
-            .light_dark_images()
+            .light_dark_image_assets()
             .into_iter()
             .flat_map(|light_dark_image_asset| light_dark_image_asset.resized_variants())
             .collect::<Vec<_>>();
@@ -154,6 +155,22 @@ impl NonHtmlAssets {
             .into_iter()
             .chain(light_dark_resized_variants)
             .collect()
+    }
+
+    fn non_image_assets(&self) -> Vec<&dyn Asset> {
+        let css_assets = self.css_assets().into_iter().map(|css_asset| {
+            let css_asset: &dyn Asset = css_asset;
+            css_asset
+        });
+        let js_assets = self.js_assets().into_iter().map(|js_asset| {
+            let js_asset: &dyn Asset = js_asset;
+            js_asset
+        });
+        let wasm_assets = self.wasm_assets().into_iter().map(|wasm_asset| {
+            let wasm_asset: &dyn Asset = wasm_asset;
+            wasm_asset
+        });
+        css_assets.chain(js_assets).chain(wasm_assets).collect()
     }
 }
 
@@ -173,25 +190,22 @@ if #[cfg(feature = "build")] {
 
         fn all_assets_that_can_be_saved_to_disk(&self) -> Vec<&dyn CanSaveToDisk> {
             let non_image_assets = self
-                .non_image_assets_can_save_to_disk()
+                .non_image_assets_as_can_save_to_disk()
                 .into_iter()
-                .map(|asset| {
-                    let asset: &dyn CanSaveToDisk = asset;
-                    asset
-                });
-            let image_assets = self.image_assets().into_iter();
+                .map(|asset| asset as &dyn CanSaveToDisk);
+            let image_assets = self.image_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
             non_image_assets.chain(image_assets).collect()
         }
 
-        fn image_assets(&self) -> Vec<&dyn CanSaveToDisk> {
-            let images = non_html_assets.images().into_iter().map(|image_asset| {
+        fn all_image_assets(&self) -> Vec<&dyn CanSaveToDisk> {
+            let images = non_html_assets.image_assets().into_iter().map(|image_asset| {
                 let image_asset: &dyn CanSaveToDisk = image_asset;
                 image_asset
             });
 
             let light_dark_images =
                 non_html_assets
-                    .light_dark_images()
+                    .light_dark_image_assets()
                     .into_iter()
                     .map(|light_dark_image_asset| {
                         let light_dark_image_asset: &dyn CanSaveToDisk = light_dark_image_asset;
@@ -199,6 +213,13 @@ if #[cfg(feature = "build")] {
                     });
 
             images.chain(light_dark_images).collect()
+        }
+
+        fn non_image_assets_as_can_save_to_disk(&self) -> Vec<&dyn CanSaveToDisk> {
+            let css_assets = self.css_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
+            let js_assets = self.js_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
+            let wasm_assets = self.wasm_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
+            css_assets.chain(js_assets).chain(wasm_assets).collect()
         }
     }
 }
