@@ -21,7 +21,7 @@ fn main() -> Result<(), JsValue> {
     #[cfg(feature = "dev")]
     dev::main();
 
-    console::debug!("Attempt number nineteen.");
+    console::debug!("Attempt number twenty-one.");
 
     let window = web_sys::window().expect("web_sys::window() failed.");
     let document = window.document().expect("window.document() failed.");
