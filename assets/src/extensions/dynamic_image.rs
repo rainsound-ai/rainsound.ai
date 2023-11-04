@@ -8,7 +8,7 @@ use crate::MimeType;
 pub trait DynamicImageExtension {
     fn resize_to_width(&self, new_width: u32) -> Self;
     fn to_data_uri(&self) -> DataUriAndMimeType;
-    fn into_bytes_with_format(&self, format: ImageFormat) -> Vec<u8>;
+    fn to_bytes_with_format(&self, format: ImageFormat) -> Vec<u8>;
 }
 
 impl DynamicImageExtension for DynamicImage {
@@ -28,7 +28,7 @@ impl DynamicImageExtension for DynamicImage {
     }
 
     fn to_data_uri(&self) -> DataUriAndMimeType {
-        let bytes = self.into_bytes_with_format(ImageFormat::Jpeg);
+        let bytes = self.to_bytes_with_format(ImageFormat::Jpeg);
         let base64_encoded = base64::engine::general_purpose::STANDARD.encode(bytes);
 
         let mime_type = MimeType::ImageJpeg;
@@ -45,7 +45,7 @@ impl DynamicImageExtension for DynamicImage {
         }
     }
 
-    fn into_bytes_with_format(&self, format: ImageFormat) -> Vec<u8> {
+    fn to_bytes_with_format(&self, format: ImageFormat) -> Vec<u8> {
         let mut bytes: Cursor<Vec<u8>> = Cursor::new(Vec::new());
         self.write_to(&mut bytes, format)
             .expect("Error encoding image.");
