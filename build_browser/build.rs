@@ -27,7 +27,6 @@ fn run_wasm_pack(production: bool) {
     let mut run_wasm_pack = Command::new(wasm_pack);
 
     run_wasm_pack
-        .args(["-vv"])
         .args(["build"])
         .args(["--no-pack"]) // For some reason generating a package.json causes errors when running `spin build`: Error: invalid type: sequence, expected a string at line 3 column 19
         .args(["--target", "web"])
