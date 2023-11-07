@@ -4,8 +4,8 @@ use gloo::history::{BrowserHistory, History};
 use gloo::net::http::Request;
 use gloo::timers::callback::Interval;
 use once_cell::sync::OnceCell;
-use wasm_bindgen_futures::spawn_local;
 use shared::Route;
+use wasm_bindgen_futures::spawn_local;
 
 pub fn start_checking_for_updates() {
     Interval::new(1_000, || {
@@ -19,7 +19,7 @@ pub fn start_checking_for_updates() {
 static original_build_time_cell: OnceCell<DateTime<Local>> = OnceCell::new();
 
 async fn check_for_updates() {
-    log!("Checking for updates!");
+    // log!("Checking for updates!");
     if new_version_available().await {
         // Reload page.
         BrowserHistory::new().go(0);
