@@ -1,5 +1,31 @@
 # Creative Computing Website
 
+**Getting started**
+
+Install necessary CLIs like Spin and wasm-pack:
+
+```bash
+./scripts setup
+```
+
+Start a development server, watching for changes:
+
+```bash
+spin watch
+```
+
+Build the site and run a preview:
+
+```bash
+spin build --up
+```
+
+Deploy:
+
+```bash
+spin deploy
+```
+
 **Architecture overview**
 
 Our site is basically a traditional multi-page, vanilla-JS web site, but with some modern niceties.
