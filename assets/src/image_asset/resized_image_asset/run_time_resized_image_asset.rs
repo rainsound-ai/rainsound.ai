@@ -30,7 +30,7 @@ impl Asset for RunTimeResizedImageAsset {
             "Expected resized image to exist at path: {:?}",
             &path_to_resized_image_file
         );
-        return fs::read(&path_to_resized_image_file).expect(&error_message);
+        fs::read(&path_to_resized_image_file).expect(&error_message)
     }
 
     fn content_type(&self) -> String {
