@@ -34,7 +34,7 @@ setup() {
 		rm -rf ./build_tailwind/node_modules &&
 		cd build_tailwind &&
 		npm install &&
-		&& cd ..
+		cd .. &&
 		# Install Spin.
 		brew tap fermyon/tap &&
 		brew install fermyon/tap/spin
