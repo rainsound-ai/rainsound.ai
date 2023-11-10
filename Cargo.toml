@@ -1,20 +1,36 @@
 [workspace]
 members = [
-    "browser",
-    "html_generator",
-    "shared",
+    # 
     "serverless_functions",
-    "html_generator_hack",
+    "shared",
+    "assets",
+    "build_browser",
+    "build_tailwind",
 ]
+exclude = [
+    # If we add the browser crate to the workspace, building causes
+    # a deadlock. This is because:
+    #
+    # We kick off cargo build. The cargo process for the workspace
+    # gets file locks for the browser crate.
+    #
+    # We start another cargo process in the build script for the build_browser crate.
+    # This cargo process can't complete because the workspace cargo process already
+    # has the file locks for the browser crate.
+    #
+    # But the workspace cargo process also can't complete because it's waiting on
+    # build_browser's build script to complete.
+    "browser",
+]
+resolver = "2"
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.
 opt-level = "s"
+# Turn on link time optimizations for faster code.
 lto = true
-
-# Always build the image crate with optimizations enabled, even in debug mode.
-[profile.dev.package.image]
-opt-level = 3
+# This speeds up the resulting code, but takes longer to compile.
+codegen-units = 1
 
 # For cargo-commander.
 [commands]

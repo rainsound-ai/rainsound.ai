@@ -1,0 +1,3 @@
+pub enum ContentType {
+    ImageJpeg,
+}

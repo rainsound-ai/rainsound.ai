@@ -1,38 +1,38 @@
-use crate::ContactFormSubmission;
+use crate::routes::contact::form_submission::ContactFormSubmission;
 use serde::Serialize;
-use worker::{Fetch, Headers, Method, Request, RequestInit};
 
 static notion_api_token: &str = std::env!("NOTION_API_TOKEN");
 static database_id: &str = std::env!("NOTION_DATABASE_ID");
 
-pub async fn add_contact_form_submission_to_database(form_data: ContactFormSubmission) {
-    let request_body = RequestBody::from_form_data(form_data);
-    let serialized_request_body = serde_json::to_string(&request_body).unwrap();
+// pub async fn add_contact_form_submission_to_database(form_data: ContactFormSubmission) {
+//     let request_body = RequestBody::from_form_data(form_data);
+//     let serialized_request_body = serde_json::to_string(&request_body).unwrap();
 
-    let mut headers = Headers::new();
+//     let mut headers = Headers::new();
 
-    let bearer = format!("Bearer {}", notion_api_token);
-    headers.set("Authorization", &bearer).unwrap();
-    headers.set("Content-Type", "application/json").unwrap();
-    headers.set("Notion-Version", "2022-06-28").unwrap();
+//     let bearer = format!("Bearer {}", notion_api_token);
+//     headers.set("Authorization", &bearer).unwrap();
+//     headers.set("Content-Type", "application/json").unwrap();
+//     headers.set("Notion-Version", "2022-06-28").unwrap();
 
-    let mut request_init = RequestInit::new();
-    request_init
-        .with_method(Method::Post)
-        .with_headers(headers)
-        .with_body(Some(serialized_request_body.into()));
+//     let mut request_init = RequestInit::new();
+//     request_init
+//         .with_method(Method::Post)
+//         .with_headers(headers)
+//         .with_body(Some(serialized_request_body.into()));
 
-    let url = "https://api.notion.com/v1/pages";
+//     let url = "https://api.notion.com/v1/pages";
 
-    let request = Request::new_with_init(url, &request_init).unwrap();
-    let response = Fetch::Request(request)
-        .send()
-        .await
-        .unwrap()
-        .text()
-        .await
-        .unwrap();
-}
+//     let request = Request::new_with_init(url, &request_init).unwrap();
+//     let response = Fetch::Request(request)
+//         .send()
+//         .await
+//         .unwrap()
+//         .text()
+//         .await
+//         .unwrap();
+//     // console_debug!("Response from Notion API: {}", response);
+// }
 
 #[derive(Serialize)]
 struct RequestBody {

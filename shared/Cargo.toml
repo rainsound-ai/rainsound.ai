@@ -8,7 +8,6 @@ description = "Code shared between browser and server."
 license = "unlicensed"
 repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
 
-
 [features]
 browser = ["wasm-bindgen", "web-sys", "gloo", "serde"]
 server = ["serde"]
@@ -32,3 +31,5 @@ web-sys = { version = "0.3.4", optional = true, features = [
     "Window",
     "DomTokenList",
 ] }
+maud = "0.25.0"
+enum-iterator = "1.4.1"

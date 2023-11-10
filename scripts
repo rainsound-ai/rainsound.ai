@@ -27,13 +27,18 @@ deploy() {
 }
 
 setup() {
-	echo "✨ Setting up libraries"
+	echo "✨ Setting up libraries."
 	cargo install cargo-watch --version 8.4.0 --root ./target/cargo_install &&
 		cargo install wasm-pack --version 0.12.1 --root ./target/cargo_install &&
-		cargo install wasm-opt --version 0.114.0 --root ./target/cargo_install &&
-		cargo install simple-http-server --version 0.6.7 --root ./target/cargo_install &&
 		cargo install twiggy --version 0.7.0 --root ./target/cargo_install &&
-		rm -rf ./target/node_modules && npm install && mv node_modules ./target/node_modules
+		rm -rf ./build_tailwind/node_modules &&
+		cd build_tailwind &&
+		npm install &&
+		cd .. &&
+		# Install Spin.
+		rustup target add wasm32-wasi &&
+		brew tap fermyon/tap &&
+		brew install fermyon/tap/spin
 }
 
 profile_bundle_size() {
@@ -61,7 +66,6 @@ build_rust_dev() {
 watch_rust() {
 	echo "✨ Watching Rust"
 	./target/cargo_install/bin/cargo-watch \
-		--watch ./html_generator \
 		--watch ./browser \
 		--watch ./shared \
 		--shell './scripts build_rust_dev'
@@ -169,16 +173,15 @@ build_tailwind_dev() {
 	echo "✨ Watching Tailwind"
 	npx \
 		--prefix ./target/node_modules tailwindcss \
-		-i ./html_generator/src/main.css \
+		-i ./serverless_functions/src/main.css \
 		-o ./target/tailwind/built.css
-	# --watch
 }
 
 build_tailwind_production() {
 	echo "✨ Building Tailwind for production"
 	npx \
 		--prefix ./target/node_modules tailwindcss \
-		-i ./html_generator/src/main.css \
+		-i ./serverless_functions/src/main.css \
 		-o ./target/tailwind/built.css \
 		--minify
 }

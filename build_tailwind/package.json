@@ -1,0 +1,6 @@
+{
+  "name": "build_tailwind",
+  "dependencies": {
+    "tailwindcss": "^3.3.3"
+  }
+}

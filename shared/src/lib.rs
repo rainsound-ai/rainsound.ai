@@ -1,7 +1,25 @@
-#![allow(non_snake_case, non_upper_case_globals)]
+#![allow(non_upper_case_globals)]
 
-pub mod components;
-pub mod extensions;
+use maud::{html, Markup};
+
 pub mod prelude;
+pub use self::prelude::*;
 
-pub use prelude::*;
+pub mod router;
+
+// pub mod components;
+// pub mod extensions;
+
+pub static message: &str = "Hello, shared!";
+
+pub fn shared_component() -> Markup {
+    html! {
+        p { "Hello, shared component!" }
+    }
+}
+
+pub fn another_shared_component() -> Markup {
+    html! {
+        p { "Hello, another shared component!" }
+    }
+}
