@@ -66,7 +66,10 @@ impl NonHtmlAssets {
     pub fn new() -> Self {
         let built_css = CssAsset {
             file_name: PathBuf::from_str("built.css").unwrap(),
-            contents: build_tailwind::built_css,
+            contents: build_tailwind::build_tailwind!(
+                path_to_input_file: "serverless_functions/src/main.css",
+                minify: true
+            ),
             load_time_budget: Duration::from_millis(1),
         };
 
