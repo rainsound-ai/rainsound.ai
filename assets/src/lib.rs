@@ -1,6 +1,7 @@
 #![allow(non_upper_case_globals)]
 
 use arraygen::Arraygen;
+use build_tailwind::build_tailwind;
 use cfg_if::cfg_if;
 use once_cell::sync::Lazy;
 use std::path::PathBuf;
@@ -64,12 +65,13 @@ pub struct NonHtmlAssets {
 // deadlocking if we're using a lazily initialized global variable.
 impl NonHtmlAssets {
     pub fn new() -> Self {
+        let tailwind_output = build_tailwind!(
+            path_to_input_file: "serverless_functions/src/main.css",
+            minify: true
+        );
         let built_css = CssAsset {
             file_name: PathBuf::from_str("built.css").unwrap(),
-            contents: build_tailwind::build_tailwind!(
-                path_to_input_file: "serverless_functions/src/main.css",
-                minify: true
-            ),
+            contents: tailwind_output,
             load_time_budget: Duration::from_millis(1),
         };
 
