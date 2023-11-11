@@ -85,7 +85,6 @@ impl NonHtmlAssets {
             contents: browser_crate.built_js,
             load_time_budget: Duration::from_millis(1),
         };
-
         let browser_bg_wasm = WasmAsset {
             file_name: PathBuf::from_str("browser_bg.wasm").unwrap(),
             bytes: browser_crate.built_wasm,
