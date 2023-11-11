@@ -1,6 +1,7 @@
 #![allow(non_upper_case_globals)]
 
 use arraygen::Arraygen;
+use build_browser::build_browser_crate;
 use build_tailwind::build_tailwind;
 use cfg_if::cfg_if;
 use once_cell::sync::Lazy;
@@ -75,15 +76,19 @@ impl NonHtmlAssets {
             load_time_budget: Duration::from_millis(1),
         };
 
+        let browser_crate = build_browser_crate!(
+            path_to_browser_crate: "browser",
+            production: true
+        );
         let browser_js = JsAsset {
             file_name: PathBuf::from_str("browser.js").unwrap(),
-            contents: build_browser::built_js,
+            contents: browser_crate.built_js,
             load_time_budget: Duration::from_millis(1),
         };
 
         let browser_bg_wasm = WasmAsset {
             file_name: PathBuf::from_str("browser_bg.wasm").unwrap(),
-            bytes: build_browser::built_wasm,
+            bytes: browser_crate.built_wasm,
             load_time_budget: Duration::from_millis(1),
         };
 
