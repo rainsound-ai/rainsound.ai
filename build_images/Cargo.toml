@@ -1,0 +1,10 @@
+[package]
+name = "build_images"
+version = "0.1.0"
+edition = "2021"
+description = ""
+license = "unlicensed"
+repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
+
+[dependencies]
+build_images_macro = { path = "../build_images_macro" }

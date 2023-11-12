@@ -91,7 +91,7 @@ fn run_wasm_pack(input: BuildBrowserCrateInput) -> Result<WasmPackOutput, TokenS
         return Err(error);
     }
     if !browser_crate.is_dir() {
-        let error_message = format!("{} is not a folder.", browser_crate_str);
+        let error_message = format!("{} is not a folder:", browser_crate_str);
 
         let error: TokenStream = syn::Error::new(input.span, error_message)
             .to_compile_error()
@@ -184,7 +184,7 @@ impl Parse for BuildBrowserCrateInput {
     fn parse(input: ParseStream) -> SynResult<Self> {
         let input_span = input.span();
 
-        let error_message = r#"Please make sure to pass arguments to build_tailwind! like this:
+        let error_message = r#"Please make sure to pass arguments to build_browser! like this:
 
 build_browser_crate!(
     path_to_browser_crate: \"browser\",

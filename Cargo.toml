@@ -6,6 +6,8 @@ members = [
     "assets",
     "build_browser",
     "build_tailwind",
+    "build_images",
+    "build_images_macro",
 ]
 exclude = [
     # If we add the browser crate to the workspace, building causes

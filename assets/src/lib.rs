@@ -2,6 +2,7 @@
 
 use arraygen::Arraygen;
 use build_browser::build_browser_crate;
+use build_images::*;
 use build_tailwind::build_tailwind;
 use cfg_if::cfg_if;
 use once_cell::sync::Lazy;
@@ -66,6 +67,8 @@ pub struct NonHtmlAssets {
 // deadlocking if we're using a lazily initialized global variable.
 impl NonHtmlAssets {
     pub fn new() -> Self {
+        let built_images = build_images!(path_to_images_dir: "assets/src/original_images");
+
         let tailwind_output = build_tailwind!(
             path_to_input_file: "serverless_functions/src/main.css",
             minify: true
