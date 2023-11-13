@@ -1,5 +1,5 @@
 [package]
-name = "build_images"
+name = "build_images_runtime"
 version = "0.1.0"
 edition = "2021"
 description = ""
@@ -7,4 +7,5 @@ license = "unlicensed"
 repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
 
 [dependencies]
-build_images_macro = { path = "../build_images_macro" }
+proc-macro2 = "1.0.69"
+quote = "1.0.33"

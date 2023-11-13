@@ -18,3 +18,4 @@ base64 = { version = "0.21.4" }
 walkdir = "2.4.0"
 mime = "0.3.17"
 rayon = "1.8.0"
+build_images_runtime = { path = "../build_images_runtime" }

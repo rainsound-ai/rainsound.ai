@@ -69,6 +69,7 @@ dependencies = [
  "base64",
  "build_browser",
  "build_images",
+ "build_images_macro",
  "build_tailwind",
  "cfg-if",
  "image",
@@ -147,6 +148,10 @@ name = "build_images"
 version = "0.1.0"
 dependencies = [
  "build_images_macro",
+ "build_images_runtime",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.39",
 ]
 
 [[package]]
@@ -154,6 +159,7 @@ name = "build_images_macro"
 version = "0.1.0"
 dependencies = [
  "base64",
+ "build_images_runtime",
  "image",
  "mime",
  "proc-macro2",
@@ -161,6 +167,14 @@ dependencies = [
  "rayon",
  "syn 2.0.39",
  "walkdir",
+]
+
+[[package]]
+name = "build_images_runtime"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
 ]
 
 [[package]]
