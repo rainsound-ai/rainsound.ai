@@ -1,6 +1,7 @@
 use crate::dynamic_image_extension::*;
 use image::{DynamicImage, GenericImageView};
 use mime::Mime;
+use std::cell::OnceCell;
 use std::fs;
 use std::{
     path::{Path, PathBuf},
@@ -8,6 +9,7 @@ use std::{
     sync::Arc,
 };
 
+#[derive(Clone)]
 pub struct BuiltImage {
     pub path_to_original_image: PathBuf,
     pub original_image: Arc<DynamicImage>,
@@ -76,6 +78,7 @@ impl BuiltImage {
     }
 }
 
+#[derive(Clone)]
 pub struct ResizedImage {
     // We store a copy of the original image so that we can resize it
     // to different widths if necessary.
@@ -84,6 +87,7 @@ pub struct ResizedImage {
     pub width: u32,
     pub height: u32,
     pub mime_type: Mime,
+    cached_bytes: OnceCell<Vec<u8>>,
 }
 
 impl ResizedImage {
@@ -109,6 +113,7 @@ impl ResizedImage {
             width,
             height,
             mime_type,
+            cached_bytes: OnceCell::new(),
         }
     }
 
@@ -135,22 +140,21 @@ impl ResizedImage {
         fs::write(&self.path, bytes).expect("Error writing resized image to disk.");
     }
 
-    fn bytes(&self) -> Vec<u8> {
-        let maybe_bytes = fs::read(&self.path);
+    pub fn bytes(&self) -> &Vec<u8> {
+        self.cached_bytes.get_or_init(|| self.generate_bytes())
+    }
 
-        match maybe_bytes {
-            Ok(bytes) => return bytes,
-            Err(error) => {
-                println!(
-                    "Couldn't read resized image file {:?} so regenerating the resized image. Original error message: {}",
-                    &self.path, error
-                );
-            }
-        }
+    fn generate_bytes(&self) -> Vec<u8> {
+        fs::read(&self.path).unwrap_or_else(|error| {
+            println!(
+                "Couldn't read resized image file {:?} so regenerating the resized image. Original error message: {}",
+                &self.path, error
+            );
 
-        self.original_image
-            .resize_to_width(self.width)
-            .to_bytes_with_format(image::ImageFormat::Jpeg)
+            self.original_image
+                .resize_to_width(self.width)
+                .to_bytes_with_format(image::ImageFormat::Jpeg)
+        })
     }
 
     fn file_already_exists(&self) -> bool {
@@ -160,6 +164,7 @@ impl ResizedImage {
 
 // We don't know what placeholders users will want at runtime so we just
 // generate all the options.
+#[derive(Clone)]
 pub struct Placeholder {
     pub lqip: DataUriString,
     pub automatically_detected_color: RgbaString,

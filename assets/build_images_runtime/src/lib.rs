@@ -2,6 +2,7 @@ use proc_macro2::TokenStream;
 use quote::{quote, ToTokens};
 use std::path::PathBuf;
 
+#[derive(Clone)]
 pub struct RunTimeBuiltImage {
     pub path_to_original_image: PathBuf,
     pub resized_copies: Vec<RunTimeResizedImage>,
@@ -19,12 +20,12 @@ impl ToTokens for RunTimeBuiltImage {
         });
 
         tokens.extend(quote! {
-            RunTimeBuiltImage {
+            build_images_runtime::RunTimeBuiltImage {
                 path_to_original_image: std::path::PathBuf::from(#self.path_to_original_image),
                 resized_copies: vec![
                     #(#resized_copies),*
                 ],
-                placeholder: RunTimePlaceholder {
+                placeholder: build_images_runtime::RunTimePlaceholder {
                     lqip_data_uri: #self.lqip_data_uri,
                     automatically_detected_color: #self.automatically_detected_color,
                 },
@@ -35,9 +36,10 @@ impl ToTokens for RunTimeBuiltImage {
     }
 }
 
+#[derive(Clone)]
 pub struct RunTimeResizedImage {
-    pub bytes: &'static [u8],
-    pub mime_type: &'static str,
+    pub bytes: Vec<u8>,
+    pub mime_type: String,
     pub width: u32,
     pub height: u32,
     pub file_name: PathBuf,
@@ -46,7 +48,7 @@ pub struct RunTimeResizedImage {
 impl ToTokens for RunTimeResizedImage {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(quote! {
-            RunTimeResizedImage {
+            build_images_runtime::RunTimeResizedImage {
                 bytes: #self.bytes,
                 mime_type: #self.mime_type,
                 width: #self.width,
@@ -57,15 +59,16 @@ impl ToTokens for RunTimeResizedImage {
     }
 }
 
+#[derive(Clone)]
 pub struct RunTimePlaceholder {
-    pub lqip_data_uri: &'static str,
-    pub automatically_detected_color: &'static str,
+    pub lqip_data_uri: String,
+    pub automatically_detected_color: String,
 }
 
 impl ToTokens for RunTimePlaceholder {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         tokens.extend(quote! {
-            RunTimePlaceholder {
+            build_images_runtime::RunTimePlaceholder {
                 lqip_data_uri: #self.lqip_data_uri,
                 automatically_detected_color: #self.automatically_detected_color,
             }

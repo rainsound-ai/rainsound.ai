@@ -106,7 +106,7 @@ mod tests {
     }
 
     fn parse_spin_toml() -> toml::Table {
-        let spin_toml_unparsed = include_str!("../../spin.toml");
+        let spin_toml_unparsed = include_str!("../../../spin.toml");
         spin_toml_unparsed.parse::<toml::Table>().unwrap()
     }
 }
