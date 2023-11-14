@@ -73,6 +73,7 @@ dependencies = [
  "build_tailwind",
  "cfg-if",
  "image",
+ "mime",
  "mime_guess",
  "once_cell",
  "rayon",

@@ -11,7 +11,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 shared = { path = "../shared", features = ["server"] }
-assets = { path = "../assets/runtime" }
+assets = { path = "../assets/mod" }
 maud = "0.25.0"
 http = "0.2"                                                           # General-purpose crate with common HTTP types.
 spin-sdk = { git = "https://github.com/fermyon/spin", tag = "v1.5.1" } # The Spin SDK.
@@ -19,4 +19,4 @@ anyhow = "1.0.75"
 build-time = "0.1.3"
 
 [build-dependencies]
-assets = { path = "../assets/runtime", features = ["build"] }
+assets = { path = "../assets/mod", features = ["build"] }

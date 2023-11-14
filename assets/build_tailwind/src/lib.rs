@@ -14,7 +14,7 @@ pub fn build_tailwind(input: TokenStream) -> TokenStream {
     let input = syn::parse_macro_input!(input as BuildTailwindInput);
 
     eprintln!("[build_tailwind] Building Tailwind.");
-    let build_tailwind_dir = workspace_root_dir().join("build_tailwind");
+    let build_tailwind_dir = workspace_root_dir().join("assets").join("build_tailwind");
 
     let config = build_tailwind_dir.join("tailwind.config.js");
     let config_str = config

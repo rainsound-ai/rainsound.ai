@@ -3,7 +3,7 @@ members = [
     # 
     "serverless_functions",
     "shared",
-    "assets/runtime",
+    "assets/mod",
     "assets/build_browser",
     "assets/build_tailwind",
     "assets/build_images",

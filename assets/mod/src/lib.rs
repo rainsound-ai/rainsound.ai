@@ -28,9 +28,6 @@ pub use self::image_asset::*;
 pub mod js_asset;
 pub use self::js_asset::*;
 
-pub mod mime_type;
-pub use self::mime_type::*;
-
 pub mod paths;
 pub use self::paths::*;
 
@@ -46,7 +43,7 @@ pub use self::wasm_asset::*;
 pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
 type ContentType = String;
 
-#[derive(PartialEq, Arraygen)]
+#[derive(Arraygen)]
 #[gen_array(pub fn image_assets: &ImageAsset, implicit_select_all: ImageAsset)]
 #[gen_array(pub fn light_dark_image_assets: &LightDarkImageAsset, implicit_select_all: LightDarkImageAsset)]
 #[gen_array(pub fn css_assets: &CssAsset, implicit_select_all: CssAsset)]
