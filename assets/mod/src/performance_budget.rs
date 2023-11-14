@@ -6,13 +6,6 @@ pub static assumed_latency: Duration = Duration::from_millis(100);
 pub static assumed_bits_per_second: f64 = 5_000_000.0;
 pub static assumed_bytes_per_second: f64 = assumed_bits_per_second / 8.0;
 
-/*
-
-load_time_budget_allowed
-load_time_budget
-
-*/
-
 // We assume 5 Mbps of bandwidth and 100 milliseconds of
 // latency. These are conservative estimates based on this
 // survey of U.S. mobile networks from Ookla.

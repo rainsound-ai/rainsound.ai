@@ -1,6 +1,5 @@
-use crate::asset::Asset;
-use crate::{CanSaveToDisk, HasPerformanceBudget};
-use std::path::{Path, PathBuf};
+use crate::{Asset, FileToSave, HasPerformanceBudget};
+use std::path::PathBuf;
 use std::time::Duration;
 
 #[derive(PartialEq)]
@@ -10,23 +9,13 @@ pub struct WasmAsset {
     pub load_time_budget: Duration,
 }
 
-impl CanSaveToDisk for WasmAsset {
-    fn save_to_disk(&self) {
-        Asset::save_to_disk(self);
-    }
-}
-
 impl Asset for WasmAsset {
-    fn file_name(&self) -> &Path {
-        &self.file_name
-    }
-
-    fn bytes(&self) -> Vec<u8> {
-        self.bytes.to_vec()
-    }
-
-    fn content_type(&self) -> String {
-        "application/wasm".to_string()
+    fn files_to_save(&self) -> Vec<crate::FileToSave> {
+        vec![FileToSave {
+            file_name: &self.file_name,
+            bytes: &self.bytes,
+            content_type: "application/wasm",
+        }]
     }
 }
 

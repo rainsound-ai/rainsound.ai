@@ -44,11 +44,7 @@ pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
 type ContentType = String;
 
 #[derive(Arraygen)]
-#[gen_array(pub fn image_assets: &ImageAsset, implicit_select_all: ImageAsset)]
-#[gen_array(pub fn light_dark_image_assets: &LightDarkImageAsset, implicit_select_all: LightDarkImageAsset)]
-#[gen_array(pub fn css_assets: &CssAsset, implicit_select_all: CssAsset)]
-#[gen_array(pub fn js_assets: &JsAsset, implicit_select_all: JsAsset)]
-#[gen_array(pub fn wasm_assets: &WasmAsset, implicit_select_all: WasmAsset)]
+#[gen_array(pub fn all_assets: &dyn Asset, implicit_select_all: dyn Asset)]
 pub struct NonHtmlAssets {
     pub built_css: CssAsset,
     pub browser_js: JsAsset,
@@ -64,8 +60,6 @@ pub struct NonHtmlAssets {
 // deadlocking if we're using a lazily initialized global variable.
 impl NonHtmlAssets {
     pub fn new() -> Self {
-        let built_images = build_images!(path_to_images_dir: "assets/src/original_images");
-
         let tailwind_output = build_tailwind!(
             path_to_input_file: "serverless_functions/src/main.css",
             minify: true
@@ -91,11 +85,11 @@ impl NonHtmlAssets {
             load_time_budget: Duration::from_millis(1),
         };
 
-        let hasui_hero = ImageAsset::new(
-            PathBuf::from_str("hasui_hero.jpg").unwrap(),
+        let built_images = build_images!(path_to_images_dir: "assets/src/original_images");
+        let hasui_hero = ImageAsset::from_built_image(
             "A woodblock print by Kawase Hasui",
-            include_bytes!("./original_images/hasui_light.jpeg"),
             Placeholder::Lqip,
+            built_images.hasui_hero,
         );
 
         NonHtmlAssets {
@@ -106,56 +100,21 @@ impl NonHtmlAssets {
         }
     }
 
-    #[allow(dead_code)]
-    fn all_assets(&self) -> Vec<&dyn Asset> {
-        let non_image_assets = self.non_image_assets();
-        let resized_image_assets =
-            self.resized_image_assets()
-                .into_iter()
-                .map(|resized_image_asset| {
-                    let resized_image_asset: &dyn Asset = resized_image_asset;
-                    resized_image_asset
-                });
-        non_image_assets
-            .into_iter()
-            .chain(resized_image_assets)
-            .collect()
-    }
-
-    fn resized_image_assets(&self) -> Vec<&ResizedImageAsset> {
-        let resized_variants: Vec<&ResizedImageAsset> = non_html_assets
-            .image_assets()
-            .into_iter()
-            .flat_map(|image_asset| &image_asset.resized_variants)
-            .collect::<Vec<_>>();
-
-        let light_dark_resized_variants: Vec<&ResizedImageAsset> = non_html_assets
-            .light_dark_image_assets()
-            .into_iter()
-            .flat_map(|light_dark_image_asset| light_dark_image_asset.resized_variants())
-            .collect::<Vec<_>>();
-
-        resized_variants
-            .into_iter()
-            .chain(light_dark_resized_variants)
-            .collect()
-    }
-
-    fn non_image_assets(&self) -> Vec<&dyn Asset> {
-        let css_assets = self.css_assets().into_iter().map(|css_asset| {
-            let css_asset: &dyn Asset = css_asset;
-            css_asset
-        });
-        let js_assets = self.js_assets().into_iter().map(|js_asset| {
-            let js_asset: &dyn Asset = js_asset;
-            js_asset
-        });
-        let wasm_assets = self.wasm_assets().into_iter().map(|wasm_asset| {
-            let wasm_asset: &dyn Asset = wasm_asset;
-            wasm_asset
-        });
-        css_assets.chain(js_assets).chain(wasm_assets).collect()
-    }
+    // fn non_image_assets(&self) -> Vec<&dyn Asset> {
+    //     let css_assets = self.css_assets().into_iter().map(|css_asset| {
+    //         let css_asset: &dyn Asset = css_asset;
+    //         css_asset
+    //     });
+    //     let js_assets = self.js_assets().into_iter().map(|js_asset| {
+    //         let js_asset: &dyn Asset = js_asset;
+    //         js_asset
+    //     });
+    //     let wasm_assets = self.wasm_assets().into_iter().map(|wasm_asset| {
+    //         let wasm_asset: &dyn Asset = wasm_asset;
+    //         wasm_asset
+    //     });
+    //     css_assets.chain(js_assets).chain(wasm_assets).collect()
+    // }
 }
 
 cfg_if! {
@@ -172,39 +131,36 @@ if #[cfg(feature = "build")] {
                 });
         }
 
-        fn all_assets_that_can_be_saved_to_disk(&self) -> Vec<&dyn CanSaveToDisk> {
-            let non_image_assets = self
-                .non_image_assets_as_can_save_to_disk()
-                .into_iter()
-                .map(|asset| asset as &dyn CanSaveToDisk);
-            let image_assets = self.all_image_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
-            non_image_assets.chain(image_assets).collect()
-        }
+        // fn all_assets_that_can_be_saved_to_disk(&self) -> Vec<&dyn CanSaveToDisk> {
+        //     let css_assets = self.css_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
+        //     let js_assets = self.js_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
+        //     let wasm_assets = self.wasm_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
+        //     let non_image_assets = self
+        //         .non_image_assets_as_can_save_to_disk()
+        //         .into_iter()
+        //         .map(|asset| asset as &dyn CanSaveToDisk);
 
-        fn all_image_assets(&self) -> Vec<&dyn CanSaveToDisk> {
-            let images = non_html_assets.image_assets().into_iter().map(|image_asset| {
-                let image_asset: &dyn CanSaveToDisk = image_asset;
-                image_asset
-            });
+        //     let image_assets = self.all_image_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
+        //     non_image_assets.chain(image_assets).collect()
+        // }
 
-            let light_dark_images =
-                non_html_assets
-                    .light_dark_image_assets()
-                    .into_iter()
-                    .map(|light_dark_image_asset| {
-                        let light_dark_image_asset: &dyn CanSaveToDisk = light_dark_image_asset;
-                        light_dark_image_asset
-                    });
+        // fn all_image_assets(&self) -> Vec<&dyn CanSaveToDisk> {
+        //     let images = non_html_assets.image_assets().into_iter().map(|image_asset| {
+        //         let image_asset: &dyn CanSaveToDisk = image_asset;
+        //         image_asset
+        //     });
 
-            images.chain(light_dark_images).collect()
-        }
+        //     let light_dark_images =
+        //         non_html_assets
+        //             .light_dark_image_assets()
+        //             .into_iter()
+        //             .map(|light_dark_image_asset| {
+        //                 let light_dark_image_asset: &dyn CanSaveToDisk = light_dark_image_asset;
+        //                 light_dark_image_asset
+        //             });
 
-        fn non_image_assets_as_can_save_to_disk(&self) -> Vec<&dyn CanSaveToDisk> {
-            let css_assets = self.css_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
-            let js_assets = self.js_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
-            let wasm_assets = self.wasm_assets().into_iter().map(|asset| asset as &dyn CanSaveToDisk);
-            css_assets.chain(js_assets).chain(wasm_assets).collect()
-        }
+        //     images.chain(light_dark_images).collect()
+        // }
     }
 }
 }

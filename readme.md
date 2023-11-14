@@ -78,17 +78,35 @@ Types and functions shared between the server and browser.
 
 `/assets`
 
+This sub-folder contains crates for handling asset preparation like running the Tailwind CLI and resizing images.
+
+`/assets/mod`
+
 Provides structs and functions for representing assets like CSS, images, and wasm. Also where we define our global list of assets.
 
 Collects all of our assets and saves them to `/built_assets` at build time.
 
-`/build_browser`
+`/assets/build_browser`
 
-The build script for this sub-crate runs wasm-pack. `lib.rs` exposes static variables containing wasm-pack's output.
+Exports a `build_browser!` macro that runs wasm-pack on the crate you pass to it, returning a struct that includes the resulting generated JS and wasm bytes.
 
-`/build_tailwind`
+`/assets/build_tailwind`
 
-The build script for this sub-crate runs the Tailwind CLI. `lib.rs` exposes a static variable containing the contents of our built CSS file.
+Exports a `build_tailwind!` macro that runs the Tailwind CLI. Returns a string with the built CSS.
+
+`/assets/build_images`
+
+Exports a `build_images!` macro that loads images from the given path and generates resized variants.
+
+`/assets/build_images_macro`
+
+Cargo requires that you define procedural macros in their own crate. This is the one for `build_images!`.
+
+`/assets/build_images_runtime`
+
+Runtime types that represent built images. We had to extract this into a separate crate because we wanted to use these types in the `build_images!` macro itself, as well as export them from the `build_images` crate.
+
+(If we put them directly in the `build_images` crate, we'd end up with a circular dependency between `build_images` and `build_images_macro`.)
 
 `spin.toml`
 

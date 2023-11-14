@@ -1,8 +1,5 @@
-use crate::{asset::Asset, CanSaveToDisk, HasPerformanceBudget};
-use std::{
-    path::{Path, PathBuf},
-    time::Duration,
-};
+use crate::{Asset, FileToSave, HasPerformanceBudget};
+use std::{path::PathBuf, time::Duration};
 
 #[derive(PartialEq)]
 pub struct CssAsset {
@@ -11,23 +8,13 @@ pub struct CssAsset {
     pub load_time_budget: Duration,
 }
 
-impl CanSaveToDisk for CssAsset {
-    fn save_to_disk(&self) {
-        Asset::save_to_disk(self);
-    }
-}
-
 impl Asset for CssAsset {
-    fn file_name(&self) -> &Path {
-        &self.file_name
-    }
-
-    fn bytes(&self) -> Vec<u8> {
-        self.contents.as_bytes().to_vec()
-    }
-
-    fn content_type(&self) -> String {
-        "text/css".to_string()
+    fn files_to_save(&self) -> Vec<FileToSave> {
+        vec![FileToSave {
+            file_name: &self.file_name,
+            bytes: &self.contents.as_bytes(),
+            content_type: "text/css",
+        }]
     }
 }
 

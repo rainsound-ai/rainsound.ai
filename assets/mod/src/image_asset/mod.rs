@@ -1,24 +1,24 @@
+use crate::Asset;
+use crate::FileToSave;
 use build_images::{RunTimeBuiltImage, RunTimeResizedImage};
-use cfg_if::cfg_if;
-use serde::{Deserialize, Serialize};
-use std::path::{Path, PathBuf};
-use std::str::FromStr;
-use std::sync::Arc;
+use std::path::PathBuf;
 
 mod light_dark_image_asset;
-use crate::asset_path_from_file_name;
-use crate::mime_type::MimeType;
 
 pub use self::light_dark_image_asset::*;
 
 pub struct ImageAsset {
     pub alt: &'static str,
     pub placeholder: BuiltPlaceholder,
+
     pub width: u32,
     pub height: u32,
+
     pub resized_copies: Vec<RunTimeResizedImage>,
+    pub srcset: String,
+    pub src: String,
+
     path_to_original_image: PathBuf,
-    srcset: String,
 }
 
 impl ImageAsset {
@@ -27,9 +27,59 @@ impl ImageAsset {
         placeholder: Placeholder,
         built_image: RunTimeBuiltImage,
     ) -> ImageAsset {
-        let srcset = Self::create_srcset(&file_name, width);
+        let srcset = Self::generate_srcset(&built_image.resized_copies);
+        let src = Self::generate_src(&built_image);
+        let placeholder = Self::get_placeholder(&built_image, placeholder);
 
-        let placeholder = match placeholder {
+        ImageAsset {
+            alt,
+            placeholder,
+
+            width: built_image.width,
+            height: built_image.height,
+
+            resized_copies: built_image.resized_copies,
+            srcset,
+            src,
+
+            path_to_original_image: built_image.path_to_original_image,
+        }
+    }
+
+    pub fn generate_src(built_image: &RunTimeBuiltImage) -> String {
+        // If their browser doesn't have support for the srcset attribute,
+        // it's probably an old mobile browser. If that's the case, they
+        // also probably don't have a lot of bandwidth so go with the smallest
+        // image possible.
+        let narrowest = built_image
+            .resized_copies
+            .iter()
+            .min_by_key(|resized_copy| resized_copy.width)
+            .expect("Received a built image with no resized copies.");
+
+        crate::path_for_asset_in_browser(&narrowest.file_name)
+            .to_string_lossy()
+            .to_string()
+    }
+
+    fn generate_srcset(resized_copies: &[RunTimeResizedImage]) -> String {
+        resized_copies
+            .iter()
+            .map(|resized_copy| {
+                let width = resized_copy.width;
+                let path = crate::path_for_asset_in_browser(&resized_copy.file_name);
+                let path_str = path.to_str().unwrap();
+                format!("{path_str} {width}w")
+            })
+            .collect::<Vec<String>>()
+            .join(", ")
+    }
+
+    fn get_placeholder(
+        built_image: &RunTimeBuiltImage,
+        placeholder: Placeholder,
+    ) -> BuiltPlaceholder {
+        match placeholder {
             Placeholder::Lqip => BuiltPlaceholder::Lqip {
                 data_uri: built_image.placeholder.lqip_data_uri,
             },
@@ -37,83 +87,31 @@ impl ImageAsset {
                 css_string: built_image.placeholder.automatically_detected_color,
             },
             Placeholder::Color { css_string } => BuiltPlaceholder::Color { css_string },
-        };
-
-        ImageAsset {
-            alt,
-            placeholder,
-            width: built_image.width,
-            height: built_image.height,
-            resized_copies: built_image.resized_copies,
-            path_to_original_image: built_image.path_to_original_image,
-            srcset,
         }
     }
-
-    pub fn src(&self) -> &str {
-        // If their browser doesn't have support for the srcset attribute,
-        // it's probably an old mobile browser. If that's the case, they
-        // also probably don't have a lot of bandwidth so go with the smallest
-        // image possible.
-        self.resized_copies
-            .first()
-            .unwrap()
-            .path
-            .file_name()
-            .to_str()
-            .unwrap()
-    }
-
-    pub fn srcset(&self) -> &str {
-        &self.srcset
-    }
-
-    fn create_srcset(file_name: &Path, image_width: u32) -> String {
-        Self::available_widths(image_width)
-            .into_iter()
-            .map(|width| {
-                let path_with_width = Self::path_with_width(file_name, width);
-                let file_name_string = path_with_width.to_str().unwrap();
-                format!("{file_name_string} {width}w")
-            })
-            .collect::<Vec<String>>()
-            .join(", ")
-    }
-}
-
-cfg_if! {
-if #[cfg(feature = "build")] {
-    use crate::CanSaveToDisk;
-
-    impl CanSaveToDisk for ImageAsset {
-        fn save_to_disk(&self) {
-            self.serialized_image_wrapper().save_to_disk(&self.file_name);
-            for resized_variant in &self.resized_copies {
-                resized_variant.save_to_disk();
-            }
-        }
-    }
-
-    impl ImageAsset {
-        fn serialized_image_wrapper(&self) -> SerializedImageWrapper {
-            SerializedImageWrapper {
-                dimensions: (self.width, self.height),
-                generated_placeholder: self.placeholder.clone(),
-                mime_type: self.mime_type,
-            }
-        }
-    }
-}
 }
 
 #[derive(Debug)]
 pub enum Placeholder {
     Lqip,
     AutomaticColor,
-    Color { css_string: &'static str },
+    Color { css_string: String },
 }
 
 pub enum BuiltPlaceholder {
-    Lqip { data_uri: &'static str },
-    Color { css_string: &'static str },
+    Lqip { data_uri: String },
+    Color { css_string: String },
+}
+
+impl Asset for ImageAsset {
+    fn files_to_save(&self) -> Vec<crate::FileToSave> {
+        self.resized_copies
+            .iter()
+            .map(|resized_copy| FileToSave {
+                file_name: &resized_copy.file_name,
+                bytes: &resized_copy.bytes,
+                content_type: &resized_copy.mime_type,
+            })
+            .collect()
+    }
 }

@@ -1,6 +1,5 @@
-use crate::asset::Asset;
-use crate::{CanSaveToDisk, HasPerformanceBudget};
-use std::path::{Path, PathBuf};
+use crate::{Asset, FileToSave, HasPerformanceBudget};
+use std::path::PathBuf;
 use std::time::Duration;
 
 #[derive(PartialEq)]
@@ -10,27 +9,13 @@ pub struct JsAsset {
     pub load_time_budget: Duration,
 }
 
-impl CanSaveToDisk for JsAsset {
-    fn save_to_disk(&self) {
-        Asset::save_to_disk(self);
-    }
-}
-
 impl Asset for JsAsset {
-    fn file_name(&self) -> &Path {
-        &self.file_name
-    }
-
-    fn bytes(&self) -> Vec<u8> {
-        // Unminified. You can comment this back in if you want to debug.
-        self.contents.as_bytes().to_vec()
-
-        // Minified.
-        // self.minified_contents()
-    }
-
-    fn content_type(&self) -> String {
-        "application/javascript".to_string()
+    fn files_to_save(&self) -> Vec<FileToSave> {
+        vec![FileToSave {
+            file_name: &self.file_name,
+            bytes: &self.contents.as_bytes(),
+            content_type: "application/javascript",
+        }]
     }
 }
 
