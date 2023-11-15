@@ -16,9 +16,6 @@ pub use self::asset::*;
 pub mod css_asset;
 pub use self::css_asset::*;
 
-pub mod content_type;
-pub use self::content_type::*;
-
 pub mod image_asset;
 pub use self::image_asset::*;
 
@@ -35,7 +32,6 @@ pub mod wasm_asset;
 pub use self::wasm_asset::*;
 
 pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
-type ContentType = String;
 
 #[derive(Arraygen)]
 #[gen_array(pub fn all_assets: &dyn Asset, implicit_select_all: dyn Asset)]

@@ -81,10 +81,10 @@ impl ImageAsset {
     ) -> BuiltPlaceholder {
         match placeholder {
             Placeholder::Lqip => BuiltPlaceholder::Lqip {
-                data_uri: built_image.placeholder.lqip_data_uri,
+                data_uri: built_image.placeholder.lqip_data_uri.clone(),
             },
             Placeholder::AutomaticColor => BuiltPlaceholder::Color {
-                css_string: built_image.placeholder.automatically_detected_color,
+                css_string: built_image.placeholder.automatically_detected_color.clone(),
             },
             Placeholder::Color { css_string } => BuiltPlaceholder::Color { css_string },
         }

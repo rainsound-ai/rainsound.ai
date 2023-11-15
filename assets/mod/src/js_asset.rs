@@ -14,7 +14,7 @@ impl Asset for JsAsset {
     fn files_to_save(&self) -> Vec<FileToSave> {
         vec![FileToSave {
             file_name: &self.file_name,
-            bytes: &self.contents.as_bytes(),
+            bytes: self.contents.as_bytes(),
             content_type: "application/javascript",
         }]
     }
@@ -23,5 +23,13 @@ impl Asset for JsAsset {
 impl HasPerformanceBudget for JsAsset {
     fn load_time_budget(&self) -> Duration {
         self.load_time_budget
+    }
+
+    fn bytes(&self) -> &[u8] {
+        self.contents.as_bytes()
+    }
+
+    fn path(&self) -> &std::path::Path {
+        &self.file_name
     }
 }

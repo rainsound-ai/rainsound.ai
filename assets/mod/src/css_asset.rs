@@ -13,7 +13,7 @@ impl Asset for CssAsset {
     fn files_to_save(&self) -> Vec<FileToSave> {
         vec![FileToSave {
             file_name: &self.file_name,
-            bytes: &self.contents.as_bytes(),
+            bytes: self.contents.as_bytes(),
             content_type: "text/css",
         }]
     }
@@ -22,5 +22,13 @@ impl Asset for CssAsset {
 impl HasPerformanceBudget for CssAsset {
     fn load_time_budget(&self) -> Duration {
         self.load_time_budget
+    }
+
+    fn bytes(&self) -> &[u8] {
+        self.contents.as_bytes()
+    }
+
+    fn path(&self) -> &std::path::Path {
+        &self.file_name
     }
 }

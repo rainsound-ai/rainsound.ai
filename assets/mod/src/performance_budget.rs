@@ -1,4 +1,8 @@
-use std::{fmt::Display, path::PathBuf, time::Duration};
+use std::{
+    fmt::Display,
+    path::{Path, PathBuf},
+    time::Duration,
+};
 
 use crate::asset::Asset;
 
@@ -53,14 +57,14 @@ impl HowCloseToBudget {
 
         if (half_of_budget..=budgeted_load_time_secs).contains(&estimated_load_time_secs) {
             return HowCloseToBudget::CloseToBudget {
-                path,
+                path: path.to_owned(),
                 estimated_load_time,
                 budgeted_load_time,
             };
         }
 
         HowCloseToBudget::OverBudget {
-            path,
+            path: path.to_owned(),
             estimated_load_time,
             budgeted_load_time,
         }
@@ -141,4 +145,8 @@ pub trait HasPerformanceBudget: Asset {
 
     // Used for enforcing performance budgets.
     fn load_time_budget(&self) -> Duration;
+
+    fn bytes(&self) -> &[u8];
+
+    fn path(&self) -> &Path;
 }
