@@ -25,9 +25,14 @@ pub fn build_images(input: TokenStream) -> TokenStream {
 
     let built_images = get_images_from_disk(input);
     let code = generate_code(&built_images);
-    // We do this last because we need the owned copy of the data
-    // to use Rayon.
-    save_images_to_disk_if_necessary(built_images);
+
+    // let item = syn::parse2::<syn::Item>(code.clone()).unwrap();
+    // let syn_file = syn::File {
+    //     attrs: vec![],
+    //     items: vec![item],
+    //     shebang: None,
+    // };
+    // let formatted_code = prettyplease::unparse(&syn_file);
 
     eprintln!("{}", &code.to_string());
 
@@ -65,6 +70,9 @@ build_images!(path_to_images_dir: \"src/original_images\");
     }
 }
 
+// We wrap our built images in Arcs because we need owned copies
+// to use Rayon, and we presume that cloning BuiltImages is expensive
+// because they hold giant piles of image bytes.
 fn get_images_from_disk(input: BuildImagesInput) -> Vec<BuiltImage> {
     eprintln!("Getting original images.");
     let original_images = get_image_files(&input.path_to_images_dir);
@@ -72,7 +80,7 @@ fn get_images_from_disk(input: BuildImagesInput) -> Vec<BuiltImage> {
 
     eprintln!("Generating placeholders.");
     original_images
-        .into_iter()
+        .into_par_iter()
         .map(|(path_to_original_image, original_image)| {
             BuiltImage::new(path_to_original_image, original_image)
         })
@@ -104,14 +112,21 @@ fn get_image_files(path_to_images_dir: &Path) -> Vec<(PathBuf, DynamicImage)> {
 
 fn generate_code(built_images: &[BuiltImage]) -> proc_macro2::TokenStream {
     eprintln!("Generating code for built images.");
+
+    eprintln!("Building property names.");
     let built_image_property_names: Vec<_> = built_images
         .iter()
         .map(|built_image| format_ident!("{}", built_image.name_in_source_code))
         .collect();
 
+    eprintln!("Instantiating RunTimeBuiltImages.");
     let built_image_property_declarations = built_images.iter().map(|built_image| {
+        eprintln!("Constructing ident.");
         let name_in_source_code = format_ident!("{}", built_image.name_in_source_code);
+        eprintln!("Instantiating RunTimeBuiltImage.");
         let run_time_built_image = RunTimeBuiltImage::from_built_image(built_image);
+
+        eprintln!("Quoting RunTimeBuiltImage.");
 
         quote! {
             #name_in_source_code: #run_time_built_image,
@@ -134,21 +149,4 @@ fn generate_code(built_images: &[BuiltImage]) -> proc_macro2::TokenStream {
             }
         }
     }
-}
-
-fn save_images_to_disk_if_necessary(built_images: Vec<BuiltImage>) {
-    // We have to iterate over owned values because we want to use Rayon.
-    let resized_images: Vec<_> = built_images
-        .into_iter()
-        .flat_map(|built_image| built_image.resized_copies.into_iter())
-        .collect();
-
-    eprintln!("Saving resized images to disk if necessary.");
-    resized_images
-        .into_iter()
-        .par_bridge()
-        .for_each(|resized_image| {
-            eprintln!("Generating resized image {}.", resized_image.path.display());
-            resized_image.save_to_disk_if_necessary();
-        });
 }

@@ -163,6 +163,7 @@ dependencies = [
  "build_images_runtime",
  "image",
  "mime",
+ "prettyplease",
  "proc-macro2",
  "quote",
  "rayon",
@@ -1035,6 +1036,16 @@ dependencies = [
  "fdeflate",
  "flate2",
  "miniz_oxide",
+]
+
+[[package]]
+name = "prettyplease"
+version = "0.2.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ae005bd773ab59b4725093fd7df83fd7892f7d8eafb48dbd7de6e024e4215f9d"
+dependencies = [
+ "proc-macro2",
+ "syn 2.0.39",
 ]
 
 [[package]]

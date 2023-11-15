@@ -1,4 +1,5 @@
-use crate::{Asset, FileToSave, HasPerformanceBudget};
+use crate::asset::{Asset, FileToSave};
+use crate::performance_budget::HasPerformanceBudget;
 use std::{path::PathBuf, time::Duration};
 
 #[derive(PartialEq)]

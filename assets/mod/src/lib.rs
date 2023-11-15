@@ -19,9 +19,6 @@ pub use self::css_asset::*;
 pub mod content_type;
 pub use self::content_type::*;
 
-pub mod extensions;
-pub use self::extensions::*;
-
 pub mod image_asset;
 pub use self::image_asset::*;
 
@@ -33,9 +30,6 @@ pub use self::paths::*;
 
 pub mod performance_budget;
 pub use self::performance_budget::*;
-
-mod prelude;
-pub use self::prelude::*;
 
 pub mod wasm_asset;
 pub use self::wasm_asset::*;
@@ -85,11 +79,11 @@ impl NonHtmlAssets {
             load_time_budget: Duration::from_millis(1),
         };
 
-        let built_images = build_images!(path_to_images_dir: "assets/src/original_images");
+        let built_images = build_images!(path_to_images_dir: "assets/mod/src/original_images");
         let hasui_hero = ImageAsset::from_built_image(
             "A woodblock print by Kawase Hasui",
             Placeholder::Lqip,
-            built_images.hasui_hero,
+            built_images.hasui_light,
         );
 
         NonHtmlAssets {
@@ -123,7 +117,7 @@ if #[cfg(feature = "build")] {
 
     impl NonHtmlAssets {
         pub fn save_to_disk(&self) {
-            self.all_assets_that_can_be_saved_to_disk()
+            self.all_assets()
                 .into_iter()
                 .par_bridge()
                 .for_each(|asset| {

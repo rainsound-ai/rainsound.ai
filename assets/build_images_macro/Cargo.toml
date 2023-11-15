@@ -19,3 +19,12 @@ walkdir = "2.4.0"
 mime = "0.3.17"
 rayon = "1.8.0"
 build_images_runtime = { path = "../build_images_runtime" }
+prettyplease = "0.2.15"
+
+# Always build the image crate with optimizations enabled, even in dev, test, and benchmark mode.
+[profile.dev.package.image]
+opt-level = 3
+[profile.test.package.image]
+opt-level = 3
+[profile.bench.package.image]
+opt-level = 3

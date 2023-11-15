@@ -1,18 +1,15 @@
 use crate::dynamic_image_extension::*;
 use image::{DynamicImage, GenericImageView};
 use mime::Mime;
-use std::cell::OnceCell;
 use std::fs;
 use std::{
     path::{Path, PathBuf},
     str::FromStr,
-    sync::Arc,
 };
 
 #[derive(Clone)]
 pub struct BuiltImage {
     pub path_to_original_image: PathBuf,
-    pub original_image: Arc<DynamicImage>,
     pub resized_copies: Vec<ResizedImage>,
     pub placeholder: Placeholder,
     pub width: u32,
@@ -22,7 +19,6 @@ pub struct BuiltImage {
 
 impl BuiltImage {
     pub fn new(path_to_original_image: PathBuf, original_image: DynamicImage) -> Self {
-        let original_image = Arc::new(original_image);
         let (width, height) = original_image.dimensions();
         let resized_copies = Self::resized_copies(&path_to_original_image, &original_image);
         let placeholder = Placeholder::new(&original_image);
@@ -43,7 +39,6 @@ impl BuiltImage {
 
         BuiltImage {
             path_to_original_image,
-            original_image,
             resized_copies,
             placeholder,
             width,
@@ -54,14 +49,14 @@ impl BuiltImage {
 
     fn resized_copies(
         path_to_original_image: &Path,
-        original_image: &Arc<DynamicImage>,
+        original_image: &DynamicImage,
     ) -> Vec<ResizedImage> {
         let original_width = original_image.width();
 
         Self::available_widths(original_width)
             .into_iter()
             .map(|target_width| {
-                ResizedImage::new(target_width, path_to_original_image, original_image.clone())
+                ResizedImage::new(target_width, path_to_original_image, original_image)
             })
             .collect()
     }
@@ -80,22 +75,15 @@ impl BuiltImage {
 
 #[derive(Clone)]
 pub struct ResizedImage {
-    // We store a copy of the original image so that we can resize it
-    // to different widths if necessary.
-    pub original_image: Arc<DynamicImage>,
     pub path: PathBuf,
     pub width: u32,
     pub height: u32,
     pub mime_type: Mime,
-    cached_bytes: OnceCell<Vec<u8>>,
+    pub bytes: Vec<u8>,
 }
 
 impl ResizedImage {
-    pub fn new(
-        width: u32,
-        path_to_original_image: &Path,
-        original_image: Arc<DynamicImage>,
-    ) -> Self {
+    pub fn new(width: u32, path_to_original_image: &Path, original_image: &DynamicImage) -> Self {
         let file_name = path_to_original_image
             .file_name()
             .expect("Error parsing file name.");
@@ -107,13 +95,14 @@ impl ResizedImage {
 
         let height = original_image.height_if_resized_to_width(width);
 
+        let bytes = Self::generate_bytes(width, &path, original_image);
+
         Self {
             path,
-            original_image,
             width,
             height,
             mime_type,
-            cached_bytes: OnceCell::new(),
+            bytes,
         }
     }
 
@@ -129,36 +118,22 @@ impl ResizedImage {
         PathBuf::from_str(&new_file_name_string).unwrap()
     }
 
-    pub fn save_to_disk_if_necessary(&self) {
-        if self.file_already_exists() {
-            return;
-        }
-
-        let bytes = self.bytes();
-
-        fs::create_dir_all(self.path.parent().unwrap()).expect("Error creating built images dir.");
-        fs::write(&self.path, bytes).expect("Error writing resized image to disk.");
-    }
-
-    pub fn bytes(&self) -> &Vec<u8> {
-        self.cached_bytes.get_or_init(|| self.generate_bytes())
-    }
-
-    fn generate_bytes(&self) -> Vec<u8> {
-        fs::read(&self.path).unwrap_or_else(|error| {
+    fn generate_bytes(width: u32, path: &Path, original_image: &DynamicImage) -> Vec<u8> {
+        fs::read(path).unwrap_or_else(|error| {
             println!(
                 "Couldn't read resized image file {:?} so regenerating the resized image. Original error message: {}",
-                &self.path, error
+                &path, error
             );
 
-            self.original_image
-                .resize_to_width(self.width)
-                .to_bytes_with_format(image::ImageFormat::Jpeg)
-        })
-    }
+            let bytes = original_image
+                .resize_to_width(width)
+                .to_bytes_with_format(image::ImageFormat::Jpeg);
 
-    fn file_already_exists(&self) -> bool {
-        self.path.exists()
+            fs::create_dir_all(path.parent().unwrap()).expect("Error creating built images dir.");
+            fs::write(path, &bytes).expect("Error writing resized image to disk.");
+
+            bytes
+        })
     }
 }
 

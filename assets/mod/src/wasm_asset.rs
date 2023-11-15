@@ -1,4 +1,5 @@
-use crate::{Asset, FileToSave, HasPerformanceBudget};
+use crate::performance_budget::HasPerformanceBudget;
+use crate::{Asset, FileToSave};
 use std::path::PathBuf;
 use std::time::Duration;
 

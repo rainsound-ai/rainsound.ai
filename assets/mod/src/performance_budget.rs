@@ -1,6 +1,6 @@
 use std::{fmt::Display, path::PathBuf, time::Duration};
 
-use super::Asset;
+use crate::asset::Asset;
 
 pub static assumed_latency: Duration = Duration::from_millis(100);
 pub static assumed_bits_per_second: f64 = 5_000_000.0;

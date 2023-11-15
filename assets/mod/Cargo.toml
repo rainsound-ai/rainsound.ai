@@ -26,9 +26,5 @@ build_images_macro = { path = "../build_images_macro" }
 mime_guess = "2.0.4"
 mime = "0.3.17"
 
-# # Always build the image crate with optimizations enabled, even in debug mode.
-# [profile.dev.package.image]
-# opt-level = 3
-
 [dev-dependencies]
 toml = "0.8.6"

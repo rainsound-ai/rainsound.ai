@@ -1,49 +1,41 @@
 use super::*;
-use cfg_if::cfg_if;
 
-#[derive(PartialEq)]
 pub struct LightDarkImageAsset {
-    pub alt: &'static str,
     pub light_mode: ImageAsset,
     pub dark_mode: ImageAsset,
     pub placeholder: LightDarkPlaceholder,
 }
 
 impl LightDarkImageAsset {
-    pub fn new(
-        alt: &'static str,
-        light_mode: ImageAsset,
-        dark_mode: ImageAsset,
-    ) -> LightDarkImageAsset {
+    pub fn new(light_mode: ImageAsset, dark_mode: ImageAsset) -> LightDarkImageAsset {
         let placeholder =
             LightDarkPlaceholder::new(&light_mode.placeholder, &dark_mode.placeholder);
 
         LightDarkImageAsset {
-            alt,
             light_mode,
             dark_mode,
             placeholder,
         }
     }
 
-    pub fn resized_variants(&self) -> Vec<&ResizedImageAsset> {
+    pub fn resized_copies(&self) -> Vec<&RunTimeResizedImage> {
         self.light_mode
-            .resized_variants
+            .resized_copies
             .iter()
-            .chain(self.dark_mode.resized_variants.iter())
+            .chain(self.dark_mode.resized_copies.iter())
             .collect()
     }
 }
 
-cfg_if! {
-if #[cfg(feature = "build")] {
-    impl CanSaveToDisk for LightDarkImageAsset {
-        fn save_to_disk(&self) {
-            self.light_mode.save_to_disk();
-            self.dark_mode.save_to_disk();
-        }
+impl Asset for LightDarkImageAsset {
+    fn files_to_save(&self) -> Vec<FileToSave> {
+        let light_mode_files_to_save = self.light_mode.files_to_save().into_iter();
+        let dark_mode_files_to_save = self.dark_mode.files_to_save().into_iter();
+
+        light_mode_files_to_save
+            .chain(dark_mode_files_to_save)
+            .collect()
     }
-}
 }
 
 #[derive(PartialEq)]
@@ -60,15 +52,15 @@ pub enum LightDarkPlaceholder {
 
 impl LightDarkPlaceholder {
     pub fn new(
-        light_mode: &GeneratedPlaceholder,
-        dark_mode: &GeneratedPlaceholder,
+        light_mode: &BuiltPlaceholder,
+        dark_mode: &BuiltPlaceholder,
     ) -> LightDarkPlaceholder {
         match (light_mode, dark_mode) {
             (
-                GeneratedPlaceholder::Lqip {
+                BuiltPlaceholder::Lqip {
                     data_uri: light_mode_data_uri,
                 },
-                GeneratedPlaceholder::Lqip {
+                BuiltPlaceholder::Lqip {
                     data_uri: dark_mode_data_uri,
                 },
             ) => LightDarkPlaceholder::Lqip {
@@ -76,10 +68,10 @@ impl LightDarkPlaceholder {
                 dark_mode_data_uri: dark_mode_data_uri.clone(),
             },
             (
-                GeneratedPlaceholder::Color {
+                BuiltPlaceholder::Color {
                     css_string: light_mode_css_string,
                 },
-                GeneratedPlaceholder::Color {
+                BuiltPlaceholder::Color {
                     css_string: dark_mode_css_string,
                 },
             ) => LightDarkPlaceholder::Color {
