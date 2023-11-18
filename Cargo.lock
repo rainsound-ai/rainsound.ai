@@ -187,6 +187,7 @@ dependencies = [
 name = "build_tailwind"
 version = "0.1.0"
 dependencies = [
+ "log",
  "proc-macro2",
  "quote",
  "syn 2.0.39",
