@@ -5,7 +5,7 @@ use std::time::Duration;
 
 #[derive(PartialEq)]
 pub struct WasmAsset {
-    pub file_name: PathBuf,
+    pub url_path: PathBuf,
     pub bytes: &'static [u8],
     pub load_time_budget: Duration,
 }
@@ -13,7 +13,7 @@ pub struct WasmAsset {
 impl Asset for WasmAsset {
     fn files_to_save(&self) -> Vec<crate::FileToSave> {
         vec![FileToSave {
-            file_name: &self.file_name,
+            path: &self.url_path,
             bytes: self.bytes,
             content_type: "application/wasm",
         }]
@@ -30,6 +30,6 @@ impl HasPerformanceBudget for WasmAsset {
     }
 
     fn path(&self) -> &std::path::Path {
-        &self.file_name
+        &self.url_path
     }
 }

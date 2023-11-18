@@ -9,7 +9,8 @@ use std::{
 
 #[derive(Clone)]
 pub struct BuiltImage {
-    pub path_to_original_image: PathBuf,
+    pub absolute_path_to_original_image: PathBuf,
+    pub path_starting_from_images_dir: PathBuf,
     pub resized_copies: Vec<ResizedImage>,
     pub placeholder: Placeholder,
     pub width: u32,
@@ -18,12 +19,24 @@ pub struct BuiltImage {
 }
 
 impl BuiltImage {
-    pub fn new(path_to_original_image: PathBuf, original_image: DynamicImage) -> Self {
+    pub fn new(
+        path_to_images_dir: &Path,
+        absolute_path_to_original_image: PathBuf,
+        original_image: DynamicImage,
+    ) -> Self {
+        let path_starting_from_images_dir = absolute_path_to_original_image
+            .strip_prefix(path_to_images_dir)
+            .expect("Error stripping prefix from absolute path to original image.")
+            .to_path_buf();
         let (width, height) = original_image.dimensions();
-        let resized_copies = Self::resized_copies(&path_to_original_image, &original_image);
+        let resized_copies = Self::resized_copies(
+            path_to_images_dir,
+            &absolute_path_to_original_image,
+            &original_image,
+        );
         let placeholder = Placeholder::new(&original_image);
 
-        let file_stem = path_to_original_image
+        let file_stem = absolute_path_to_original_image
             .file_stem()
             .expect("Error parsing file stem.")
             .to_string_lossy()
@@ -38,7 +51,8 @@ impl BuiltImage {
         );
 
         BuiltImage {
-            path_to_original_image,
+            path_starting_from_images_dir,
+            absolute_path_to_original_image,
             resized_copies,
             placeholder,
             width,
@@ -48,7 +62,8 @@ impl BuiltImage {
     }
 
     fn resized_copies(
-        path_to_original_image: &Path,
+        path_to_images_dir: &Path,
+        absolute_path_to_original_image: &Path,
         original_image: &DynamicImage,
     ) -> Vec<ResizedImage> {
         let original_width = original_image.width();
@@ -56,7 +71,12 @@ impl BuiltImage {
         Self::available_widths(original_width)
             .into_iter()
             .map(|target_width| {
-                ResizedImage::new(target_width, path_to_original_image, original_image)
+                ResizedImage::new(
+                    target_width,
+                    path_to_images_dir,
+                    absolute_path_to_original_image,
+                    original_image,
+                )
             })
             .collect()
     }
@@ -75,7 +95,8 @@ impl BuiltImage {
 
 #[derive(Clone)]
 pub struct ResizedImage {
-    pub path: PathBuf,
+    pub absolute_path: PathBuf,
+    pub path_starting_from_images_dir: PathBuf,
     pub width: u32,
     pub height: u32,
     pub mime_type: Mime,
@@ -83,22 +104,29 @@ pub struct ResizedImage {
 }
 
 impl ResizedImage {
-    pub fn new(width: u32, path_to_original_image: &Path, original_image: &DynamicImage) -> Self {
-        let file_name = path_to_original_image
-            .file_name()
-            .expect("Error parsing file name.");
-        let file_name = PathBuf::from(file_name);
+    pub fn new(
+        width: u32,
+        path_to_images_dir: &Path,
+        absolute_path_to_original_image: &Path,
+        original_image: &DynamicImage,
+    ) -> Self {
+        let path_starting_from_images_dir = absolute_path_to_original_image
+            .strip_prefix(path_to_images_dir)
+            .expect("Error stripping prefix from absolute path to original image.")
+            .to_path_buf();
 
         let mime_type = mime::IMAGE_JPEG;
 
-        let path = Self::path_with_width(&file_name, width, &mime_type);
+        let absolute_path_with_width =
+            Self::path_with_width(&path_starting_from_images_dir, width, &mime_type);
 
         let height = original_image.height_if_resized_to_width(width);
 
-        let bytes = Self::generate_bytes(width, &path, original_image);
+        let bytes = Self::generate_bytes(width, &absolute_path_with_width, original_image);
 
         Self {
-            path,
+            absolute_path: absolute_path_with_width,
+            path_starting_from_images_dir,
             width,
             height,
             mime_type,
@@ -106,9 +134,24 @@ impl ResizedImage {
         }
     }
 
-    fn path_with_width(file_name: &Path, width: u32, mime_type: &Mime) -> PathBuf {
-        let file_name_with_width = Self::file_name_with_width(file_name, width, mime_type);
-        crate::paths::built_image_path_from_file_name(&file_name_with_width)
+    fn path_with_width(
+        path_starting_from_images_dir: &Path,
+        width: u32,
+        mime_type: &Mime,
+    ) -> PathBuf {
+        let file_name = path_starting_from_images_dir
+            .file_name()
+            .expect("Error parsing file name.");
+        let file_name = PathBuf::from(file_name);
+
+        let file_name_with_width = Self::file_name_with_width(&file_name, width, mime_type);
+
+        let path_starting_from_images_dir_with_width = path_starting_from_images_dir
+            .parent()
+            .expect("Error getting parent of path starting from images dir.")
+            .join(&file_name_with_width);
+
+        crate::paths::built_image_path(&path_starting_from_images_dir_with_width)
     }
 
     fn file_name_with_width(file_name: &Path, width: u32, mime_type: &Mime) -> PathBuf {

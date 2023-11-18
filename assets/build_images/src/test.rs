@@ -13,7 +13,10 @@ pub fn it_works() {
     let first_resized_copy = test_image.resized_copies.first().unwrap();
 
     assert_eq!(
-        first_resized_copy.file_name.to_str().unwrap(),
-        "test_image_100w.jpg"
+        first_resized_copy
+            .path_starting_from_images_dir
+            .to_str()
+            .unwrap(),
+        "/test_image_100w.jpg"
     );
 }

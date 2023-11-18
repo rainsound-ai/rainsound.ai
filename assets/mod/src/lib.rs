@@ -55,7 +55,7 @@ impl NonHtmlAssets {
             minify: true
         );
         let built_css = CssAsset {
-            file_name: PathBuf::from_str("built.css").unwrap(),
+            url_path: PathBuf::from_str("built.css").unwrap(),
             contents: tailwind_output,
             load_time_budget: Duration::from_millis(1),
         };
@@ -65,12 +65,12 @@ impl NonHtmlAssets {
             production: true
         );
         let browser_js = JsAsset {
-            file_name: PathBuf::from_str("browser.js").unwrap(),
+            url_path: PathBuf::from_str("browser.js").unwrap(),
             contents: browser_crate.built_js,
             load_time_budget: Duration::from_millis(1),
         };
         let browser_bg_wasm = WasmAsset {
-            file_name: PathBuf::from_str("browser_bg.wasm").unwrap(),
+            url_path: PathBuf::from_str("browser_bg.wasm").unwrap(),
             bytes: browser_crate.built_wasm,
             load_time_budget: Duration::from_millis(1),
         };

@@ -4,7 +4,7 @@ use std::{path::PathBuf, time::Duration};
 
 #[derive(PartialEq)]
 pub struct CssAsset {
-    pub file_name: PathBuf,
+    pub url_path: PathBuf,
     pub contents: &'static str,
     pub load_time_budget: Duration,
 }
@@ -12,7 +12,7 @@ pub struct CssAsset {
 impl Asset for CssAsset {
     fn files_to_save(&self) -> Vec<FileToSave> {
         vec![FileToSave {
-            file_name: &self.file_name,
+            path: &self.url_path,
             bytes: self.contents.as_bytes(),
             content_type: "text/css",
         }]
@@ -29,6 +29,6 @@ impl HasPerformanceBudget for CssAsset {
     }
 
     fn path(&self) -> &std::path::Path {
-        &self.file_name
+        &self.url_path
     }
 }

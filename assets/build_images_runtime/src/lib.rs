@@ -4,7 +4,8 @@ use std::path::PathBuf;
 
 #[derive(Clone)]
 pub struct RunTimeBuiltImage {
-    pub path_to_original_image: PathBuf,
+    pub path_starting_from_images_dir: PathBuf,
+    pub absolute_path_to_original_image: PathBuf,
     pub resized_copies: Vec<RunTimeResizedImage>,
     pub placeholder: RunTimePlaceholder,
     pub width: u32,
@@ -23,7 +24,9 @@ impl ToTokens for RunTimeBuiltImage {
         });
         eprintln!("Done quoting resized copies.");
 
-        let path_to_original_image = self.path_to_original_image.to_str().unwrap();
+        let path_starting_from_images_dir = self.path_starting_from_images_dir.to_str().unwrap();
+        let absolute_path_to_original_image =
+            self.absolute_path_to_original_image.to_str().unwrap();
         let width = &self.width;
         let height = &self.height;
 
@@ -34,7 +37,8 @@ impl ToTokens for RunTimeBuiltImage {
 
         tokens.extend(quote! {
             RunTimeBuiltImage {
-                path_to_original_image: std::path::PathBuf::from(#path_to_original_image),
+                path_starting_from_images_dir: std::path::PathBuf::from(#path_starting_from_images_dir),
+                absolute_path_to_original_image: std::path::PathBuf::from(#absolute_path_to_original_image),
                 resized_copies: vec![
                     #(#resized_copies),*
                 ],
@@ -52,8 +56,8 @@ pub struct RunTimeResizedImage {
     pub mime_type: String,
     pub width: u32,
     pub height: u32,
-    pub file_name: PathBuf,
-    pub original_file_path: PathBuf,
+    pub path_starting_from_images_dir: PathBuf,
+    pub absolute_path: PathBuf,
 }
 
 impl ToTokens for RunTimeResizedImage {
@@ -62,17 +66,17 @@ impl ToTokens for RunTimeResizedImage {
         let mime_type = &self.mime_type;
         let width = &self.width;
         let height = &self.height;
-        let file_name = self.file_name.to_str().unwrap();
-        let original_file_path = self.original_file_path.to_str().unwrap();
+        let path_starting_from_images_dir = self.path_starting_from_images_dir.to_str().unwrap();
+        let absolute_path = self.absolute_path.to_str().unwrap();
 
         tokens.extend(quote! {
             RunTimeResizedImage {
-                bytes: include_bytes!(#original_file_path).to_vec(),
+                bytes: include_bytes!(#absolute_path).to_vec(),
                 mime_type: #mime_type.to_string(),
                 width: #width,
                 height: #height,
-                file_name: std::path::PathBuf::from(#file_name),
-                original_file_path: std::path::PathBuf::from(#original_file_path),
+                path_starting_from_images_dir: std::path::PathBuf::from(#path_starting_from_images_dir),
+                absolute_path: std::path::PathBuf::from(#absolute_path),
             }
         })
     }

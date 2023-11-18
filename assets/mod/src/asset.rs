@@ -15,7 +15,7 @@ pub trait Asset: Send + Sync {
 }
 
 pub struct FileToSave<'a> {
-    pub file_name: &'a Path,
+    pub path: &'a Path,
     pub bytes: &'a [u8],
     pub content_type: &'a str,
 }
@@ -37,15 +37,14 @@ impl<'a> FileToSave<'a> {
     }
 
     fn path_on_disk(&self) -> PathBuf {
-        crate::built_assets_dir().join(self.file_name)
+        crate::built_assets_dir().join(self.path)
     }
 
-    /// The path used when loading assets in the browser.
-    fn path(&self) -> PathBuf {
-        path_for_asset_in_browser(self.file_name)
+    fn url_path(&self) -> PathBuf {
+        asset_url_path(self.path)
     }
 }
 
-pub fn path_for_asset_in_browser(file_name: &Path) -> PathBuf {
-    crate::built_assets_browser_prefix().join(file_name)
+pub fn asset_url_path(sub_url_path: &Path) -> PathBuf {
+    crate::built_assets_browser_prefix().join(sub_url_path)
 }

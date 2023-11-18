@@ -26,15 +26,8 @@ pub fn build_images(input: TokenStream) -> TokenStream {
     let built_images = get_images_from_disk(input);
     let code = generate_code(&built_images);
 
-    // let item = syn::parse2::<syn::Item>(code.clone()).unwrap();
-    // let syn_file = syn::File {
-    //     attrs: vec![],
-    //     items: vec![item],
-    //     shebang: None,
-    // };
-    // let formatted_code = prettyplease::unparse(&syn_file);
-
-    eprintln!("{}", &code.to_string());
+    // print_code_for_debugging(&code);
+    // eprintln!("{}", &code.to_string());
 
     code.into()
 }
@@ -81,33 +74,58 @@ fn get_images_from_disk(input: BuildImagesInput) -> Vec<BuiltImage> {
     eprintln!("Generating placeholders.");
     original_images
         .into_par_iter()
-        .map(|(path_to_original_image, original_image)| {
-            BuiltImage::new(path_to_original_image, original_image)
+        .map(|image_file| {
+            BuiltImage::new(
+                &input.path_to_images_dir,
+                image_file.absolute_path_to_image,
+                image_file.image,
+            )
         })
         .collect()
 }
 
-fn get_image_files(path_to_images_dir: &Path) -> Vec<(PathBuf, DynamicImage)> {
+fn get_image_files(path_to_images_dir: &Path) -> Vec<ImageFile> {
     WalkDir::new(path_to_images_dir)
         .into_iter()
-        .filter_map(|maybe_entry| match maybe_entry {
-            Ok(entry) if entry.file_type().is_dir() => None,
-            Ok(entry) => {
-                let path = entry.path();
-                match image::open(path) {
-                    Ok(dynamic_image) => Some((path.to_path_buf(), dynamic_image)),
-                    Err(error) => {
-                        eprintln!("Error opening image {:?}: {:?}", path, error);
-                        None
-                    }
-                }
-            }
-            Err(error) => {
-                eprintln!("Error reading image directory: {:?}", error);
-                None
-            }
-        })
+        .filter_map(try_get_image_file_from_dir_entry)
         .collect()
+}
+
+fn try_get_image_file_from_dir_entry(
+    maybe_dir_entry: walkdir::Result<walkdir::DirEntry>,
+) -> Option<ImageFile> {
+    match maybe_dir_entry {
+        Ok(entry) if entry.file_type().is_dir() => None,
+        Ok(entry) => {
+            let path = entry.path();
+            try_get_image_file_from_path(path)
+        }
+        Err(error) => {
+            eprintln!("Error reading image directory: {:?}", error);
+            None
+        }
+    }
+}
+
+fn try_get_image_file_from_path(path: &Path) -> Option<ImageFile> {
+    match image::open(path) {
+        Ok(dynamic_image) => {
+            let image_file = ImageFile {
+                absolute_path_to_image: path.to_path_buf(),
+                image: dynamic_image,
+            };
+            Some(image_file)
+        }
+        Err(error) => {
+            eprintln!("Error opening image {:?}: {:?}", path, error);
+            None
+        }
+    }
+}
+
+struct ImageFile {
+    absolute_path_to_image: PathBuf,
+    image: DynamicImage,
 }
 
 fn generate_code(built_images: &[BuiltImage]) -> proc_macro2::TokenStream {
@@ -149,4 +167,25 @@ fn generate_code(built_images: &[BuiltImage]) -> proc_macro2::TokenStream {
             }
         }
     }
+}
+
+#[allow(dead_code)]
+fn print_code_for_debugging(token_stream: &proc_macro2::TokenStream) {
+    let wrapped_in_main_function = quote! {
+        fn main() {
+            #token_stream
+        }
+    };
+
+    let item = syn::parse2::<syn::Item>(wrapped_in_main_function).unwrap();
+
+    let syn_file = syn::File {
+        attrs: vec![],
+        items: vec![item],
+        shebang: None,
+    };
+
+    let formatted_code = prettyplease::unparse(&syn_file);
+
+    eprintln!("{}", formatted_code);
 }

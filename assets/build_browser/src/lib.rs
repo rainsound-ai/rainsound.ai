@@ -142,7 +142,10 @@ struct WasmPackOutput {
 }
 
 fn out_dir() -> PathBuf {
-    workspace_root_dir().join("build_browser").join("target")
+    workspace_root_dir()
+        .join("assets")
+        .join("build_browser")
+        .join("target")
 }
 
 fn minify_js(path_to_js: PathBuf) -> PathBuf {

@@ -9,6 +9,8 @@ pub fn build_images_dir() -> PathBuf {
     workspace_root_dir().join("assets").join("build_images")
 }
 
-pub fn built_image_path_from_file_name(file_name: &Path) -> PathBuf {
-    build_images_dir().join("target").join(file_name)
+pub fn built_image_path(path_starting_from_images_dir: &Path) -> PathBuf {
+    build_images_dir()
+        .join("target")
+        .join(path_starting_from_images_dir)
 }

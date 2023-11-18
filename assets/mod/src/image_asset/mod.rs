@@ -18,7 +18,7 @@ pub struct ImageAsset {
     pub srcset: String,
     pub src: String,
 
-    path_to_original_image: PathBuf,
+    absolute_path_to_original_image: PathBuf,
 }
 
 impl ImageAsset {
@@ -42,7 +42,7 @@ impl ImageAsset {
             srcset,
             src,
 
-            path_to_original_image: built_image.path_to_original_image,
+            absolute_path_to_original_image: built_image.absolute_path_to_original_image,
         }
     }
 
@@ -57,7 +57,7 @@ impl ImageAsset {
             .min_by_key(|resized_copy| resized_copy.width)
             .expect("Received a built image with no resized copies.");
 
-        crate::path_for_asset_in_browser(&narrowest.file_name)
+        crate::asset_url_path(&narrowest.path_starting_from_images_dir)
             .to_string_lossy()
             .to_string()
     }
@@ -67,7 +67,7 @@ impl ImageAsset {
             .iter()
             .map(|resized_copy| {
                 let width = resized_copy.width;
-                let path = crate::path_for_asset_in_browser(&resized_copy.file_name);
+                let path = crate::asset_url_path(&resized_copy.path_starting_from_images_dir);
                 let path_str = path.to_str().unwrap();
                 format!("{path_str} {width}w")
             })
@@ -108,7 +108,7 @@ impl Asset for ImageAsset {
         self.resized_copies
             .iter()
             .map(|resized_copy| FileToSave {
-                file_name: &resized_copy.file_name,
+                path: &resized_copy.path_starting_from_images_dir,
                 bytes: &resized_copy.bytes,
                 content_type: &resized_copy.mime_type,
             })

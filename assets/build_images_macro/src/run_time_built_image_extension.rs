@@ -29,7 +29,8 @@ impl RunTimeBuiltImageExtension for RunTimeBuiltImage {
             width,
             height,
             resized_copies,
-            path_to_original_image: built_image.path_to_original_image.clone(),
+            path_starting_from_images_dir: built_image.path_starting_from_images_dir.clone(),
+            absolute_path_to_original_image: built_image.absolute_path_to_original_image.clone(),
             placeholder: RunTimePlaceholder {
                 lqip_data_uri,
                 automatically_detected_color,
