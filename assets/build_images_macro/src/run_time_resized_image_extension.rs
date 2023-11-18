@@ -7,7 +7,7 @@ pub trait RunTimeResizedImageExtension {
 
 impl RunTimeResizedImageExtension for RunTimeResizedImage {
     fn from_built_resized_image(resized_image: &ResizedImage) -> Self {
-        eprintln!("Instantiating RunTimeResizedImage.");
+        log::info!("Instantiating RunTimeResizedImage.");
         let mime_type = resized_image.mime_type.to_string();
         let width = resized_image.width;
         let height = resized_image.height;

@@ -8,23 +8,23 @@ pub trait RunTimeBuiltImageExtension {
 
 impl RunTimeBuiltImageExtension for RunTimeBuiltImage {
     fn from_built_image(built_image: &BuiltImage) -> Self {
-        eprintln!("Extracting placeholder.");
+        log::info!("Extracting placeholder.");
         let placeholder = &built_image.placeholder;
         let lqip_data_uri = placeholder.lqip.to_string();
         let automatically_detected_color = placeholder.automatically_detected_color.to_string();
 
-        eprintln!("Extracting width and height.");
+        log::info!("Extracting width and height.");
         let width = built_image.width;
         let height = built_image.height;
 
-        eprintln!("Extracting resized copies.");
+        log::info!("Extracting resized copies.");
         let resized_copies: Vec<_> = built_image
             .resized_copies
             .iter()
             .map(RunTimeResizedImage::from_built_resized_image)
             .collect();
 
-        eprintln!("Creating RunTimeBuiltImage.");
+        log::info!("Creating RunTimeBuiltImage.");
         RunTimeBuiltImage {
             width,
             height,

@@ -20,6 +20,11 @@ mime = "0.3.17"
 rayon = "1.8.0"
 build_images_runtime = { path = "../build_images_runtime" }
 prettyplease = "0.2.15"
+log = "0.4.20"
+simple_logger = { version = "4.2.0", default_features = false, features = [
+    "stderr",
+    "colors",
+] }
 
 # Always build the image crate with optimizations enabled, even in dev, test, and benchmark mode.
 [profile.dev.package.image]

@@ -14,15 +14,15 @@ pub struct RunTimeBuiltImage {
 
 impl ToTokens for RunTimeBuiltImage {
     fn to_tokens(&self, tokens: &mut TokenStream) {
-        eprintln!("Converting RunTimeBuiltImage to tokens.");
+        log::info!("Converting RunTimeBuiltImage to tokens.");
 
         let resized_copies = self.resized_copies.iter().map(|resized_copy| {
-            eprintln!("Quoting resized copy.");
+            log::info!("Quoting resized copy.");
             quote! {
                 #resized_copy
             }
         });
-        eprintln!("Done quoting resized copies.");
+        log::info!("Done quoting resized copies.");
 
         let path_starting_from_images_dir = self.path_starting_from_images_dir.to_str().unwrap();
         let absolute_path_to_original_image =
@@ -62,7 +62,7 @@ pub struct RunTimeResizedImage {
 
 impl ToTokens for RunTimeResizedImage {
     fn to_tokens(&self, tokens: &mut TokenStream) {
-        eprintln!("Converting RunTimeResizedImage to tokens.");
+        log::info!("Converting RunTimeResizedImage to tokens.");
         let mime_type = &self.mime_type;
         let width = &self.width;
         let height = &self.height;
@@ -90,7 +90,7 @@ pub struct RunTimePlaceholder {
 
 impl ToTokens for RunTimePlaceholder {
     fn to_tokens(&self, tokens: &mut TokenStream) {
-        eprintln!("Converting RunTimePlaceholder to tokens.");
+        log::info!("Converting RunTimePlaceholder to tokens.");
         let lqip_data_uri = &self.lqip_data_uri;
         let automatically_detected_color = &self.automatically_detected_color;
 

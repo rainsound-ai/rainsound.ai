@@ -17,6 +17,6 @@ pub fn it_works() {
             .path_starting_from_images_dir
             .to_str()
             .unwrap(),
-        "/test_image_100w.jpg"
+        "test_image_100w.jpg"
     );
 }
