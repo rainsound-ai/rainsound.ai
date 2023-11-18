@@ -138,6 +138,7 @@ dependencies = [
 name = "build_browser"
 version = "0.1.0"
 dependencies = [
+ "log",
  "minify-js",
  "proc-macro2",
  "quote",

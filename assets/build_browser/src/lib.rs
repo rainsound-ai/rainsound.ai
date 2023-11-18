@@ -48,7 +48,7 @@ pub fn build_browser_crate(input: TokenStream) -> TokenStream {
 }
 
 fn run_wasm_pack(input: BuildBrowserCrateInput) -> Result<WasmPackOutput, TokenStream> {
-    eprintln!("[build_browser] Building browser crate.");
+    log::info!("Building browser crate.");
 
     let wasm_pack = workspace_root_dir()
         .join("target")
@@ -77,10 +77,7 @@ fn run_wasm_pack(input: BuildBrowserCrateInput) -> Result<WasmPackOutput, TokenS
 
     let browser_crate = workspace_root_dir().join(input.path_to_browser_crate);
     let browser_crate_str = browser_crate.to_str().unwrap();
-    eprintln!(
-        "[build_browser] Looking for browser crate at {}.",
-        browser_crate_str
-    );
+    log::info!("Looking for browser crate at {}.", browser_crate_str);
     if !browser_crate.exists() {
         let error_message = format!("Folder not found: {}", browser_crate_str);
 
@@ -106,13 +103,13 @@ fn run_wasm_pack(input: BuildBrowserCrateInput) -> Result<WasmPackOutput, TokenS
         run_wasm_pack.args(["--features", "dev"]);
     }
 
-    eprintln!("[build_browser] Invoking wasm-pack CLI.");
+    log::info!("Invoking wasm-pack CLI.");
     let wasm_pack_output = run_wasm_pack
         .output()
         .expect("Error invoking the Tailwind CLI.");
 
     if wasm_pack_output.status.success() {
-        eprintln!("[build_browser] Successfully built browser crate.");
+        log::info!("Successfully built browser crate.");
 
         Ok(WasmPackOutput {
             path_to_built_wasm: out_dir.join("browser_bg.wasm"),
@@ -120,14 +117,14 @@ fn run_wasm_pack(input: BuildBrowserCrateInput) -> Result<WasmPackOutput, TokenS
         })
     } else {
         let stdout = String::from_utf8(wasm_pack_output.stdout)
-            .expect("Error converting wasm-pack's output to a string.");
+            .expect("Error converting wasm-pack's stdout to a string.");
         let stderr = String::from_utf8(wasm_pack_output.stderr)
-            .expect("Error converting wasm-pack's error output to a string.");
+            .expect("Error converting wasm-pack's stderr to a string.");
         let error_message = format!(
             "Error building browser crate.\nstdout:\n{}\n\nstderr:\n{}",
             stdout, stderr
         );
-        eprintln!("[build_browser] {}", error_message);
+        log::error!("{}", error_message);
         let error: TokenStream = syn::Error::new(input.span, error_message)
             .to_compile_error()
             .into();
