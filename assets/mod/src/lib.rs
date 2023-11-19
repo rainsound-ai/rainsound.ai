@@ -52,7 +52,8 @@ impl NonHtmlAssets {
     pub fn new() -> Self {
         let tailwind_output = build_tailwind!(
             path_to_input_file: "serverless_functions/src/main.css",
-            minify: true
+            minify: true,
+            debug: true
         );
         let built_css = CssAsset {
             url_path: PathBuf::from_str("built.css").unwrap(),
@@ -62,7 +63,7 @@ impl NonHtmlAssets {
 
         let browser_crate = build_browser_crate!(
             path_to_browser_crate: "browser",
-            production: true
+            production: true,
         );
         let browser_js = JsAsset {
             url_path: PathBuf::from_str("browser.js").unwrap(),

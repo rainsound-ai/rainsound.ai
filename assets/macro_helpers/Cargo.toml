@@ -1,18 +1,12 @@
 [package]
-name = "build_tailwind"
+name = "macro_helpers"
 version = "0.1.0"
 edition = "2021"
 description = ""
 license = "unlicensed"
 repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
 
-[lib]
-proc-macro = true
-
 [dependencies]
-macro_helpers = { path = "../macro_helpers" }
-log = "0.4.20"
 proc-macro2 = "1.0.69"
 quote = "1.0.33"
 syn = "2.0.39"
-simple_logger = "4.2.0"

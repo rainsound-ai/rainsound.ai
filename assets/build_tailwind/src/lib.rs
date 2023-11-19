@@ -1,17 +1,25 @@
 #![allow(non_upper_case_globals)]
 
+use macro_helpers::*;
 use proc_macro::TokenStream;
 use quote::quote;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 use syn::{
     parse::{Parse, ParseStream},
-    Ident, LitBool, LitStr, Result as SynResult, Token,
+    Result as SynResult,
 };
 
 #[proc_macro]
 pub fn build_tailwind(input: TokenStream) -> TokenStream {
     let input = syn::parse_macro_input!(input as BuildTailwindInput);
+
+    let log_level = if input.debug {
+        log::Level::max()
+    } else {
+        log::Level::Warn
+    };
+    simple_logger::init_with_level(log_level).unwrap();
 
     log::info!("Building Tailwind.");
     let build_tailwind_dir = workspace_root_dir().join("assets").join("build_tailwind");
@@ -94,6 +102,7 @@ struct BuildTailwindInput {
     path_to_input_file: String,
     minify: bool,
     span: proc_macro2::Span,
+    debug: bool,
 }
 
 impl Parse for BuildTailwindInput {
@@ -108,36 +117,23 @@ build_tailwind!(
 );
 "#;
 
-        // Validate and parse "path_to_input_file".
-        let key: Result<Ident, _> = input.parse();
-        let parsed_key = match key {
-            Ok(parsed_key) => parsed_key,
-            Err(error) => return Err(syn::Error::new(error.span(), error_message)),
-        };
-        if parsed_key != "path_to_input_file" {
-            return Err(syn::Error::new(input.span(), error_message));
-        }
-        let _: Token![:] = input.parse()?;
-        let path_to_input_file: LitStr = input.parse()?;
+        let error = syn::Error::new(input_span, error_message);
 
-        // Parse the comma.
-        let _: Token![,] = input.parse()?;
+        let path_to_input_file =
+            parse_named_string_argument("path_to_input_file", &input, ArgumentPosition::First)
+                .ok_or(error.clone())?;
 
-        // Validate and parse "minify".
-        let key: Result<Ident, _> = input.parse();
-        let parsed_key = match key {
-            Ok(parsed_key) => parsed_key,
-            Err(error) => return Err(syn::Error::new(error.span(), error_message)),
-        };
-        if parsed_key != "minify" {
-            return Err(syn::Error::new(input.span(), error_message));
-        }
-        let _: Token![:] = input.parse()?;
-        let minify: LitBool = input.parse()?;
+        let minify =
+            parse_named_bool_argument("minify", &input, ArgumentPosition::NotFirst).ok_or(error)?;
+
+        // Validate and parse "debug".
+        let debug =
+            parse_named_bool_argument("debug", &input, ArgumentPosition::NotFirst).unwrap_or(false);
 
         Ok(BuildTailwindInput {
-            path_to_input_file: path_to_input_file.value(),
-            minify: minify.value,
+            path_to_input_file,
+            minify,
+            debug,
             span: input_span,
         })
     }
