@@ -4,29 +4,29 @@ use std::path::PathBuf;
 use std::time::Duration;
 
 #[derive(PartialEq)]
-pub struct WasmAsset {
+pub struct JsAsset {
     pub url_path: PathBuf,
-    pub bytes: &'static [u8],
+    pub contents: &'static str,
     pub load_time_budget: Duration,
 }
 
-impl Asset for WasmAsset {
-    fn files_to_save(&self) -> Vec<crate::FileToSave> {
+impl Asset for JsAsset {
+    fn files_to_save(&self) -> Vec<FileToSave> {
         vec![FileToSave {
-            path: &self.url_path,
-            bytes: self.bytes,
-            content_type: "application/wasm",
+            path_starting_from_built_assets_dir: &self.url_path,
+            bytes: self.contents.as_bytes(),
+            content_type: "application/javascript",
         }]
     }
 }
 
-impl HasPerformanceBudget for WasmAsset {
+impl HasPerformanceBudget for JsAsset {
     fn load_time_budget(&self) -> Duration {
         self.load_time_budget
     }
 
     fn bytes(&self) -> &[u8] {
-        self.bytes
+        self.contents.as_bytes()
     }
 
     fn path(&self) -> &std::path::Path {

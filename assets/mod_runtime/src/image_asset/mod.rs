@@ -17,8 +17,7 @@ pub struct ImageAsset {
     pub resized_copies: Vec<RunTimeResizedImage>,
     pub srcset: String,
     pub src: String,
-
-    absolute_path_to_original_image: PathBuf,
+    // absolute_path_to_original_image: PathBuf,
 }
 
 impl ImageAsset {
@@ -41,8 +40,7 @@ impl ImageAsset {
             resized_copies: built_image.resized_copies,
             srcset,
             src,
-
-            absolute_path_to_original_image: built_image.absolute_path_to_original_image,
+            // absolute_path_to_original_image: built_image.absolute_path_to_original_image,
         }
     }
 
@@ -108,7 +106,7 @@ impl Asset for ImageAsset {
         self.resized_copies
             .iter()
             .map(|resized_copy| FileToSave {
-                path: &resized_copy.path_starting_from_images_dir,
+                path_starting_from_built_assets_dir: &resized_copy.path_starting_from_images_dir,
                 bytes: &resized_copy.bytes,
                 content_type: &resized_copy.mime_type,
             })

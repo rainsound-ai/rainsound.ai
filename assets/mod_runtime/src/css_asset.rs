@@ -1,26 +1,25 @@
+use crate::asset::{Asset, FileToSave};
 use crate::performance_budget::HasPerformanceBudget;
-use crate::{Asset, FileToSave};
-use std::path::PathBuf;
-use std::time::Duration;
+use std::{path::PathBuf, time::Duration};
 
 #[derive(PartialEq)]
-pub struct JsAsset {
+pub struct CssAsset {
     pub url_path: PathBuf,
     pub contents: &'static str,
     pub load_time_budget: Duration,
 }
 
-impl Asset for JsAsset {
+impl Asset for CssAsset {
     fn files_to_save(&self) -> Vec<FileToSave> {
         vec![FileToSave {
-            path: &self.url_path,
+            path_starting_from_built_assets_dir: &self.url_path,
             bytes: self.contents.as_bytes(),
-            content_type: "application/javascript",
+            content_type: "text/css",
         }]
     }
 }
 
-impl HasPerformanceBudget for JsAsset {
+impl HasPerformanceBudget for CssAsset {
     fn load_time_budget(&self) -> Duration {
         self.load_time_budget
     }
