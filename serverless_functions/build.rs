@@ -6,5 +6,5 @@ fn main() {
     println!("cargo:rerun-if-changed=../**/*.rs");
     println!("cargo:rerun-if-changed=../**/*.css");
 
-    // assets::non_html_assets.save_to_disk();
+    assets::non_html_assets.save_to_disk();
 }
