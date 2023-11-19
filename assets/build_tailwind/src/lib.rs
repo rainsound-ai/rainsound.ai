@@ -119,16 +119,25 @@ build_tailwind!(
 
         let error = syn::Error::new(input_span, error_message);
 
-        let path_to_input_file =
-            parse_named_string_argument("path_to_input_file", &input, ArgumentPosition::First)
-                .ok_or(error.clone())?;
+        let path_to_input_file = parse_named_string_argument(
+            "path_to_input_file",
+            &input,
+            // ArgumentPosition::First
+        )
+        .ok_or(error.clone())?;
 
-        let minify =
-            parse_named_bool_argument("minify", &input, ArgumentPosition::NotFirst).ok_or(error)?;
+        let minify = parse_named_bool_argument(
+            "minify", &input,
+            // ArgumentPosition::NotFirst
+        )
+        .ok_or(error)?;
 
         // Validate and parse "debug".
-        let debug =
-            parse_named_bool_argument("debug", &input, ArgumentPosition::NotFirst).unwrap_or(false);
+        let debug = parse_named_bool_argument(
+            "debug", &input,
+            // ArgumentPosition::NotFirst
+        )
+        .unwrap_or(false);
 
         Ok(BuildTailwindInput {
             path_to_input_file,

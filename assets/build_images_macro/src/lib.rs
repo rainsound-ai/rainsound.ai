@@ -64,16 +64,22 @@ build_images!(path_to_images_dir: \"src/original_images\", debug: true);
 
         // This argument is required, so if it's not present we
         // convert None to an error and return early.
-        let string_path_to_images_dir_starting_at_workspace_root =
-            parse_named_string_argument("path_to_images_dir", &input, ArgumentPosition::First)
-                .ok_or(error)?;
+        let string_path_to_images_dir_starting_at_workspace_root = parse_named_string_argument(
+            "path_to_images_dir",
+            &input,
+            // ArgumentPosition::First
+        )
+        .ok_or(error)?;
 
         let absolute_path_to_images_dir =
             paths::workspace_root_dir().join(string_path_to_images_dir_starting_at_workspace_root);
 
         // This argument is optional, so we default to `false` if it's not present.
-        let debug =
-            parse_named_bool_argument("debug", &input, ArgumentPosition::NotFirst).unwrap_or(false);
+        let debug = parse_named_bool_argument(
+            "debug", &input,
+            // ArgumentPosition::NotFirst
+        )
+        .unwrap_or(false);
 
         Ok(BuildImagesInput {
             absolute_path_to_images_dir,

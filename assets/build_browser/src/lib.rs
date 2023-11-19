@@ -19,19 +19,17 @@ pub fn build_browser_crate(input: TokenStream) -> TokenStream {
     };
     simple_logger::init_with_level(log_level).unwrap();
 
-    let wasm_pack_output = run_wasm_pack(input);
-    let (path_to_built_wasm, path_to_built_js) = match wasm_pack_output {
-        Ok(wasm_pack_output) => {
-            let built_wasm = wasm_pack_output.path_to_built_wasm;
-            let built_js = wasm_pack_output.path_to_built_js;
-            (built_wasm, built_js)
-        }
-        Err(error_message_token_stream) => return error_message_token_stream,
+    // For some reason the `?` operator is erroring here.
+    let maybe_wasm_pack_output = run_wasm_pack(input);
+    let wasm_pack_output = match maybe_wasm_pack_output {
+        Ok(wasm_pack_output) => wasm_pack_output,
+        Err(error) => return error,
     };
 
-    let path_to_minified_js = minify_js(path_to_built_js);
+    let path_to_minified_js = minify_js(wasm_pack_output.path_to_built_js);
 
-    let path_to_built_wasm_str = path_to_built_wasm
+    let path_to_built_wasm_str = wasm_pack_output
+        .path_to_built_wasm
         .to_str()
         .expect("Error converting the path to the built wasm file to a string.");
     let path_to_minified_js_str = path_to_minified_js
@@ -114,7 +112,7 @@ fn run_wasm_pack(input: BuildBrowserCrateInput) -> Result<WasmPackOutput, TokenS
     log::info!("Invoking wasm-pack CLI.");
     let wasm_pack_output = run_wasm_pack
         .output()
-        .expect("Error invoking the Tailwind CLI.");
+        .expect("Error invoking the wasm-pack CLI.");
 
     if wasm_pack_output.status.success() {
         log::info!("Successfully built browser crate.");
@@ -214,21 +212,30 @@ build_browser_crate!(
         //
         // This argument is required, so if it's not present we
         // convert None to an error and return early.
-        let path_to_browser_crate =
-            parse_named_string_argument("path_to_browser_crate", &input, ArgumentPosition::First)
-                .ok_or(error.clone())?;
+        let path_to_browser_crate = parse_named_string_argument(
+            "path_to_browser_crate",
+            &input,
+            // ArgumentPosition::First
+        )
+        .ok_or(error.clone())?;
 
         // Validate and parse `production`.
         //
         // This argument is also required, so if it's not present we
         // convert None to an error and return early.
-        let production =
-            parse_named_bool_argument("production", &input, ArgumentPosition::NotFirst)
-                .ok_or(error)?;
+        let production = parse_named_bool_argument(
+            "production",
+            &input,
+            // ArgumentPosition::NotFirst
+        )
+        .ok_or(error)?;
 
         // This argument is optional, so we default to `false` if it's not present.
-        let debug =
-            parse_named_bool_argument("debug", &input, ArgumentPosition::NotFirst).unwrap_or(false);
+        let debug = parse_named_bool_argument(
+            "debug", &input,
+            // ArgumentPosition::NotFirst
+        )
+        .unwrap_or(false);
 
         Ok(BuildBrowserCrateInput {
             path_to_browser_crate,
