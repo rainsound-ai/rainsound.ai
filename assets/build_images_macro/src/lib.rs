@@ -1,6 +1,6 @@
 use build_images_runtime::*;
 use image::DynamicImage;
-use macro_helpers::*;
+use parse_macro_arguments::*;
 use proc_macro::TokenStream;
 use quote::{format_ident, quote};
 use rayon::prelude::*;

@@ -11,7 +11,7 @@ proc-macro = true
 
 [dependencies]
 build_images_runtime = { path = "../build_images_runtime" }
-macro_helpers = { path = "../macro_helpers" }
+parse_macro_arguments = { path = "../parse_macro_arguments" }
 proc-macro2 = "1.0.69"
 quote = "1.0.33"
 syn = "2.0.39"

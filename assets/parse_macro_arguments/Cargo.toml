@@ -1,5 +1,5 @@
 [package]
-name = "macro_helpers"
+name = "parse_macro_arguments"
 version = "0.1.0"
 edition = "2021"
 description = ""

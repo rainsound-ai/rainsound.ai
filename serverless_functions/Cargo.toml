@@ -19,4 +19,4 @@ anyhow = "1.0.75"
 build-time = "0.1.3"
 
 [build-dependencies]
-assets = { path = "../assets/mod", features = ["build"] }
+# assets = { path = "../assets/mod", features = ["build"] }

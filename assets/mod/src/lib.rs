@@ -50,14 +50,14 @@ pub struct NonHtmlAssets {
 // deadlocking if we're using a lazily initialized global variable.
 impl NonHtmlAssets {
     pub fn new() -> Self {
-        let tailwind_output = build_tailwind!(
+        let built_css = build_tailwind!(
             path_to_input_file: "serverless_functions/src/main.css",
             minify: true,
             debug: true
         );
         let built_css = CssAsset {
             url_path: PathBuf::from_str("built.css").unwrap(),
-            contents: tailwind_output,
+            contents: built_css,
             load_time_budget: Duration::from_millis(1),
         };
 

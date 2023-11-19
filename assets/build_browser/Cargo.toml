@@ -10,7 +10,7 @@ repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
 proc-macro = true
 
 [dependencies]
-macro_helpers = { path = "../macro_helpers" }
+parse_macro_arguments = { path = "../parse_macro_arguments" }
 log = "0.4.20"
 minify-js = { version = "0.5.6" }
 proc-macro2 = "1.0.69"
