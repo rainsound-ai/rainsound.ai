@@ -1,4 +1,5 @@
 use crate::asset::{Asset, FileToSave};
+use crate::asset_url_path;
 use crate::performance_budget::HasPerformanceBudget;
 use std::{path::PathBuf, time::Duration};
 
@@ -7,6 +8,17 @@ pub struct CssAsset {
     pub url_path: PathBuf,
     pub contents: &'static str,
     pub load_time_budget: Duration,
+}
+
+impl CssAsset {
+    pub fn new(url_path: PathBuf, contents: &'static str, load_time_budget: Duration) -> Self {
+        let url_path = asset_url_path(&url_path);
+        Self {
+            url_path,
+            contents,
+            load_time_budget,
+        }
+    }
 }
 
 impl Asset for CssAsset {

@@ -54,11 +54,11 @@ impl NonHtmlAssets {
             minify: true,
             debug: true
         );
-        let built_css = CssAsset {
-            url_path: PathBuf::from_str("built.css").unwrap(),
-            contents: built_css,
-            load_time_budget: Duration::from_millis(1),
-        };
+        let built_css = CssAsset::new(
+            PathBuf::from_str("built.css").unwrap(),
+            built_css,
+            Duration::from_millis(1),
+        );
 
         let browser_crate = build_browser_crate!(
             path_to_browser_crate: "browser",
