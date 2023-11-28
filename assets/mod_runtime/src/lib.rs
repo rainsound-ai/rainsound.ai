@@ -65,16 +65,16 @@ impl NonHtmlAssets {
             production: true,
             debug: true,
         );
-        let browser_js = JsAsset {
-            url_path: PathBuf::from_str("browser.js").unwrap(),
-            contents: browser_crate.built_js,
-            load_time_budget: Duration::from_millis(1),
-        };
-        let browser_bg_wasm = WasmAsset {
-            url_path: PathBuf::from_str("browser_bg.wasm").unwrap(),
-            bytes: browser_crate.built_wasm,
-            load_time_budget: Duration::from_millis(1),
-        };
+        let browser_js = JsAsset::new(
+            PathBuf::from_str("browser.js").unwrap(),
+            browser_crate.built_js,
+            Duration::from_millis(1),
+        );
+        let browser_bg_wasm = WasmAsset::new(
+            PathBuf::from_str("browser_bg.wasm").unwrap(),
+            browser_crate.built_wasm,
+            Duration::from_millis(1),
+        );
 
         let built_images =
             build_images!(path_to_images_dir: "assets/mod_runtime/src/original_images");

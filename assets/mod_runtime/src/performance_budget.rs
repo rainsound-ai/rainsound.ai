@@ -53,7 +53,7 @@ impl HowCloseToBudget {
             return HowCloseToBudget::WellBelowBudget;
         }
 
-        let path = asset.path();
+        let path = asset.path_for_reporting_asset_over_budget();
 
         if (half_of_budget..=budgeted_load_time_secs).contains(&estimated_load_time_secs) {
             return HowCloseToBudget::CloseToBudget {
@@ -148,5 +148,5 @@ pub trait HasPerformanceBudget: Asset {
 
     fn bytes(&self) -> &[u8];
 
-    fn path(&self) -> &Path;
+    fn path_for_reporting_asset_over_budget(&self) -> &Path;
 }

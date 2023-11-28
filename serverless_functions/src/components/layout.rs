@@ -62,10 +62,12 @@ fn nav_links() -> Markup {
 fn main_js() -> Markup {
     let browser_js_path = non_html_assets
         .browser_js
-        .path()
+        .full_url_path
         .to_string_lossy()
         .to_string();
+    dbg!(&browser_js_path);
     let contents = include_str!("../main.js").replace("{browser_js_filename}", &browser_js_path);
+    dbg!(&contents);
     html! {
         script type="module" {
             (PreEscaped(contents))
