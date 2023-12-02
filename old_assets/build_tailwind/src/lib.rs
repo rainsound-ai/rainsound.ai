@@ -19,9 +19,7 @@ pub fn build_tailwind(input: TokenStream) -> TokenStream {
     } else {
         log::Level::Warn
     };
-    if let Err(error) = simple_logger::init_with_level(log_level) {
-        log::warn!("Error initializing logger: {}", error);
-    }
+    simple_logger::init_with_level(log_level).unwrap();
 
     log::info!("Building Tailwind.");
     let build_tailwind_dir = workspace_root_dir().join("assets").join("build_tailwind");

@@ -17,9 +17,7 @@ pub fn build_browser_crate(input: TokenStream) -> TokenStream {
     } else {
         log::Level::Warn
     };
-    if let Err(error) = simple_logger::init_with_level(log_level) {
-        log::warn!("Error initializing logger: {}", error);
-    }
+    simple_logger::init_with_level(log_level).unwrap();
 
     // For some reason the `?` operator is erroring here.
     let maybe_wasm_pack_output = run_wasm_pack(input);

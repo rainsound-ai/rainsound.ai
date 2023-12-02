@@ -1,6 +1,7 @@
 use crate::components::*;
 use crate::css_class_groups::*;
 use crate::routes::Route;
+use crate::serverless_functions_assets::all_assets;
 use assets::*;
 use maud::{html, Markup, PreEscaped, DOCTYPE};
 
@@ -12,7 +13,7 @@ pub fn layout(content: Markup) -> Markup {
             meta charset="UTF-8";
             meta name="viewport" content="width=device-width, initial-scale=1.0";
             meta http_equiv="X-UA-Compatible" content="ie=edge";
-            (stylesheet(&non_html_assets.built_css))
+            (stylesheet(&all_assets.css))
         }
 
         body class={(bg_background()) " dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75"} {

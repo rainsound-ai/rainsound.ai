@@ -7,5 +7,5 @@ license = "unlicensed"
 repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
 
 [dependencies]
-assets_runtime = { path = "../runtime" }
-assets_macro = { path = "../macro" }
+assets_runtime = { path = "../mod_runtime" }
+assets_macro = { path = "../mod_macro" }

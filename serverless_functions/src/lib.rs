@@ -19,6 +19,8 @@ use self::prelude::*;
 
 mod routes;
 
+mod serverless_functions_assets;
+
 #[http_component]
 fn main(req: Request) -> Result<Response> {
     // This saves our assets to the assets/built_assets directory at build time.

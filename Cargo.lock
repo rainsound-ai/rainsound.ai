@@ -75,7 +75,6 @@ version = "0.1.0"
 dependencies = [
  "assets_runtime",
  "log",
- "parse_macro_arguments",
  "proc-macro2",
  "quote",
  "rayon",
@@ -95,6 +94,8 @@ dependencies = [
  "cfg-if",
  "log",
  "once_cell",
+ "proc-macro2",
+ "quote",
  "rayon",
  "toml",
 ]
@@ -1372,6 +1373,7 @@ dependencies = [
  "build-time",
  "http",
  "maud",
+ "once_cell",
  "shared",
  "spin-sdk",
 ]

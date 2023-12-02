@@ -1,17 +1,16 @@
-#![allow(non_upper_case_globals)]
-
-use parse_macro_arguments::*;
+use crate::parse_macro_arguments::*;
+use assets_runtime::{paths::*, CssAsset};
 use proc_macro::TokenStream;
 use quote::quote;
-use std::path::{Path, PathBuf};
 use std::process::Command;
+use std::str::FromStr;
+use std::{path::PathBuf, time::Duration};
 use syn::{
     parse::{Parse, ParseStream},
     Result as SynResult,
 };
 
-#[proc_macro]
-pub fn build_tailwind(input: TokenStream) -> TokenStream {
+pub fn build(input: TokenStream) -> TokenStream {
     let input = syn::parse_macro_input!(input as BuildTailwindInput);
 
     let log_level = if input.debug {
@@ -24,9 +23,8 @@ pub fn build_tailwind(input: TokenStream) -> TokenStream {
     }
 
     log::info!("Building Tailwind.");
-    let build_tailwind_dir = workspace_root_dir().join("assets").join("build_tailwind");
 
-    let config = build_tailwind_dir.join("tailwind.config.js");
+    let config = tailwind_config_path();
     let config_str = config
         .to_str()
         .expect("Error converting the path to the Tailwind config to a string.");
@@ -46,7 +44,7 @@ pub fn build_tailwind(input: TokenStream) -> TokenStream {
             .into();
     }
 
-    let output_file = build_tailwind_dir.join("target").join("built.css");
+    let output_file = built_assets_dir().join(&input.url_path);
     let output_file_str = output_file
         .to_str()
         .expect("Error converting the path to the Tailwind output CSS file to a string.");
@@ -69,9 +67,7 @@ pub fn build_tailwind(input: TokenStream) -> TokenStream {
         .output()
         .expect("Error invoking the Tailwind CLI.");
 
-    if tailwind_cli_output.status.success() {
-        log::info!("Successfully built Tailwind.");
-    } else {
+    if !tailwind_cli_output.status.success() {
         let stdout = String::from_utf8(tailwind_cli_output.stdout)
             .expect("Error converting the Tailwind CLI's output to a string.");
         let stderr = String::from_utf8(tailwind_cli_output.stderr)
@@ -86,25 +82,30 @@ pub fn build_tailwind(input: TokenStream) -> TokenStream {
             .into();
     }
 
+    log::info!("Successfully built Tailwind.");
+
     let built_css = std::fs::read_to_string(output_file).expect("Error reading built.css file.");
 
+    let css_asset = CssAsset::new(input.url_path, built_css, input.performance_budget);
+
     let output = quote! {
-        #built_css
+        #css_asset
     };
 
     output.into()
 }
 
-fn workspace_root_dir() -> PathBuf {
-    let cargo_workspace_dir = std::env!("CARGO_WORKSPACE_DIR");
-    Path::new(&cargo_workspace_dir).to_path_buf()
+pub fn tailwind_config_path() -> PathBuf {
+    assets_macros_dir().join("tailwind.config.js")
 }
 
 struct BuildTailwindInput {
     path_to_input_file: String,
+    url_path: PathBuf,
+    performance_budget: Duration,
     minify: bool,
-    span: proc_macro2::Span,
     debug: bool,
+    span: proc_macro2::Span,
 }
 
 impl Parse for BuildTailwindInput {
@@ -115,34 +116,34 @@ impl Parse for BuildTailwindInput {
 
 build_tailwind!(
     path_to_input_file: \"src/main.css\",
-    minify: true
+    url_path: \"built.css\",
+    performance_budget_millis: 300,
+    minify: true,
+    debug: true,
 );
 "#;
 
         let error = syn::Error::new(input_span, error_message);
 
-        let path_to_input_file = parse_named_string_argument(
-            "path_to_input_file",
-            &input,
-            // ArgumentPosition::First
-        )
-        .ok_or(error.clone())?;
+        let path_to_input_file =
+            parse_named_string_argument("path_to_input_file", &input).ok_or(error.clone())?;
 
-        let minify = parse_named_bool_argument(
-            "minify", &input,
-            // ArgumentPosition::NotFirst
-        )
-        .ok_or(error)?;
+        let url_path_string =
+            parse_named_string_argument("url_path", &input).ok_or(error.clone())?;
+        let url_path = PathBuf::from_str(&url_path_string).expect("Error parsing url_path.");
 
-        // Validate and parse "debug".
-        let debug = parse_named_bool_argument(
-            "debug", &input,
-            // ArgumentPosition::NotFirst
-        )
-        .unwrap_or(false);
+        let performance_budget_millis =
+            parse_named_u64_argument("performance_budget_millis", &input).ok_or(error.clone())?;
+        let performance_budget = Duration::from_millis(performance_budget_millis);
+
+        let minify = parse_named_bool_argument("minify", &input).ok_or(error)?;
+
+        let debug = parse_named_bool_argument("debug", &input).unwrap_or(false);
 
         Ok(BuildTailwindInput {
             path_to_input_file,
+            url_path,
+            performance_budget,
             minify,
             debug,
             span: input_span,

@@ -1,11 +1,12 @@
 [package]
-name = "assets"
+name = "parse_macro_arguments"
 version = "0.1.0"
 edition = "2021"
-description = "Assets processing."
+description = ""
 license = "unlicensed"
 repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
 
 [dependencies]
-assets_runtime = { path = "../runtime" }
-assets_macro = { path = "../macro" }
+proc-macro2 = "1.0.69"
+quote = "1.0.33"
+syn = "2.0.39"
