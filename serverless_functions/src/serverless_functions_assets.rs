@@ -1,10 +1,11 @@
-use assets::CssAsset;
+use assets::{BrowserCrateAsset, CssAsset};
 use once_cell::sync::Lazy;
 
 pub static all_assets: Lazy<ServerlessFunctionsAssets> = Lazy::new(ServerlessFunctionsAssets::new);
 
 pub struct ServerlessFunctionsAssets {
     pub css: CssAsset,
+    pub browser_crate: BrowserCrateAsset,
 }
 
 // We have to separate out the non-html assets because
@@ -23,16 +24,15 @@ impl ServerlessFunctionsAssets {
             debug: true
         );
 
-        // let css = build_tailwind!(
-        //     path_to_input_file: "serverless_functions/src/main.css",
-        //     minify: true,
-        //     debug: true
-        // );
-        // let css = CssAsset::new(
-        //     PathBuf::from_str("built.css").unwrap(),
-        //     built_css,
-        //     Duration::from_millis(1),
-        // );
+        let browser_crate = assets::build_browser_crate!(
+            path_to_browser_crate: "browser",
+            js_url_path: "browser.js",
+            js_performance_budget_millis: 1,
+            wasm_url_path: "browser_bg.wasm",
+            wasm_performance_budget_millis: 1,
+            production: true,
+            debug: true,
+        );
 
         // let browser_crate = build_browser_crate!(
         //     path_to_browser_crate: "browser",
@@ -57,7 +57,7 @@ impl ServerlessFunctionsAssets {
         //     built_images.hasui_light,
         // );
 
-        ServerlessFunctionsAssets { css }
+        ServerlessFunctionsAssets { css, browser_crate }
     }
 }
 

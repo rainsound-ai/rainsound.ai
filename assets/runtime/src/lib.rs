@@ -1,15 +1,18 @@
 #![allow(non_upper_case_globals)]
 
 use arraygen::Arraygen;
-use build_browser::build_browser_crate;
+// use build_browser::build_browser_crate;
 use build_images::*;
 use once_cell::sync::Lazy;
-use std::path::PathBuf;
-use std::str::FromStr;
-use std::time::Duration;
+// use std::path::PathBuf;
+// use std::str::FromStr;
+// use std::time::Duration;
 
 mod asset;
 use self::asset::*;
+
+mod browser_crate_asset;
+pub use self::browser_crate_asset::BrowserCrateAsset;
 
 mod css_asset;
 pub use self::css_asset::CssAsset;
@@ -35,8 +38,8 @@ pub static non_html_assets: Lazy<NonHtmlAssets> = Lazy::new(NonHtmlAssets::new);
 #[gen_array(pub fn all_assets: &dyn Asset, implicit_select_all: CssAsset, JsAsset, WasmAsset, ImageAsset, LightDarkImageAsset)]
 pub struct NonHtmlAssets {
     // pub built_css: CssAsset,
-    pub browser_js: JsAsset,
-    pub browser_bg_wasm: WasmAsset,
+    // pub browser_js: JsAsset,
+    // pub browser_bg_wasm: WasmAsset,
     pub hasui_hero: ImageAsset,
 }
 
@@ -48,32 +51,21 @@ pub struct NonHtmlAssets {
 // deadlocking if we're using a lazily initialized global variable.
 impl NonHtmlAssets {
     pub fn new() -> Self {
-        // let built_css = build_tailwind!(
-        //     path_to_input_file: "serverless_functions/src/main.css",
-        //     minify: true,
-        //     debug: true
+        // let browser_crate = build_browser_crate!(
+        //     path_to_browser_crate: "browser",
+        //     production: true,
+        //     debug: true,
         // );
-        // let built_css = CssAsset::new(
-        //     PathBuf::from_str("built.css").unwrap(),
-        //     built_css,
+        // let browser_js = JsAsset::new(
+        //     PathBuf::from_str("browser.js").unwrap(),
+        //     browser_crate.built_js,
         //     Duration::from_millis(1),
         // );
-
-        let browser_crate = build_browser_crate!(
-            path_to_browser_crate: "browser",
-            production: true,
-            debug: true,
-        );
-        let browser_js = JsAsset::new(
-            PathBuf::from_str("browser.js").unwrap(),
-            browser_crate.built_js,
-            Duration::from_millis(1),
-        );
-        let browser_bg_wasm = WasmAsset::new(
-            PathBuf::from_str("browser_bg.wasm").unwrap(),
-            browser_crate.built_wasm,
-            Duration::from_millis(1),
-        );
+        // let browser_bg_wasm = WasmAsset::new(
+        //     PathBuf::from_str("browser_bg.wasm").unwrap(),
+        //     browser_crate.built_wasm,
+        //     Duration::from_millis(1),
+        // );
 
         let built_images = build_images!(path_to_images_dir: "assets/runtime/src/original_images");
         let hasui_hero = ImageAsset::from_built_image(
@@ -84,8 +76,8 @@ impl NonHtmlAssets {
 
         NonHtmlAssets {
             // built_css,
-            browser_js,
-            browser_bg_wasm,
+            // browser_js,
+            // browser_bg_wasm,
             hasui_hero,
         }
     }

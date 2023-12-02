@@ -4,8 +4,6 @@ use std::{
     time::Duration,
 };
 
-use crate::asset::Asset;
-
 pub static assumed_latency: Duration = Duration::from_millis(100);
 pub static assumed_bits_per_second: f64 = 5_000_000.0;
 pub static assumed_bytes_per_second: f64 = assumed_bits_per_second / 8.0;
@@ -138,7 +136,7 @@ mod tests {
     // }
 }
 
-pub trait HasPerformanceBudget: Asset {
+pub trait HasPerformanceBudget {
     fn check_performance_budget(&self) -> HowCloseToBudget {
         HowCloseToBudget::new(self)
     }

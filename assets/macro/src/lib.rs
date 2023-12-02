@@ -1,6 +1,5 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use rayon::prelude::*;
 use syn::{
     parse::{Parse, ParseStream},
     Result as SynResult,
@@ -9,6 +8,7 @@ use syn::{
 mod parse_macro_arguments;
 use parse_macro_arguments::*;
 
+mod browser_crate;
 mod tailwind;
 
 #[proc_macro]
@@ -59,4 +59,9 @@ impl Parse for SaveToDiskInput {
 #[proc_macro]
 pub fn build_tailwind(input: TokenStream) -> TokenStream {
     tailwind::build(input)
+}
+
+#[proc_macro]
+pub fn build_browser_crate(input: TokenStream) -> TokenStream {
+    browser_crate::build(input)
 }

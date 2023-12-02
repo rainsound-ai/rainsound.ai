@@ -21,6 +21,10 @@ pub fn assets_macros_dir() -> PathBuf {
     assets_dir().join("macro")
 }
 
+pub fn target_dir() -> PathBuf {
+    workspace_root_dir().join("target")
+}
+
 /// When loading assets in the browser, URL paths should
 /// start with this prefix.
 ///

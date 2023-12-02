@@ -20,3 +20,4 @@ simple_logger = { version = "4.2.0", default_features = false, features = [
     "stderr",
     "colors",
 ] }
+minify-js = { version = "0.5.6" }

@@ -61,8 +61,9 @@ fn nav_links() -> Markup {
 }
 
 fn main_js() -> Markup {
-    let browser_js_path = non_html_assets
-        .browser_js
+    let browser_js_path = all_assets
+        .browser_crate
+        .js
         .full_url_path
         .to_string_lossy()
         .to_string();

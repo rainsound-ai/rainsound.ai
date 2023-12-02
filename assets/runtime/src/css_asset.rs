@@ -1,4 +1,3 @@
-use crate::asset::{Asset, FileToSave};
 use crate::asset_url_path;
 use crate::performance_budget::HasPerformanceBudget;
 use cfg_if::cfg_if;
@@ -28,15 +27,15 @@ impl CssAsset {
     }
 }
 
-impl Asset for CssAsset {
-    fn files_to_save(&self) -> Vec<FileToSave> {
-        vec![FileToSave {
-            path_starting_from_built_assets_dir: &self.url_path_starting_from_built_assets_dir,
-            bytes: self.contents.as_bytes(),
-            content_type: "text/css",
-        }]
-    }
-}
+// impl Asset for CssAsset {
+//     fn files_to_save(&self) -> Vec<FileToSave> {
+//         vec![FileToSave {
+//             path_starting_from_built_assets_dir: &self.url_path_starting_from_built_assets_dir,
+//             bytes: self.contents.as_bytes(),
+//             content_type: "text/css",
+//         }]
+//     }
+// }
 
 impl HasPerformanceBudget for CssAsset {
     fn load_time_budget(&self) -> Duration {

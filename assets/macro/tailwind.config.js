@@ -5,9 +5,11 @@ const path = require('path')
 const anyHtmlRustOrCssFileInTheWorkspace = path.resolve(
   __dirname,
   '..',
+  '..',
   '**',
   '*.{html,rs,css}'
 )
+console.log(`Using ${anyHtmlRustOrCssFileInTheWorkspace} as the content path.`)
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
