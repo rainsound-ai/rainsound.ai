@@ -34,22 +34,6 @@ impl ServerlessFunctionsAssets {
             debug: true,
         );
 
-        // let browser_crate = build_browser_crate!(
-        //     path_to_browser_crate: "browser",
-        //     production: true,
-        //     debug: true,
-        // );
-        // let browser_js = JsAsset::new(
-        //     PathBuf::from_str("browser.js").unwrap(),
-        //     browser_crate.built_js,
-        //     Duration::from_millis(1),
-        // );
-        // let browser_bg_wasm = WasmAsset::new(
-        //     PathBuf::from_str("browser_bg.wasm").unwrap(),
-        //     browser_crate.built_wasm,
-        //     Duration::from_millis(1),
-        // );
-
         // let built_images = build_images!(path_to_images_dir: "assets/runtime/src/original_images");
         // let hasui_hero = ImageAsset::from_built_image(
         //     "A woodblock print by Kawase Hasui",

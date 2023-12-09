@@ -12,15 +12,7 @@ use syn::{
 
 pub fn build(input: TokenStream) -> TokenStream {
     let input = syn::parse_macro_input!(input as BuildTailwindInput);
-
-    let log_level = if input.debug {
-        log::Level::max()
-    } else {
-        log::Level::Warn
-    };
-    if let Err(error) = simple_logger::init_with_level(log_level) {
-        log::warn!("Error initializing logger: {}", error);
-    }
+    crate::logger::init_logger(input.debug);
 
     log::info!("Building Tailwind.");
 

@@ -1,0 +1,9 @@
+INFO [assets_macro::browser_crate] Building browser crate.
+INFO [assets_macro::browser_crate] Looking for browser crate at /Users/photon-garden/dev/creative-computing-website/browser.
+INFO [assets_macro::browser_crate] Invoking wasm-pack CLI with this command: "/Users/photon-garden/dev/creative-computing-website/target/cargo_install/bin/wasm-pack" "build" "--no-pack" "--target" "web" "--out-dir" "/Users/photon-garden/dev/creative-computing-website/target/browser" "--out-name" "browser" "--release" "/Users/photon-garden/dev/creative-computing-website/browser"
+INFO [assets_macro::browser_crate] Successfully built browser crate.
+INFO [assets_macro::browser_crate] Moving JS file to "/Users/photon-garden/dev/creative-computing-website/assets/built_assets/browser.js"
+WARN [assets_macro::logger] Error initializing logger: Logger initialization failed
+INFO [assets_macro::deprecated] Saving assets to disk.
+INFO [assets_macro::deprecated] Found 1 assets.
+INFO [assets_macro::deprecated] Done saving assets to disk.

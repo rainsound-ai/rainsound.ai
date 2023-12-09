@@ -74,7 +74,7 @@ if #[cfg(feature = "build_time")] {
             // );
 
             let contents = &self.contents;
-            log::info!("contents: {}", contents);
+            // log::info!("contents: {}", contents);
 
             let load_time_budget_millis = self.load_time_budget.as_millis() as u64;
             // log::info!("load_time_budget_millis: {}", load_time_budget_millis);

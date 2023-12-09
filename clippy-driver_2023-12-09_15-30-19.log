@@ -1,0 +1,13 @@
+INFO [assets_macro::tailwind] Building Tailwind.
+INFO [assets_macro::tailwind] Using Tailwind config at /Users/photon-garden/dev/creative-computing-website/assets/macro/tailwind.config.js.
+INFO [assets_macro::tailwind] Using Tailwind input CSS file at /Users/photon-garden/dev/creative-computing-website/serverless_functions/src/main.css.
+INFO [assets_macro::tailwind] Saving Tailwind output to /Users/photon-garden/dev/creative-computing-website/assets/built_assets/built.css.
+INFO [assets_macro::tailwind] Invoking Tailwind CLI.
+INFO [assets_macro::tailwind] Successfully built Tailwind.
+INFO [assets_macro] Releasing lock for build_tailwind
+INFO [assets_macro] Acquiring lock for build_browser_crate
+INFO [assets_macro] Running macro build_browser_crate
+WARN [assets_macro::logger] Error initializing logger: Logger initialization failed
+INFO [assets_macro::browser_crate] Building browser crate.
+INFO [assets_macro::browser_crate] Looking for browser crate at /Users/photon-garden/dev/creative-computing-website/browser.
+INFO [assets_macro::browser_crate] Invoking wasm-pack CLI with this command: "/Users/photon-garden/dev/creative-computing-website/target/cargo_install/bin/wasm-pack" "build" "--no-pack" "--target" "web" "--out-dir" "/Users/photon-garden/dev/creative-computing-website/target/browser" "--out-name" "browser" "--release" "/Users/photon-garden/dev/creative-computing-website/browser"

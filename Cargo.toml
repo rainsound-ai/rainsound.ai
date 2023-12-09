@@ -8,8 +8,8 @@ members = [
     "assets/build_images",
     "assets/build_images_runtime",
     "assets/build_images_macro",
-    "assets/build_browser",
     "assets/parse_macro_arguments",
+    # "assets/build_browser",
     # "assets/build_tailwind",
 ]
 exclude = [

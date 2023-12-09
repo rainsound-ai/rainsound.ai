@@ -12,15 +12,7 @@ use syn::{
 
 pub fn build(input: TokenStream) -> TokenStream {
     let input = syn::parse_macro_input!(input as BuildBrowserCrateInput);
-
-    let log_level = if input.debug {
-        log::Level::max()
-    } else {
-        log::Level::Warn
-    };
-    if let Err(error) = simple_logger::init_with_level(log_level) {
-        log::warn!("Error initializing logger: {}", error);
-    }
+    crate::logger::init_logger(input.debug);
 
     let maybe_wasm_pack_output = run_wasm_pack(&input);
     let wasm_pack_output = match maybe_wasm_pack_output {
@@ -28,6 +20,7 @@ pub fn build(input: TokenStream) -> TokenStream {
         Err(error) => return error,
     };
 
+    std::fs::create_dir_all(built_assets_dir()).expect("Error creating built assets dir.");
     let final_path_to_built_wasm = built_assets_dir().join(&input.wasm_url_path);
     std::fs::rename(
         &wasm_pack_output.path_to_built_wasm,
@@ -36,6 +29,18 @@ pub fn build(input: TokenStream) -> TokenStream {
     .expect("Error moving the built wasm file to the final location.");
 
     let final_path_to_built_js = built_assets_dir().join(&input.js_url_path);
+    log::info!("Moving JS file to {:?}", &final_path_to_built_js);
+    if !wasm_pack_output.path_to_built_js.exists() {
+        let error_message = format!(
+            "Error moving the built JS file to the final location. The built JS file doesn't exist at {:?}.",
+            &wasm_pack_output.path_to_built_js
+        );
+        log::error!("{}", error_message);
+        let error: TokenStream = syn::Error::new(input.span, error_message)
+            .to_compile_error()
+            .into();
+        return error;
+    }
     std::fs::rename(&wasm_pack_output.path_to_built_js, &final_path_to_built_js)
         .expect("Error moving the built JS file to the final location.");
 
@@ -124,7 +129,10 @@ fn run_wasm_pack(input: &BuildBrowserCrateInput) -> Result<WasmPackOutput, Token
         run_wasm_pack.args(["--features", "dev"]);
     }
 
-    log::info!("Invoking wasm-pack CLI.");
+    log::info!(
+        "Invoking wasm-pack CLI with this command: {:?}",
+        &run_wasm_pack
+    );
     let wasm_pack_output = run_wasm_pack
         .output()
         .expect("Error invoking the wasm-pack CLI.");

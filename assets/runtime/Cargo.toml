@@ -14,7 +14,6 @@ arraygen = "0.3.2"
 once_cell = "1.18.0"
 rayon = "1.8.0"
 cfg-if = "1.0.0"
-build_browser = { path = "../build_browser" }
 build_images = { path = "../build_images" }
 build_images_macro = { path = "../build_images_macro" }
 log = "0.4.20"
