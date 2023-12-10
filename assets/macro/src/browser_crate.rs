@@ -226,33 +226,33 @@ build_browser_crate!(
 
         let path_to_browser_crate =
             parse_named_string_argument("path_to_browser_crate", &input).ok_or(error.clone())?;
-        eprintln!("path_to_browser_crate: {:?}", path_to_browser_crate);
+        // eprintln!("path_to_browser_crate: {:?}", path_to_browser_crate);
 
         let js_url_path =
             parse_named_string_argument("js_url_path", &input).ok_or(error.clone())?;
-        eprintln!("js_url_path: {:?}", js_url_path);
+        // eprintln!("js_url_path: {:?}", js_url_path);
 
         let js_performance_budget_millis =
             parse_named_u64_argument("js_performance_budget_millis", &input)
                 .ok_or(error.clone())?;
         let js_performance_budget = Duration::from_millis(js_performance_budget_millis);
-        eprintln!("js_performance_budget: {:?}", js_performance_budget);
+        // eprintln!("js_performance_budget: {:?}", js_performance_budget);
 
         let wasm_url_path =
             parse_named_string_argument("wasm_url_path", &input).ok_or(error.clone())?;
-        eprintln!("wasm_url_path: {:?}", wasm_url_path);
+        // eprintln!("wasm_url_path: {:?}", wasm_url_path);
 
         let wasm_performance_budget_millis =
             parse_named_u64_argument("wasm_performance_budget_millis", &input)
                 .ok_or(error.clone())?;
         let wasm_performance_budget = Duration::from_millis(wasm_performance_budget_millis);
-        eprintln!("wasm_performance_budget: {:?}", wasm_performance_budget);
+        // eprintln!("wasm_performance_budget: {:?}", wasm_performance_budget);
 
         let production = parse_named_bool_argument("production", &input).ok_or(error)?;
-        eprintln!("production: {:?}", production);
+        // eprintln!("production: {:?}", production);
 
         let debug = parse_named_bool_argument("debug", &input).unwrap_or(false);
-        eprintln!("debug: {:?}", debug);
+        // eprintln!("debug: {:?}", debug);
 
         Ok(BuildBrowserCrateInput {
             path_to_browser_crate: PathBuf::from(path_to_browser_crate),

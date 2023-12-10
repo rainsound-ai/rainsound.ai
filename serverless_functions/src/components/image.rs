@@ -7,7 +7,7 @@ pub struct Image<'a> {
 }
 
 impl<'a> Image<'a> {
-    pub fn new(asset: &ImageAsset) -> Self {
+    pub fn new(asset: &'a ImageAsset) -> Self {
         Self { asset, class: "" }
     }
 

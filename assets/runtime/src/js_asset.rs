@@ -1,5 +1,5 @@
+use crate::asset_url_path;
 use crate::performance_budget::HasPerformanceBudget;
-use crate::{asset_url_path, Asset, FileToSave};
 use cfg_if::cfg_if;
 use std::path::PathBuf;
 use std::time::Duration;
@@ -25,16 +25,6 @@ impl JsAsset {
             contents,
             load_time_budget,
         }
-    }
-}
-
-impl Asset for JsAsset {
-    fn files_to_save(&self) -> Vec<FileToSave> {
-        vec![FileToSave {
-            path_starting_from_built_assets_dir: &self.url_path_starting_from_built_assets_dir,
-            bytes: self.contents.as_bytes(),
-            content_type: "application/javascript",
-        }]
     }
 }
 

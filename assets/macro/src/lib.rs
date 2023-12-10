@@ -20,6 +20,11 @@ pub fn build_browser_crate(input: TokenStream) -> TokenStream {
 }
 
 #[proc_macro]
+pub fn build_image(input: TokenStream) -> TokenStream {
+    lock_file::with_lock_file("build_image", || images::build_image(input))
+}
+
+#[proc_macro]
 pub fn build_images(input: TokenStream) -> TokenStream {
-    lock_file::with_lock_file("build_images", || images::build_all_images_in_folder(input))
+    lock_file::with_lock_file("build_images", || images::build_images_in_folder(input))
 }

@@ -1,5 +1,6 @@
-use crate::parse_macro_arguments::*;
 use assets_runtime::ImageAsset;
+use build_image_input::*;
+use build_images_in_folder_input::*;
 use build_time_image::*;
 use image::DynamicImage;
 use image_asset_extension::*;
@@ -7,32 +8,52 @@ use proc_macro::TokenStream;
 use quote::{format_ident, quote};
 use rayon::prelude::*;
 use std::path::{Path, PathBuf};
-use syn::{
-    parse::{Parse, ParseStream},
-    Result as SynResult,
-};
 use walkdir::WalkDir;
 
+mod build_image_input;
+mod build_images_in_folder_input;
 mod build_time_image;
 mod build_time_resized_image;
 mod dynamic_image_extension;
 mod image_asset_extension;
 
 pub fn build_image(input: TokenStream) -> TokenStream {
-    todo!();
+    let input = syn::parse_macro_input!(input as BuildImageInput);
+    crate::logger::init_logger(input.debug);
+
+    let absolute_path_to_image = &input.absolute_path_to_image;
+
+    log::info!("Building image: {}", input.absolute_path_to_image.display());
+    let image_file = try_get_image_file_from_path(absolute_path_to_image)
+        .expect("Error getting image file from path.");
+
+    let absolute_path_to_images_dir = absolute_path_to_image
+        .parent()
+        .expect("Error getting parent directory of image.")
+        .to_path_buf();
+
+    let build_time_image = BuildTimeImage::new(
+        &absolute_path_to_images_dir,
+        absolute_path_to_image.clone(),
+        image_file.image,
+        PlaceholderToGenerate::Lqip,
+        input.alt,
+    );
+
+    let image_asset = ImageAsset::from_build_time_image(&build_time_image);
+
+    let code = quote! {
+        #image_asset
+    };
+
+    // print_code_for_debugging(&code);
+
+    code.into()
 }
 
-pub fn build_all_images_in_folder(input: TokenStream) -> TokenStream {
-    let input = syn::parse_macro_input!(input as BuildImagesInput);
-
-    let log_level = if input.debug {
-        log::Level::max()
-    } else {
-        log::Level::Warn
-    };
-    if let Err(error) = simple_logger::init_with_level(log_level) {
-        log::warn!("Error initializing logger: {}", error);
-    }
+pub fn build_images_in_folder(input: TokenStream) -> TokenStream {
+    let input = syn::parse_macro_input!(input as BuildImagesInFolderInput);
+    crate::logger::init_logger(input.debug);
 
     log::info!("Building images.");
     log::info!(
@@ -42,52 +63,15 @@ pub fn build_all_images_in_folder(input: TokenStream) -> TokenStream {
     let images_to_build = get_images_from_disk(input);
     let code = generate_code(&images_to_build);
 
-    print_code_for_debugging(&code);
+    // print_code_for_debugging(&code);
 
     code.into()
-}
-
-struct BuildImagesInput {
-    absolute_path_to_images_dir: PathBuf,
-    debug: bool,
-}
-
-impl Parse for BuildImagesInput {
-    fn parse(input: ParseStream) -> SynResult<Self> {
-        let error_message = r#"Please make sure to pass arguments to build_images! like this:
-
-build_images!(path_to_images_dir: \"src/original_images\");
-
-The path should be relative to the workspace root.
-
-You can also pass an optional `debug` argument like this:
-
-build_images!(path_to_images_dir: \"src/original_images\", debug: true);
-"#;
-        let error = syn::Error::new(input.span(), error_message);
-
-        // This argument is required, so if it's not present we
-        // convert None to an error and return early.
-        let string_path_to_images_dir_starting_at_workspace_root =
-            parse_named_string_argument("path_to_images_dir", &input).ok_or(error)?;
-
-        let absolute_path_to_images_dir = assets_runtime::paths::workspace_root_dir()
-            .join(string_path_to_images_dir_starting_at_workspace_root);
-
-        // This argument is optional, so we default to `false` if it's not present.
-        let debug = parse_named_bool_argument("debug", &input).unwrap_or(false);
-
-        Ok(BuildImagesInput {
-            absolute_path_to_images_dir,
-            debug,
-        })
-    }
 }
 
 // We wrap our built images in Arcs because we need owned copies
 // to use Rayon, and we presume that cloning BuiltImages is expensive
 // because they hold giant piles of image bytes.
-fn get_images_from_disk(input: BuildImagesInput) -> Vec<BuildTimeImage> {
+fn get_images_from_disk(input: BuildImagesInFolderInput) -> Vec<BuildTimeImage> {
     log::info!("Getting original images from disk.");
     let original_images = get_image_files(&input.absolute_path_to_images_dir);
     log::info!("Found {} original images.", original_images.len());
@@ -163,9 +147,9 @@ fn generate_code(images_to_build: &[BuildTimeImage]) -> proc_macro2::TokenStream
     log::info!("Instantiating ImageAssets.");
     let image_property_declarations = images_to_build.iter().map(|image| {
         let name_in_source_code = format_ident!("{}", image.name_in_source_code);
-        let run_time_image = ImageAsset::from_build_time_image(image);
+        let image_asset = ImageAsset::from_build_time_image(image);
         quote! {
-            #name_in_source_code: #run_time_image,
+            #name_in_source_code: #image_asset,
         }
     });
 
