@@ -19,7 +19,7 @@ use self::prelude::*;
 
 mod routes;
 
-mod serverless_functions_assets;
+mod assets;
 
 #[http_component]
 fn main(req: Request) -> Result<Response> {

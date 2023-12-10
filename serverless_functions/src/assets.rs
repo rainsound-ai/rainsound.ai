@@ -1,7 +1,7 @@
 use assets::{BrowserCrateAsset, CssAsset, ImageAsset};
 use once_cell::sync::Lazy;
 
-pub static all_assets: Lazy<ServerlessFunctionsAssets> = Lazy::new(ServerlessFunctionsAssets::new);
+pub static assets: Lazy<ServerlessFunctionsAssets> = Lazy::new(ServerlessFunctionsAssets::new);
 
 pub struct ServerlessFunctionsAssets {
     pub css: CssAsset,

@@ -1,5 +1,5 @@
+use crate::assets::assets;
 use crate::components::*;
-use crate::serverless_functions_assets::all_assets;
 use maud::{html, Markup};
 
 mod build_time;
@@ -18,7 +18,7 @@ pub fn home_page() -> Markup {
     layout(html! {
         h1 { "Home" }
         p class="bg-red-500" { "WE MAEK THE SOFTWRE FOR YOU GIVE US MONEY NOM NOM NOM NOM 🧌" }
-        (image("", &all_assets.hasui_hero))
+        (image("", &assets.hasui_hero))
         // LightDarkImage { asset: &non_html_assets.images.hasui_hero }
     })
 }
