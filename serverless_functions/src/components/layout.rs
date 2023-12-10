@@ -2,7 +2,6 @@ use crate::assets::assets;
 use crate::components::*;
 use crate::css_class_groups::*;
 use crate::routes::Route;
-use assets::*;
 use maud::{html, Markup, PreEscaped, DOCTYPE};
 
 pub fn layout(content: Markup) -> Markup {
