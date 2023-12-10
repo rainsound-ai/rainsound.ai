@@ -1,8 +1,5 @@
 #![allow(non_upper_case_globals)]
 
-mod asset;
-use self::asset::*;
-
 mod browser_crate_asset;
 pub use self::browser_crate_asset::BrowserCrateAsset;
 
