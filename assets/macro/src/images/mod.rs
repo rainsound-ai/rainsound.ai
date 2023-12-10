@@ -1,8 +1,8 @@
 use crate::parse_macro_arguments::*;
 use assets_runtime::ImageAsset;
+use build_time_image::*;
 use image::DynamicImage;
 use image_asset_extension::*;
-use image_to_build::*;
 use proc_macro::TokenStream;
 use quote::{format_ident, quote};
 use rayon::prelude::*;
@@ -13,9 +13,10 @@ use syn::{
 };
 use walkdir::WalkDir;
 
+mod build_time_image;
+mod build_time_resized_image;
 mod dynamic_image_extension;
 mod image_asset_extension;
-mod image_to_build;
 
 pub fn build_image(input: TokenStream) -> TokenStream {
     todo!();
@@ -86,7 +87,7 @@ build_images!(path_to_images_dir: \"src/original_images\", debug: true);
 // We wrap our built images in Arcs because we need owned copies
 // to use Rayon, and we presume that cloning BuiltImages is expensive
 // because they hold giant piles of image bytes.
-fn get_images_from_disk(input: BuildImagesInput) -> Vec<ImageToBuild> {
+fn get_images_from_disk(input: BuildImagesInput) -> Vec<BuildTimeImage> {
     log::info!("Getting original images from disk.");
     let original_images = get_image_files(&input.absolute_path_to_images_dir);
     log::info!("Found {} original images.", original_images.len());
@@ -95,7 +96,7 @@ fn get_images_from_disk(input: BuildImagesInput) -> Vec<ImageToBuild> {
     original_images
         .into_par_iter()
         .map(|image_file| {
-            ImageToBuild::new(
+            BuildTimeImage::new(
                 &input.absolute_path_to_images_dir,
                 image_file.absolute_path_to_image,
                 image_file.image,
@@ -150,7 +151,7 @@ struct ImageFile {
     image: DynamicImage,
 }
 
-fn generate_code(images_to_build: &[ImageToBuild]) -> proc_macro2::TokenStream {
+fn generate_code(images_to_build: &[BuildTimeImage]) -> proc_macro2::TokenStream {
     log::info!("Generating code for built images.");
 
     log::info!("Building property names.");
@@ -162,7 +163,7 @@ fn generate_code(images_to_build: &[ImageToBuild]) -> proc_macro2::TokenStream {
     log::info!("Instantiating ImageAssets.");
     let image_property_declarations = images_to_build.iter().map(|image| {
         let name_in_source_code = format_ident!("{}", image.name_in_source_code);
-        let run_time_image = ImageAsset::from_image_to_build(image);
+        let run_time_image = ImageAsset::from_build_time_image(image);
         quote! {
             #name_in_source_code: #run_time_image,
         }

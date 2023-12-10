@@ -1,24 +1,25 @@
-use crate::images::*;
+use super::build_time_image::BuildTimeImage;
+use super::build_time_resized_image::BuildTimeResizedImage;
 use assets_runtime::ImageAsset;
 
 pub trait ImageAssetExtension {
-    fn from_image_to_build(image_to_build: &ImageToBuild) -> Self;
+    fn from_build_time_image(build_time_image: &BuildTimeImage) -> Self;
 }
 
 impl ImageAssetExtension for ImageAsset {
-    fn from_image_to_build(image_to_build: &ImageToBuild) -> Self {
+    fn from_build_time_image(build_time_image: &BuildTimeImage) -> Self {
         ImageAsset {
-            alt: image_to_build.alt.clone(),
-            placeholder: image_to_build.placeholder.clone(),
-            width: image_to_build.width,
-            height: image_to_build.height,
-            srcset: generate_srcset(&image_to_build.resized_copies),
-            src: generate_src(image_to_build),
+            alt: build_time_image.alt.clone(),
+            placeholder: build_time_image.placeholder.clone(),
+            width: build_time_image.width,
+            height: build_time_image.height,
+            srcset: generate_srcset(&build_time_image.resized_copies),
+            src: generate_src(build_time_image),
         }
     }
 }
 
-fn generate_src(built_image: &ImageToBuild) -> String {
+fn generate_src(built_image: &BuildTimeImage) -> String {
     // If their browser doesn't have support for the srcset attribute,
     // it's probably an old mobile browser. If that's the case, they
     // also probably don't have a lot of bandwidth so go with the smallest
