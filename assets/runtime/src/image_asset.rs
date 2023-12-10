@@ -1,9 +1,5 @@
 use cfg_if::cfg_if;
 
-mod light_dark_image_asset;
-
-pub use self::light_dark_image_asset::*;
-
 pub struct ImageAsset {
     pub alt: String,
     pub placeholder: Placeholder,

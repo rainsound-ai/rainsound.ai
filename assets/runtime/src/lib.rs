@@ -10,7 +10,10 @@ mod css_asset;
 pub use self::css_asset::CssAsset;
 
 mod image_asset;
-pub use self::image_asset::{ImageAsset, LightDarkImageAsset, Placeholder};
+pub use self::image_asset::{ImageAsset, Placeholder};
+
+mod light_dark_image_asset;
+pub use self::light_dark_image_asset::LightDarkImageAsset;
 
 mod js_asset;
 pub use self::js_asset::JsAsset;

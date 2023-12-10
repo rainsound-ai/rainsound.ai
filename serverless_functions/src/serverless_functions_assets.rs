@@ -41,7 +41,7 @@ impl ServerlessFunctionsAssets {
         ServerlessFunctionsAssets {
             css,
             browser_crate,
-            hasui_hero: built_images.astronaut,
+            hasui_hero: built_images.hasui_light,
         }
     }
 }
