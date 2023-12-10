@@ -40,4 +40,4 @@ files = [{ source = "assets/built", destination = "/" }]
 route = "/built-assets/..."
 # [component.build]
 # command = ""
-# watch = ["built_assets/**/*"]
+# watch = ["assets/built/**/*"]

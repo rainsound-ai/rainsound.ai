@@ -14,7 +14,7 @@ pub fn built_assets_dir() -> PathBuf {
 }
 
 pub fn built_assets_dir_name() -> &'static str {
-    "built_assets"
+    "built"
 }
 
 pub fn assets_macros_dir() -> PathBuf {
