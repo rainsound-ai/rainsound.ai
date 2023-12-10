@@ -18,7 +18,7 @@ pub fn home_page() -> Markup {
     layout(html! {
         h1 { "Home" }
         p class="bg-red-500" { "WE MAEK THE SOFTWRE FOR YOU GIVE US MONEY NOM NOM NOM NOM 🧌" }
-        (image("", &assets.hasui_hero))
+        (Image::new(&assets.hasui_hero))
         // LightDarkImage { asset: &non_html_assets.images.hasui_hero }
     })
 }

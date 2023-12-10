@@ -1,12 +1,30 @@
 use assets::{ImageAsset, Placeholder};
-use maud::{html, Markup};
+use maud::{html, Markup, Render};
 
-pub fn image<'class>(class: impl Into<&'class str>, asset: &ImageAsset) -> Markup {
-    let class = class.into();
+pub struct Image<'a> {
+    pub asset: &'a ImageAsset,
+    pub class: &'a str,
+}
 
-    match &asset.placeholder {
-        Placeholder::Color { css_string } => image_with_color_placeholder(class, asset, css_string),
-        Placeholder::Lqip { data_uri } => image_with_lqip(class, asset, data_uri),
+impl<'a> Image<'a> {
+    pub fn new(asset: &ImageAsset) -> Self {
+        Self { asset, class: "" }
+    }
+
+    pub fn class(mut self, class: impl Into<&'a str>) -> Self {
+        self.class = class.into();
+        self
+    }
+}
+
+impl Render for Image<'_> {
+    fn render(&self) -> Markup {
+        match &self.asset.placeholder {
+            Placeholder::Color { css_string } => {
+                image_with_color_placeholder(self.class, self.asset, css_string)
+            }
+            Placeholder::Lqip { data_uri } => image_with_lqip(self.class, self.asset, data_uri),
+        }
     }
 }
 
