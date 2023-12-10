@@ -1,14 +1,12 @@
-use assets::{BuiltPlaceholder, ImageAsset};
+use assets::{ImageAsset, Placeholder};
 use maud::{html, Markup};
 
 pub fn image<'class>(class: impl Into<&'class str>, asset: &ImageAsset) -> Markup {
     let class = class.into();
 
     match &asset.placeholder {
-        BuiltPlaceholder::Color { css_string } => {
-            image_with_color_placeholder(class, asset, css_string)
-        }
-        BuiltPlaceholder::Lqip { data_uri } => image_with_lqip(class, asset, data_uri),
+        Placeholder::Color { css_string } => image_with_color_placeholder(class, asset, css_string),
+        Placeholder::Lqip { data_uri } => image_with_lqip(class, asset, data_uri),
     }
 }
 

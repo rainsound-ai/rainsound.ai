@@ -17,25 +17,6 @@ impl LightDarkImageAsset {
             placeholder,
         }
     }
-
-    pub fn resized_copies(&self) -> Vec<&RunTimeResizedImage> {
-        self.light_mode
-            .resized_copies
-            .iter()
-            .chain(self.dark_mode.resized_copies.iter())
-            .collect()
-    }
-}
-
-impl Asset for LightDarkImageAsset {
-    fn files_to_save(&self) -> Vec<FileToSave> {
-        let light_mode_files_to_save = self.light_mode.files_to_save().into_iter();
-        let dark_mode_files_to_save = self.dark_mode.files_to_save().into_iter();
-
-        light_mode_files_to_save
-            .chain(dark_mode_files_to_save)
-            .collect()
-    }
 }
 
 #[derive(PartialEq)]
@@ -51,16 +32,13 @@ pub enum LightDarkPlaceholder {
 }
 
 impl LightDarkPlaceholder {
-    pub fn new(
-        light_mode: &BuiltPlaceholder,
-        dark_mode: &BuiltPlaceholder,
-    ) -> LightDarkPlaceholder {
+    pub fn new(light_mode: &Placeholder, dark_mode: &Placeholder) -> LightDarkPlaceholder {
         match (light_mode, dark_mode) {
             (
-                BuiltPlaceholder::Lqip {
+                Placeholder::Lqip {
                     data_uri: light_mode_data_uri,
                 },
-                BuiltPlaceholder::Lqip {
+                Placeholder::Lqip {
                     data_uri: dark_mode_data_uri,
                 },
             ) => LightDarkPlaceholder::Lqip {
@@ -68,10 +46,10 @@ impl LightDarkPlaceholder {
                 dark_mode_data_uri: dark_mode_data_uri.clone(),
             },
             (
-                BuiltPlaceholder::Color {
+                Placeholder::Color {
                     css_string: light_mode_css_string,
                 },
-                BuiltPlaceholder::Color {
+                Placeholder::Color {
                     css_string: dark_mode_css_string,
                 },
             ) => LightDarkPlaceholder::Color {

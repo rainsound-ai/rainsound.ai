@@ -5,12 +5,6 @@ members = [
     "assets/mod",
     "assets/runtime",
     "assets/macro",
-    "assets/build_images",
-    "assets/build_images_runtime",
-    "assets/build_images_macro",
-    "assets/parse_macro_arguments",
-    # "assets/build_browser",
-    # "assets/build_tailwind",
 ]
 exclude = [
     # If we add the browser crate to the workspace, building causes

@@ -1,5 +1,0 @@
-INFO [assets_macro::tailwind] Building Tailwind.
-INFO [assets_macro::tailwind] Using Tailwind config at /Users/photon-garden/dev/creative-computing-website/assets/macro/tailwind.config.js.
-INFO [assets_macro::tailwind] Using Tailwind input CSS file at /Users/photon-garden/dev/creative-computing-website/serverless_functions/src/main.css.
-INFO [assets_macro::tailwind] Saving Tailwind output to /Users/photon-garden/dev/creative-computing-website/assets/built_assets/built.css.
-INFO [assets_macro::tailwind] Invoking Tailwind CLI.

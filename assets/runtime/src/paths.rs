@@ -35,6 +35,14 @@ pub fn built_assets_browser_prefix() -> PathBuf {
     PathBuf::from("built-assets")
 }
 
+pub fn asset_url_path(sub_url_path: &Path) -> PathBuf {
+    crate::built_assets_browser_prefix().join(sub_url_path)
+}
+
+pub fn built_image_path(path_starting_from_images_dir: &Path) -> PathBuf {
+    built_assets_dir().join(path_starting_from_images_dir)
+}
+
 #[cfg(test)]
 mod tests {
     #[test]

@@ -23,9 +23,6 @@ mod serverless_functions_assets;
 
 #[http_component]
 fn main(req: Request) -> Result<Response> {
-    // This saves our assets to the assets/built_assets directory at build time.
-    assets::save_to_disk!(debug: true);
-
     let route = Route::from_request(&req);
     let response = route.html().into_response();
     Ok(response)

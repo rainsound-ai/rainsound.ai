@@ -1,4 +1,4 @@
-use assets::{BrowserCrateAsset, CssAsset};
+use assets::{BrowserCrateAsset, CssAsset, ImageAsset};
 use once_cell::sync::Lazy;
 
 pub static all_assets: Lazy<ServerlessFunctionsAssets> = Lazy::new(ServerlessFunctionsAssets::new);
@@ -6,6 +6,7 @@ pub static all_assets: Lazy<ServerlessFunctionsAssets> = Lazy::new(ServerlessFun
 pub struct ServerlessFunctionsAssets {
     pub css: CssAsset,
     pub browser_crate: BrowserCrateAsset,
+    pub hasui_hero: ImageAsset,
 }
 
 // We have to separate out the non-html assets because
@@ -34,14 +35,14 @@ impl ServerlessFunctionsAssets {
             debug: true,
         );
 
-        // let built_images = build_images!(path_to_images_dir: "assets/runtime/src/original_images");
-        // let hasui_hero = ImageAsset::from_built_image(
-        //     "A woodblock print by Kawase Hasui",
-        //     Placeholder::Lqip,
-        //     built_images.hasui_light,
-        // );
+        let built_images =
+            assets::build_images!(path_to_images_dir: "serverless_functions/src/images");
 
-        ServerlessFunctionsAssets { css, browser_crate }
+        ServerlessFunctionsAssets {
+            css,
+            browser_crate,
+            hasui_hero: built_images.astronaut,
+        }
     }
 }
 

@@ -51,17 +51,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a4668cab20f66d8d020e1fbc0ebe47217433c1b6c8f2040faf858554e394ace6"
 
 [[package]]
-name = "arraygen"
-version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d18fb8e389fd57e0a796f7aca8785c788c24e51efb39bda68d4fb09fa7566888"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 1.0.109",
-]
-
-[[package]]
 name = "assets"
 version = "0.1.0"
 dependencies = [
@@ -74,27 +63,28 @@ name = "assets_macro"
 version = "0.1.0"
 dependencies = [
  "assets_runtime",
+ "base64",
  "fs4",
+ "image",
  "log",
+ "mime",
  "minify-js",
+ "prettyplease",
  "proc-macro2",
  "quote",
  "rand",
  "rayon",
  "simple_logger",
  "syn 2.0.39",
+ "walkdir",
 ]
 
 [[package]]
 name = "assets_runtime"
 version = "0.1.0"
 dependencies = [
- "arraygen",
- "build_images",
- "build_images_macro",
  "cfg-if",
  "log",
- "once_cell",
  "proc-macro2",
  "quote",
  "rayon",
@@ -151,45 +141,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.39",
-]
-
-[[package]]
-name = "build_images"
-version = "0.1.0"
-dependencies = [
- "build_images_macro",
- "build_images_runtime",
- "proc-macro2",
- "quote",
- "syn 2.0.39",
-]
-
-[[package]]
-name = "build_images_macro"
-version = "0.1.0"
-dependencies = [
- "base64",
- "build_images_runtime",
- "image",
- "log",
- "mime",
- "parse_macro_arguments",
- "prettyplease",
- "proc-macro2",
- "quote",
- "rayon",
- "simple_logger",
- "syn 2.0.39",
- "walkdir",
-]
-
-[[package]]
-name = "build_images_runtime"
-version = "0.1.0"
-dependencies = [
- "log",
- "proc-macro2",
- "quote",
 ]
 
 [[package]]
@@ -1033,15 +984,6 @@ dependencies = [
  "hashbrown 0.13.2",
  "lazy_static",
  "memchr",
-]
-
-[[package]]
-name = "parse_macro_arguments"
-version = "0.1.0"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.39",
 ]
 
 [[package]]

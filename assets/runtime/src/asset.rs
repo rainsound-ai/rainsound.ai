@@ -44,7 +44,3 @@ impl<'a> FileToSave<'a> {
         crate::built_assets_dir().join(self.path_starting_from_built_assets_dir)
     }
 }
-
-pub fn asset_url_path(sub_url_path: &Path) -> PathBuf {
-    crate::built_assets_browser_prefix().join(sub_url_path)
-}

@@ -10,12 +10,8 @@ repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
 build_time = ["proc-macro2", "quote"]
 
 [dependencies]
-arraygen = "0.3.2"
-once_cell = "1.18.0"
 rayon = "1.8.0"
 cfg-if = "1.0.0"
-build_images = { path = "../build_images" }
-build_images_macro = { path = "../build_images_macro" }
 log = "0.4.20"
 proc-macro2 = { version = "1.0.69", optional = true }
 quote = { version = "1.0.33", optional = true }
