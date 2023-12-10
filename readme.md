@@ -58,7 +58,7 @@ _Pit of success_. The easiest way to build our site should also be the best, for
 
 [Tailwind](https://tailwindcss.com/) for CSS.
 
-[Cargo build scripts](https://doc.rust-lang.org/cargo/reference/build-scripts.html) for resizing images and other asset pre-processing.
+[Procedural macros](https://blog.logrocket.com/procedural-macros-in-rust/) for resizing images, running the Tailwind CLI, and other asset pre-processing.
 
 [wasm-pack](https://github.com/rustwasm/wasm-pack) for compiling our client-side Rust to wasm.
 
@@ -82,31 +82,15 @@ This sub-folder contains crates for handling asset preparation like running the 
 
 `/assets/mod`
 
-Provides structs and functions for representing assets like CSS, images, and wasm. Also where we define our global list of assets.
+The assets crate. This is the public interface for all things asset-related.
 
-Collects all of our assets and saves them to `/built_assets` at build time.
+`/assets/runtime`
 
-`/assets/build_browser`
+The assets_runtime crate. Provides structs for representing assets like CSS, images, and wasm.
 
-Exports a `build_browser!` macro that runs wasm-pack on the crate you pass to it, returning a struct that includes the resulting generated JS and wasm bytes.
+`/assets/macro`
 
-`/assets/build_tailwind`
-
-Exports a `build_tailwind!` macro that runs the Tailwind CLI. Returns a string with the built CSS.
-
-`/assets/build_images`
-
-Exports a `build_images!` macro that loads images from the given path and generates resized variants.
-
-`/assets/build_images_macro`
-
-Cargo requires that you define procedural macros in their own crate. This is the one for `build_images!`.
-
-`/assets/build_images_runtime`
-
-Runtime types that represent built images. We had to extract this into a separate crate because we wanted to use these types in the `build_images!` macro itself, as well as export them from the `build_images` crate.
-
-(If we put them directly in the `build_images` crate, we'd end up with a circular dependency between `build_images` and `build_images_macro`.)
+The assets_macro crate. Cargo requires that you define procedural macros in their own crate, so this is where we put our macros and other build-time related code. This includes the `build_tailwind!`, `build_browser_crate!`, and `build_images!` macros that get re-exported by `assets/mod`.
 
 `spin.toml`
 
