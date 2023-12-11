@@ -33,12 +33,9 @@ impl Assets {
             production: true,
         );
 
-        // let built_images =
-        //     assets::build_images!(path_to_images_dir: "serverless_functions/src/images");
-
         let hasui_hero = assets::build_image!(
             path_to_image: "serverless_functions/src/images/hasui_light.jpeg",
-            alt: "Hasui's 'The Pond at Benten Shrine in Shiba'",
+            alt: "A woodblock print of mountains and a river by Kawase Hasui."
         );
 
         Self {

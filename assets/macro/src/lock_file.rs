@@ -4,7 +4,7 @@
 /// and multiple invocations running at once can interfere with each other.
 pub fn with_lock_file<T>(macro_name: &'static str, run_macro: impl FnOnce() -> T) -> T {
     let lock_file_name = format!("assets_macro_{}.lock", macro_name);
-    let lock_file_path = std::env::temp_dir().join(lock_file_name);
+    let lock_file_path = assets_runtime::target_dir().join(lock_file_name);
 
     wait_for_lock_to_be_released(macro_name, &lock_file_path);
 
@@ -58,7 +58,7 @@ fn wait_for_lock_to_be_released(macro_name: &'static str, lock_file_path: &std::
 
     // Wait for the lock file to be deleted.
     let start_time = std::time::Instant::now();
-    let max_wait_time = Duration::from_secs(5 * 60);
+    let max_wait_time = Duration::from_secs(10 * 60);
 
     // Wait for another process to release the lock.
     log::info!(

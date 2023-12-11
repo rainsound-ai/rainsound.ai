@@ -33,16 +33,6 @@ impl WasmAsset {
     }
 }
 
-// impl Asset for WasmAsset {
-//     fn files_to_save(&self) -> Vec<crate::FileToSave> {
-//         vec![FileToSave {
-//             path_starting_from_built_assets_dir: &self.url_path_starting_from_built_assets_dir,
-//             bytes: self.bytes,
-//             content_type: "application/wasm",
-//         }]
-//     }
-// }
-
 impl HasPerformanceBudget for WasmAsset {
     fn load_time_budget(&self) -> Duration {
         self.load_time_budget
