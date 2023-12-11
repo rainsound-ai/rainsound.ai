@@ -22,7 +22,6 @@ impl Assets {
             url_path: "built.css",
             performance_budget_millis: 1,
             minify: true,
-            debug: true
         );
 
         let browser_crate = assets::build_browser_crate!(
@@ -32,7 +31,6 @@ impl Assets {
             wasm_url_path: "browser_bg.wasm",
             wasm_performance_budget_millis: 1,
             production: true,
-            debug: true,
         );
 
         // let built_images =
@@ -41,7 +39,6 @@ impl Assets {
         let hasui_hero = assets::build_image!(
             path_to_image: "serverless_functions/src/images/hasui_light.jpeg",
             alt: "Hasui's 'The Pond at Benten Shrine in Shiba'",
-            debug: true
         );
 
         Self {

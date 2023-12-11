@@ -7,17 +7,14 @@ pub fn init_logger(debug: bool) {
         log::Level::Warn
     };
 
-    if let Err(error) = simple_logger::init_with_level(log_level) {
-        log::warn!("Error initializing logger: {}", error);
+    let init_result = simple_logger::init_with_level(log_level);
+
+    match init_result {
+        Ok(_) => {}
+        Err(e) if debug => {
+            // This usually just means that the logger has already been initialized.
+            eprintln!("Error initializing logger: {}", e);
+        }
+        Err(_) => {}
     }
 }
-
-// fn try_init_logger(
-//     debug: bool,
-// ) -> Result<flexi_logger::LoggerHandle, flexi_logger::FlexiLoggerError> {
-//     Logger::try_with_str("assets_macro")
-//         .unwrap()
-//         .log_to_file(FileSpec::default())
-//         .write_mode(WriteMode::BufferAndFlush)
-//         .start()
-// }
