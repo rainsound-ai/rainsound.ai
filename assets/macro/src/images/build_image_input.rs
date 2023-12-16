@@ -1,5 +1,5 @@
 use crate::parse_macro_arguments::*;
-use std::{fmt::Display, path::PathBuf};
+use std::path::PathBuf;
 use syn::{
     parse::{Parse, ParseStream},
     LitStr, Result as SynResult, Token,

@@ -62,7 +62,6 @@ fn try_get_image_file_from_path(path: &Path) -> Option<ImageFile> {
     match image::open(path) {
         Ok(dynamic_image) => {
             let image_file = ImageFile {
-                absolute_path_to_image: path.to_path_buf(),
                 image: dynamic_image,
             };
             Some(image_file)
@@ -75,7 +74,6 @@ fn try_get_image_file_from_path(path: &Path) -> Option<ImageFile> {
 }
 
 struct ImageFile {
-    absolute_path_to_image: PathBuf,
     image: DynamicImage,
 }
 
