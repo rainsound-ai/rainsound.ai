@@ -1,5 +1,4 @@
 use crate::asset_url_path;
-use crate::performance_budget::HasPerformanceBudget;
 use cfg_if::cfg_if;
 use std::{path::PathBuf, time::Duration};
 
@@ -26,31 +25,32 @@ impl CssAsset {
             load_time_budget,
         };
 
+        #[cfg(feature = "build_time")]
         asset.check_performance_budget();
 
         asset
     }
 }
 
-impl HasPerformanceBudget for CssAsset {
-    fn load_time_budget(&self) -> Duration {
-        self.load_time_budget
-    }
-
-    fn bytes(&self) -> &[u8] {
-        self.contents.as_bytes()
-    }
-
-    fn path_for_reporting_asset_over_budget(&self) -> &std::path::Path {
-        &self.url_path_starting_from_built_assets_dir
-    }
-}
-
 cfg_if! {
 if #[cfg(feature = "build_time")] {
-
+    use crate::performance_budget::HasPerformanceBudget;
     use proc_macro2::TokenStream;
     use quote::{quote, ToTokens};
+
+    impl HasPerformanceBudget for CssAsset {
+        fn load_time_budget(&self) -> Duration {
+            self.load_time_budget
+        }
+
+        fn bytes(&self) -> &[u8] {
+            self.contents.as_bytes()
+        }
+
+        fn path_for_reporting_asset_over_budget(&self) -> &std::path::Path {
+            &self.url_path_starting_from_built_assets_dir
+        }
+    }
 
     impl ToTokens for CssAsset {
         fn to_tokens(&self, tokens: &mut TokenStream) {

@@ -57,15 +57,17 @@ impl HowCloseToBudget {
         let budgeted_load_time = asset.load_time_budget();
         let budgeted_load_time_millis = budgeted_load_time.as_millis();
 
-        let half_of_budget = budgeted_load_time_millis / 2;
+        let one_fifth_of_budget = budgeted_load_time_millis / 5;
+        // Warn if we're within 20% of the budget.
+        let warning_threshold = budgeted_load_time_millis - one_fifth_of_budget;
 
-        if (0..=half_of_budget).contains(&estimated_load_time_millis) {
+        if (0..=warning_threshold).contains(&estimated_load_time_millis) {
             return HowCloseToBudget::Below;
         }
 
         let path = asset.path_for_reporting_asset_over_budget();
 
-        if (half_of_budget..=budgeted_load_time_millis).contains(&estimated_load_time_millis) {
+        if (warning_threshold..=budgeted_load_time_millis).contains(&estimated_load_time_millis) {
             return HowCloseToBudget::AlmostOver {
                 path: path.to_owned(),
                 estimated_load_time,
@@ -139,6 +141,11 @@ This means the minimum load time is always at least {assumed_latency_millis} ms.
 
 pub trait HasPerformanceBudget {
     fn check_performance_budget(&self) {
+        // Only check performance budgets in release mode.
+        if cfg!(debug_assertions) {
+            return;
+        }
+
         let how_close = HowCloseToBudget::new(self);
         match how_close {
             HowCloseToBudget::Below => {}

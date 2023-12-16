@@ -26,9 +26,9 @@ impl Assets {
         let browser_crate = assets::build_browser_crate!(
             path_to_browser_crate: "browser",
             js_url_path: "browser.js",
-            js_performance_budget_millis: 1,
+            js_performance_budget_millis: 150,
             wasm_url_path: "browser_bg.wasm",
-            wasm_performance_budget_millis: 1,
+            wasm_performance_budget_millis: 150,
         );
 
         let hasui_hero = assets::build_image!(

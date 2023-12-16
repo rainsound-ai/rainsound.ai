@@ -1,6 +1,5 @@
 use crate::asset_url_path;
 use crate::paths::built_assets_dir;
-use crate::performance_budget::HasPerformanceBudget;
 use cfg_if::cfg_if;
 use std::path::PathBuf;
 use std::time::Duration;
@@ -20,38 +19,40 @@ impl WasmAsset {
         load_time_budget: Duration,
     ) -> Self {
         let full_url_path = asset_url_path(&url_path_starting_from_built_assets_dir);
-        Self {
+        let asset = Self {
             full_url_path,
             url_path_starting_from_built_assets_dir,
             bytes,
             load_time_budget,
-        }
-    }
+        };
 
-    fn path_on_disk(&self) -> PathBuf {
-        built_assets_dir().join(&self.url_path_starting_from_built_assets_dir)
-    }
-}
+        #[cfg(feature = "build_time")]
+        asset.check_performance_budget();
 
-impl HasPerformanceBudget for WasmAsset {
-    fn load_time_budget(&self) -> Duration {
-        self.load_time_budget
-    }
-
-    fn bytes(&self) -> &[u8] {
-        &self.bytes
-    }
-
-    fn path_for_reporting_asset_over_budget(&self) -> &std::path::Path {
-        &self.url_path_starting_from_built_assets_dir
+        asset
     }
 }
 
 cfg_if! {
 if #[cfg(feature = "build_time")] {
-
+    use crate::performance_budget::HasPerformanceBudget;
     use proc_macro2::TokenStream;
     use quote::{quote, ToTokens};
+
+    impl HasPerformanceBudget for WasmAsset {
+        fn load_time_budget(&self) -> Duration {
+            self.load_time_budget
+        }
+
+        fn bytes(&self) -> &[u8] {
+            &self.bytes
+        }
+
+        fn path_for_reporting_asset_over_budget(&self) -> &std::path::Path {
+            &self.url_path_starting_from_built_assets_dir
+        }
+    }
+
 
     impl ToTokens for WasmAsset {
         fn to_tokens(&self, tokens: &mut TokenStream) {
@@ -69,7 +70,7 @@ if #[cfg(feature = "build_time")] {
             //     url_path_starting_from_built_assets_dir
             // );
 
-            let path_on_disk = self.path_on_disk();
+            let path_on_disk = path_on_disk(self);
             let path_on_disk = path_on_disk.to_str().unwrap();
 
             let load_time_budget_millis = self.load_time_budget.as_millis() as u64;
@@ -92,5 +93,8 @@ if #[cfg(feature = "build_time")] {
         }
     }
 
+    fn path_on_disk(wasm_asset: &WasmAsset) -> PathBuf {
+        built_assets_dir().join(&wasm_asset.url_path_starting_from_built_assets_dir)
+    }
 }
 }

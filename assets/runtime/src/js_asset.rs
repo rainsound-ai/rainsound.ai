@@ -1,5 +1,4 @@
 use crate::asset_url_path;
-use crate::performance_budget::HasPerformanceBudget;
 use cfg_if::cfg_if;
 use std::path::PathBuf;
 use std::time::Duration;
@@ -19,34 +18,39 @@ impl JsAsset {
         load_time_budget: Duration,
     ) -> Self {
         let full_url_path = asset_url_path(&url_path_starting_from_built_assets_dir);
-        Self {
+        let asset = Self {
             full_url_path,
             url_path_starting_from_built_assets_dir,
             contents,
             load_time_budget,
-        }
-    }
-}
+        };
 
-impl HasPerformanceBudget for JsAsset {
-    fn load_time_budget(&self) -> Duration {
-        self.load_time_budget
-    }
+        #[cfg(feature = "build_time")]
+        asset.check_performance_budget();
 
-    fn bytes(&self) -> &[u8] {
-        self.contents.as_bytes()
-    }
-
-    fn path_for_reporting_asset_over_budget(&self) -> &std::path::Path {
-        &self.url_path_starting_from_built_assets_dir
+        asset
     }
 }
 
 cfg_if! {
 if #[cfg(feature = "build_time")] {
-
+    use crate::performance_budget::HasPerformanceBudget;
     use proc_macro2::TokenStream;
     use quote::{quote, ToTokens};
+
+    impl HasPerformanceBudget for JsAsset {
+        fn load_time_budget(&self) -> Duration {
+            self.load_time_budget
+        }
+
+        fn bytes(&self) -> &[u8] {
+            self.contents.as_bytes()
+        }
+
+        fn path_for_reporting_asset_over_budget(&self) -> &std::path::Path {
+            &self.url_path_starting_from_built_assets_dir
+        }
+    }
 
     impl ToTokens for JsAsset {
         fn to_tokens(&self, tokens: &mut TokenStream) {
