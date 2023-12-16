@@ -2,7 +2,10 @@
 ///
 /// This is important since many of our macros write to the file system,
 /// and multiple invocations running at once can interfere with each other.
-pub fn with_lock_file<T>(macro_name: &'static str, run_macro: impl FnOnce() -> T) -> T {
+pub fn with_lock_file<MacroOutput>(
+    macro_name: &'static str,
+    run_macro: impl FnOnce() -> MacroOutput,
+) -> MacroOutput {
     let lock_file_name = format!("assets_macro_{}.lock", macro_name);
     let lock_file_path = assets_runtime::target_dir().join(lock_file_name);
 
@@ -10,7 +13,12 @@ pub fn with_lock_file<T>(macro_name: &'static str, run_macro: impl FnOnce() -> T
 
     // Acquire the lock.
     log::info!("Acquiring lock for {}", macro_name);
-    touch(&lock_file_path).unwrap();
+    touch(&lock_file_path).unwrap_or_else(|_| {
+        panic!(
+            "Error creating lock file {}.",
+            lock_file_path.to_str().unwrap()
+        )
+    });
 
     // Run the macro.
     log::info!("Running macro {}", macro_name);
@@ -43,16 +51,29 @@ fn wait_for_lock_to_be_released(macro_name: &'static str, lock_file_path: &std::
     }
 
     // Delete the lock file if it was created more than a minute ago.
-    let metadata = fs::metadata(lock_file_path).unwrap();
-    let creation_time = metadata.created().unwrap();
+    let metadata = fs::metadata(lock_file_path).unwrap_or_else(|_| {
+        panic!(
+            "Error reading lock file metadata for {}",
+            lock_file_path.to_str().unwrap()
+        )
+    });
+
+    let creation_time = metadata
+        .created()
+        .unwrap_or_else(|_| panic!("Error reading lock file creation time."));
     let elapsed = std::time::SystemTime::now()
         .duration_since(creation_time)
-        .unwrap();
+        .expect("Error calculating elapsed time.");
 
     let one_minute = Duration::from_secs(60);
 
     if elapsed > one_minute {
-        std::fs::remove_file(lock_file_path).unwrap();
+        std::fs::remove_file(lock_file_path).unwrap_or_else(|_| {
+            panic!(
+                "Error deleting lock file {}.",
+                lock_file_path.to_str().unwrap()
+            )
+        });
         return;
     }
 

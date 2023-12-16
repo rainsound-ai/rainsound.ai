@@ -128,7 +128,11 @@ build_tailwind!(
             parse_named_u64_argument("performance_budget_millis", &input).ok_or(error.clone())?;
         let performance_budget = Duration::from_millis(performance_budget_millis);
 
-        let minify = parse_named_bool_argument("minify", &input).ok_or(error)?;
+        // True if we're in release mode (i.e. `cargo build --release`).
+        let release_mode = !cfg!(debug_assertions);
+        // Default to minifying in release mode.
+        let minify_by_default = release_mode;
+        let minify = parse_named_bool_argument("minify", &input).unwrap_or(minify_by_default);
 
         let debug = parse_named_bool_argument("debug", &input).unwrap_or(false);
 

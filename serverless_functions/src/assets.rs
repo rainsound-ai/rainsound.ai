@@ -21,7 +21,6 @@ impl Assets {
             path_to_input_file: "serverless_functions/src/main.css",
             url_path: "built.css",
             performance_budget_millis: 1,
-            minify: true,
         );
 
         let browser_crate = assets::build_browser_crate!(
@@ -31,6 +30,7 @@ impl Assets {
             wasm_url_path: "browser_bg.wasm",
             wasm_performance_budget_millis: 1,
             production: true,
+            debug: true,
         );
 
         let hasui_hero = assets::build_image!(
