@@ -5,7 +5,7 @@ use image::DynamicImage;
 use image_asset_extension::*;
 use proc_macro::TokenStream;
 use quote::quote;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 // use build_images_in_folder_input::*;
 // use quote::format_ident;
 // use rayon::prelude::*;
@@ -43,7 +43,7 @@ pub fn build_image(input: TokenStream) -> TokenStream {
         &absolute_path_to_images_dir,
         absolute_path_to_image.clone(),
         image_file.image,
-        PlaceholderToGenerate::Lqip,
+        input.placeholder_to_generate,
         alt,
     );
 

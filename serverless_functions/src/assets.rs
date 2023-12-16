@@ -33,7 +33,8 @@ impl Assets {
 
         let hasui_hero = assets::build_image!(
             path_to_image: "serverless_functions/src/images/hasui_light.jpeg",
-            alt: "A woodblock print of mountains and a river by Kawase Hasui."
+            alt: "A woodblock print of mountains and a river by Kawase Hasui.",
+            placeholder: lqip,
         );
 
         Self {

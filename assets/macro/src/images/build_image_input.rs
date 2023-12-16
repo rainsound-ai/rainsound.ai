@@ -2,27 +2,36 @@ use crate::parse_macro_arguments::*;
 use std::path::PathBuf;
 use syn::{
     parse::{Parse, ParseStream},
-    LitStr, Result as SynResult, Token,
+    Ident, LitStr, Result as SynResult, Token,
 };
+
+use super::build_time_image::PlaceholderToGenerate;
 
 /// This struct represents the input to the `build_image!` macro.
 pub struct BuildImageInput {
     pub absolute_path_to_image: PathBuf,
+    pub placeholder_to_generate: PlaceholderToGenerate,
     pub alt: Alt,
     pub debug: bool,
 }
 
 impl Parse for BuildImageInput {
     fn parse(input: ParseStream) -> SynResult<Self> {
-        let error_message = r#"Please make sure to pass arguments to build_image! like this:
+        let error_message = r#"Please make sure to pass arguments to build_image! like this. The path should be relative to the workspace root. By default this will detect the dominant color of the image and use that as the placeholder.
 
-build_image!(path_to_image: \"src/images/santoka.jpg\");
+build_image!(
+    path_to_image: \"src/images/santoka.jpg\",
+    alt: \"Taneda Santōka\",
+);
 
-The path should be relative to the workspace root.
+There are also some optional arguments. `placeholder` can be `lqip` or `automatic_color`. `lqip` generates a low resolution version of the image as a base64 string, suitable for embedding directly into html. `automatic_color` computes the dominant color of the image. `debug` can be `true` or `false`.
 
-You can also pass an optional `debug` argument like this:
-
-build_image!(path_to_image: \"src/images/santoka.jpg\", debug: true);
+build_image!(
+    path_to_image: \"src/images/santoka.jpg\",
+    alt: \"Taneda Santōka\",
+    placeholder: lqip,
+    debug: true,
+);
 "#;
         let error = syn::Error::new(input.span(), error_message);
 
@@ -34,7 +43,9 @@ build_image!(path_to_image: \"src/images/santoka.jpg\", debug: true);
         let absolute_path_to_image = assets_runtime::paths::workspace_root_dir()
             .join(string_path_to_image_starting_at_workspace_root);
 
-        let alt = parse_alt(&input).ok_or(error)?;
+        let alt = parse_alt(&input).ok_or(error.clone())?;
+
+        let placeholder_to_generate = parse_placeholder_to_generate(&input).ok_or(error)?;
 
         // This argument is optional, so we default to `false` if it's not present.
         let debug = parse_named_bool_argument("debug", &input).unwrap_or(false);
@@ -42,6 +53,7 @@ build_image!(path_to_image: \"src/images/santoka.jpg\", debug: true);
         Ok(BuildImageInput {
             absolute_path_to_image,
             alt,
+            placeholder_to_generate,
             debug,
         })
     }
@@ -71,4 +83,31 @@ fn parse_alt(input: &ParseStream) -> Option<Alt> {
 pub enum Alt {
     Automatic,
     Literal(String),
+}
+
+fn parse_placeholder_to_generate(input: &ParseStream) -> Option<PlaceholderToGenerate> {
+    let maybe_argument_name = parse_argument_name_and_colon("placeholder", input);
+
+    if maybe_argument_name.is_none() {
+        return Some(PlaceholderToGenerate::AutomaticallyDetectedColor);
+    }
+
+    // If there's an argument name, the value should be an ident
+
+    let argument_value_literal: Ident = input.parse().ok()?;
+    let placeholder_str = argument_value_literal.to_string();
+    let placeholder = match placeholder_str.as_str() {
+        "lqip" => PlaceholderToGenerate::Lqip,
+        "automatic_color" => PlaceholderToGenerate::AutomaticallyDetectedColor,
+        _ => panic!(
+            "Invalid placeholder: {}. Should be either lqip or automatic_color.",
+            placeholder_str
+        ),
+    };
+
+    // Parse the optional comma after the argument. Note how
+    // we ignore the error here since the comma is optional.
+    let _: Result<Token![,], _> = input.parse();
+
+    Some(placeholder)
 }
