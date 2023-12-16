@@ -10,7 +10,7 @@ id = "invoke_serverless_functions"
 source = "target/wasm32-wasi/debug/serverless_functions.wasm"
 allowed_http_hosts = []
 # This makes assets available server-side in our serverless functions.
-files = [{ source = "built_assets", destination = "/built_assets" }]
+files = [{ source = "assets/built", destination = "/assets/built" }]
 [component.trigger]
 route = "/..."
 [component.build]
@@ -34,10 +34,10 @@ watch = [
 [[component]]
 id = "serve_built_assets"
 source = { url = "https://github.com/fermyon/spin-fileserver/releases/download/v0.1.0/spin_static_fs.wasm", digest = "sha256:96c76d9af86420b39eb6cd7be5550e3cb5d4cc4de572ce0fd1f6a29471536cb4" }
-files = [{ source = "built_assets", destination = "/" }]
+files = [{ source = "assets/built", destination = "/" }]
 # environment = { CACHE_CONTROl = "no-cache" }
 [component.trigger]
 route = "/built-assets/..."
 # [component.build]
 # command = ""
-# watch = ["built_assets/**/*"]
+# watch = ["assets/built/**/*"]

@@ -58,7 +58,7 @@ _Pit of success_. The easiest way to build our site should also be the best, for
 
 [Tailwind](https://tailwindcss.com/) for CSS.
 
-[Cargo build scripts](https://doc.rust-lang.org/cargo/reference/build-scripts.html) for resizing images and other asset pre-processing.
+[Procedural macros](https://blog.logrocket.com/procedural-macros-in-rust/) for resizing images, running the Tailwind CLI, and other asset pre-processing.
 
 [wasm-pack](https://github.com/rustwasm/wasm-pack) for compiling our client-side Rust to wasm.
 
@@ -78,17 +78,19 @@ Types and functions shared between the server and browser.
 
 `/assets`
 
-Provides structs and functions for representing assets like CSS, images, and wasm. Also where we define our global list of assets.
+This sub-folder contains crates for handling asset preparation like running the Tailwind CLI and resizing images.
 
-Collects all of our assets and saves them to `/built_assets` at build time.
+`/assets/mod`
 
-`/build_browser`
+The assets crate. This is the public interface for all things asset-related.
 
-The build script for this sub-crate runs wasm-pack. `lib.rs` exposes static variables containing wasm-pack's output.
+`/assets/runtime`
 
-`/build_tailwind`
+The assets_runtime crate. Provides structs for representing assets like CSS, images, and wasm.
 
-The build script for this sub-crate runs the Tailwind CLI. `lib.rs` exposes a static variable containing the contents of our built CSS file.
+`/assets/macro`
+
+The assets_macro crate. Cargo requires that you define procedural macros in their own crate, so this is where we put our macros and other build-time related code. This includes the `build_tailwind!`, `build_browser_crate!`, and `build_images!` macros that get re-exported by `assets/mod`.
 
 `spin.toml`
 

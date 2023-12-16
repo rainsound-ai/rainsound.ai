@@ -19,6 +19,8 @@ use self::prelude::*;
 
 mod routes;
 
+mod assets;
+
 #[http_component]
 fn main(req: Request) -> Result<Response> {
     let route = Route::from_request(&req);

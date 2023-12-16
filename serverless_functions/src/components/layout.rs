@@ -1,7 +1,7 @@
+use crate::assets::assets;
 use crate::components::*;
 use crate::css_class_groups::*;
 use crate::routes::Route;
-use assets::*;
 use maud::{html, Markup, PreEscaped, DOCTYPE};
 
 pub fn layout(content: Markup) -> Markup {
@@ -12,7 +12,7 @@ pub fn layout(content: Markup) -> Markup {
             meta charset="UTF-8";
             meta name="viewport" content="width=device-width, initial-scale=1.0";
             meta http_equiv="X-UA-Compatible" content="ie=edge";
-            (stylesheet(&non_html_assets.built_css))
+            (stylesheet(&assets.css))
         }
 
         body class={(bg_background()) " dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75"} {
@@ -60,9 +60,10 @@ fn nav_links() -> Markup {
 }
 
 fn main_js() -> Markup {
-    let browser_js_path = non_html_assets
-        .browser_js
-        .path()
+    let browser_js_path = assets
+        .browser_crate
+        .js
+        .full_url_path
         .to_string_lossy()
         .to_string();
     let contents = include_str!("../main.js").replace("{browser_js_filename}", &browser_js_path);

@@ -1,11 +1,10 @@
 [workspace]
 members = [
-    # 
     "serverless_functions",
     "shared",
-    "assets",
-    "build_browser",
-    "build_tailwind",
+    "assets/mod",
+    "assets/runtime",
+    "assets/macro",
 ]
 exclude = [
     # If we add the browser crate to the workspace, building causes
@@ -40,3 +39,11 @@ preview = "./scripts preview"
 deploy = "./scripts deploy"
 profile_bundle_size = "./scripts profile_bundle_size"
 setup = "chmod +x ./scripts && ./scripts setup"
+
+# Always build the image crate with optimizations enabled, even in dev, test, and benchmark mode.
+[profile.dev.package.image]
+opt-level = 3
+[profile.test.package.image]
+opt-level = 3
+[profile.bench.package.image]
+opt-level = 3
