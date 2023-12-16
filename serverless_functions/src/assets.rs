@@ -20,7 +20,7 @@ impl Assets {
         let css = assets::build_tailwind!(
             path_to_input_file: "serverless_functions/src/main.css",
             url_path: "built.css",
-            performance_budget_millis: 1,
+            performance_budget_millis: 150,
         );
 
         let browser_crate = assets::build_browser_crate!(

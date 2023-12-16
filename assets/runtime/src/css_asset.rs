@@ -18,12 +18,17 @@ impl CssAsset {
         load_time_budget: Duration,
     ) -> Self {
         let full_url_path = asset_url_path(&url_path_starting_from_built_assets_dir);
-        Self {
+
+        let asset = Self {
             full_url_path,
             url_path_starting_from_built_assets_dir,
             contents,
             load_time_budget,
-        }
+        };
+
+        asset.check_performance_budget();
+
+        asset
     }
 }
 
