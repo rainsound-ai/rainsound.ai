@@ -11,6 +11,7 @@ impl<'a> Image<'a> {
         Self { asset, class: "" }
     }
 
+    #[allow(dead_code)]
     pub fn class(mut self, class: impl Into<&'a str>) -> Self {
         self.class = class.into();
         self
