@@ -21,6 +21,9 @@ pub fn build(input: TokenStream) -> TokenStream {
     };
 
     std::fs::create_dir_all(built_assets_dir()).expect("Error creating built assets dir.");
+
+    // Move the built wasm from the temporary directory where wasm-pack
+    // saved it to its final location in the built assets directory.
     let final_path_to_built_wasm = built_assets_dir().join(&input.wasm_url_path);
     std::fs::rename(
         &wasm_pack_output.path_to_built_wasm,
@@ -28,6 +31,8 @@ pub fn build(input: TokenStream) -> TokenStream {
     )
     .expect("Error moving the built wasm file to the final location.");
 
+    // Move the built JavaScript from the temporary directory where wasm-pack
+    // saved it to its final location in the built assets directory.
     let final_path_to_built_js = built_assets_dir().join(&input.js_url_path);
     log::info!("Moving JS file to {:?}", &final_path_to_built_js);
     if !wasm_pack_output.path_to_built_js.exists() {
@@ -66,6 +71,9 @@ pub fn build(input: TokenStream) -> TokenStream {
         ),
     };
 
+    // Clean up the temporary directory where wasm-pack saved the built files.
+    std::fs::remove_dir_all(wasm_pack_output.out_dir).expect("Error deleting out_dir.");
+
     let output = quote! {
         #browser_crate_asset
     };
@@ -76,15 +84,16 @@ pub fn build(input: TokenStream) -> TokenStream {
 fn run_wasm_pack(input: &BuildBrowserCrateInput) -> Result<WasmPackOutput, TokenStream> {
     log::info!("Building browser crate.");
 
-    let wasm_pack = workspace_root_dir()
-        .join("target")
-        .join("cargo_install")
-        .join("bin")
-        .join("wasm-pack")
+    let wasm_pack = path_to_cargo_install_binary("wasm-pack")
         .to_string_lossy()
         .to_string();
 
-    let out_dir = target_dir().join("browser");
+    // Generate a unique name for the out directory so that
+    // if we're running multiple builds in parallel, they
+    // don't interfere with each other.
+    let uuid = uuid::Uuid::new_v4().to_string();
+    let sub_folder_name = format!("browser_{}", uuid);
+    let out_dir = target_dir().join(sub_folder_name);
     let out_dir_str = out_dir.to_str().unwrap();
     let mut run_wasm_pack = Command::new(wasm_pack);
 
@@ -143,6 +152,7 @@ fn run_wasm_pack(input: &BuildBrowserCrateInput) -> Result<WasmPackOutput, Token
         Ok(WasmPackOutput {
             path_to_built_wasm: out_dir.join("browser_bg.wasm"),
             path_to_built_js: out_dir.join("browser.js"),
+            out_dir,
         })
     } else {
         let stdout = String::from_utf8(wasm_pack_output.stdout)
@@ -165,6 +175,7 @@ fn run_wasm_pack(input: &BuildBrowserCrateInput) -> Result<WasmPackOutput, Token
 struct WasmPackOutput {
     path_to_built_wasm: PathBuf,
     path_to_built_js: PathBuf,
+    out_dir: PathBuf,
 }
 
 fn overwrite_js_with_minified(path_to_js: PathBuf) -> String {

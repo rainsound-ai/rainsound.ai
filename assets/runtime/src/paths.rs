@@ -25,10 +25,18 @@ pub fn target_dir() -> PathBuf {
     workspace_root_dir().join("target")
 }
 
+pub fn cargo_install_dir() -> PathBuf {
+    target_dir().join("cargo_install")
+}
+
+pub fn path_to_cargo_install_binary(binary_name: &str) -> PathBuf {
+    cargo_install_dir().join("bin").join(binary_name)
+}
+
 /// When loading assets in the browser, URL paths should
 /// start with this prefix.
 ///
-/// For example, if you have an asset at `built_assets/built.css`,
+/// For example, if you have an asset at `assets/built/built.css`,
 /// then the URL path to that asset in the browser should be
 /// `/built-assets/built.css`.
 pub fn built_assets_browser_prefix() -> PathBuf {
@@ -36,7 +44,7 @@ pub fn built_assets_browser_prefix() -> PathBuf {
 }
 
 pub fn asset_url_path(sub_url_path: &Path) -> PathBuf {
-    crate::built_assets_browser_prefix().join(sub_url_path)
+    built_assets_browser_prefix().join(sub_url_path)
 }
 
 pub fn built_image_path(path_starting_from_images_dir: &Path) -> PathBuf {
