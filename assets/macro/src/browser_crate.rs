@@ -248,7 +248,13 @@ build_browser_crate!(
         let wasm_performance_budget = Duration::from_millis(wasm_performance_budget_millis);
         // eprintln!("wasm_performance_budget: {:?}", wasm_performance_budget);
 
-        let production = parse_named_bool_argument("production", &input).ok_or(error)?;
+        // True if we're in release mode (i.e. `cargo build --release`).
+        let release_mode = !cfg!(debug_assertions);
+        // Default to production: true in release mode.
+        let production_default = release_mode;
+        let production =
+            parse_named_bool_argument("production", &input).unwrap_or(production_default);
+
         // eprintln!("production: {:?}", production);
 
         let debug = parse_named_bool_argument("debug", &input).unwrap_or(false);
