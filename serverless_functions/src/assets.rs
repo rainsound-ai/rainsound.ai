@@ -7,7 +7,7 @@ pub struct Assets {
     pub css: CssAsset,
     pub browser_crate: BrowserCrateAsset,
     pub hasui_hero: ImageAsset,
-    pub my_font: FontAsset,
+    pub fugi: FontAsset,
 }
 
 // We have to separate out the non-html assets because
@@ -20,15 +20,15 @@ impl Assets {
     pub fn new() -> Self {
         let css = assets::build_tailwind!(
             path_to_input_file: "serverless_functions/src/main.css",
-            url_path: "built.css",
+            url_path: "built-assets/built.css",
             performance_budget_millis: 150,
         );
 
         let browser_crate = assets::build_browser_crate!(
             path_to_browser_crate: "browser",
-            js_url_path: "browser.js",
+            js_url_path: "built-assets/browser.js",
             js_performance_budget_millis: 150,
-            wasm_url_path: "browser_bg.wasm",
+            wasm_url_path: "built-assets/browser_bg.wasm",
             wasm_performance_budget_millis: 150,
         );
 
@@ -38,11 +38,11 @@ impl Assets {
             placeholder: lqip,
         );
 
-        // let my_font = assets::build_font!(
-        //     path_to_input_file: "serverless_functions/src/fonts/MyFont.otf",
-        //     url_path: "fonts/MyFont.otf",
-        //     performance_budget_millis: 150,
-        // );
+        let fugi = assets::build_font!(
+            path_to_input_file: "serverless_functions/src/fonts/Fugi.ttf",
+            url_path: "built-assets/fonts/Fugi.ttf",
+            performance_budget_millis: 150,
+        );
 
         // favicon
 
@@ -50,7 +50,7 @@ impl Assets {
             css,
             browser_crate,
             hasui_hero,
-            my_font,
+            fugi,
         }
     }
 }

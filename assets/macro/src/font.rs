@@ -31,6 +31,12 @@ pub fn build(input: TokenStream) -> TokenStream {
 
     let output_file_path = built_assets_dir().join(&input.url_path);
 
+    let output_dir = output_file_path
+        .parent()
+        .expect("Error getting fonts directory.");
+
+    std::fs::create_dir_all(output_dir).expect("Error creating built assets dir.");
+
     std::fs::copy(input_file_path, output_file_path).expect("Error copying font file.");
 
     let font_asset = FontAsset::new(
@@ -76,8 +82,8 @@ build_font!(
         let path_to_input_file = PathBuf::from_str(&path_to_input_file_string)
             .expect("Error parsing path_to_input_file.");
 
-        let url_path_string =
-            parse_named_string_argument("url_path", &input).ok_or(error.clone())?;
+        let url_path_string = parse_url_path_argument("url_path", &input)
+            .map_err(|err| err.to_syn_error(input_span))?;
         let url_path = PathBuf::from_str(&url_path_string).expect("Error parsing url_path.");
 
         let performance_budget_millis =

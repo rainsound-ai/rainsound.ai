@@ -1,3 +1,4 @@
+use assets_runtime::built_assets_browser_prefix;
 use syn::{parse::ParseStream, Ident, LitBool, LitInt, LitStr, Token};
 
 pub fn parse_named_string_argument(
@@ -41,6 +42,47 @@ pub fn parse_named_u64_argument(argument_name: &'static str, input: &ParseStream
     let _: Result<Token![,], _> = input.parse();
 
     Some(argument_value)
+}
+
+pub enum ParseUrlPathArgumentError {
+    MissingArgument,
+    InvalidPrefix,
+}
+
+impl ParseUrlPathArgumentError {
+    pub fn to_syn_error(self, span: proc_macro2::Span) -> syn::Error {
+        syn::Error::new(span, self.to_string())
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            ParseUrlPathArgumentError::MissingArgument => {
+                "url_path argument is missing".to_string()
+            }
+            ParseUrlPathArgumentError::InvalidPrefix => {
+                format!(
+                    "url_path must start with {}",
+                    &built_assets_browser_prefix().to_string_lossy().to_string()
+                )
+            }
+        }
+    }
+}
+
+pub fn parse_url_path_argument(
+    argument_name: &'static str,
+    input: &ParseStream,
+) -> Result<String, ParseUrlPathArgumentError> {
+    let path_string = parse_named_string_argument(argument_name, input)
+        .ok_or(ParseUrlPathArgumentError::MissingArgument)?;
+
+    let prefix = built_assets_browser_prefix().to_string_lossy().to_string();
+
+    if !path_string.starts_with(&prefix) {
+        return Err(ParseUrlPathArgumentError::InvalidPrefix);
+    }
+
+    Ok(path_string)
 }
 
 /// parse_argument_name_and_colon("path_to_image", input)

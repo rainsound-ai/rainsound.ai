@@ -1,25 +1,24 @@
-use crate::asset_url_path;
+use crate::built_assets_browser_prefix;
 use cfg_if::cfg_if;
 use std::{path::PathBuf, time::Duration};
 
 #[derive(PartialEq)]
 pub struct CssAsset {
-    pub full_url_path: PathBuf, // Used for loading the asset in the browser.
+    pub url_path: PathBuf, // Used for loading the asset in the browser.
     pub url_path_starting_from_built_assets_dir: PathBuf, // Used for saving the asset to disk.
     pub contents: String,
     pub load_time_budget: Duration,
 }
 
 impl CssAsset {
-    pub fn new(
-        url_path_starting_from_built_assets_dir: PathBuf,
-        contents: String,
-        load_time_budget: Duration,
-    ) -> Self {
-        let full_url_path = asset_url_path(&url_path_starting_from_built_assets_dir);
+    pub fn new(url_path: PathBuf, contents: String, load_time_budget: Duration) -> Self {
+        let url_path_starting_from_built_assets_dir = url_path
+            .strip_prefix(built_assets_browser_prefix())
+            .expect("Error stripping prefix.")
+            .to_path_buf();
 
         let asset = Self {
-            full_url_path,
+            url_path,
             url_path_starting_from_built_assets_dir,
             contents,
             load_time_budget,
@@ -56,8 +55,8 @@ if #[cfg(feature = "build_time")] {
         fn to_tokens(&self, tokens: &mut TokenStream) {
             log::info!("Converting CssAsset to tokens.");
 
-            let full_url_path = self.full_url_path.to_str().unwrap();
-            // log::info!("full_url_path: {}", full_url_path);
+            let url_path = self.url_path.to_str().unwrap();
+            // log::info!("url_path: {}", url_path);
 
             let url_path_starting_from_built_assets_dir = self
                 .url_path_starting_from_built_assets_dir
@@ -76,7 +75,7 @@ if #[cfg(feature = "build_time")] {
 
             let quoted = quote! {
                 CssAsset {
-                    full_url_path: std::path::PathBuf::from(#full_url_path),
+                    url_path: std::path::PathBuf::from(#url_path),
                     url_path_starting_from_built_assets_dir: std::path::PathBuf::from(#url_path_starting_from_built_assets_dir),
                     contents: #contents.to_string(),
                     load_time_budget: std::time::Duration::from_millis(#load_time_budget_millis),

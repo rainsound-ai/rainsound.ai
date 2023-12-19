@@ -63,7 +63,7 @@ fn main_js() -> Markup {
     let browser_js_path = assets
         .browser_crate
         .js
-        .full_url_path
+        .url_path
         .to_string_lossy()
         .to_string();
     let contents = include_str!("../main.js").replace("{browser_js_filename}", &browser_js_path);
