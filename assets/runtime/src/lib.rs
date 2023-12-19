@@ -22,3 +22,6 @@ mod performance_budget;
 
 mod wasm_asset;
 pub use self::wasm_asset::WasmAsset;
+
+mod font_asset;
+pub use self::font_asset::FontAsset;

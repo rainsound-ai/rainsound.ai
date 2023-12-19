@@ -28,7 +28,7 @@ pub fn build_image(input: TokenStream) -> TokenStream {
     let image_file = try_get_image_file_from_path(absolute_path_to_image)
         .expect("Error getting image file from path.");
 
-    let absolute_path_to_images_dir = absolute_path_to_image
+    let absolute_path_to_image_dir = absolute_path_to_image
         .parent()
         .expect("Error getting parent directory of image.")
         .to_path_buf();
@@ -40,7 +40,7 @@ pub fn build_image(input: TokenStream) -> TokenStream {
     };
 
     let build_time_image = BuildTimeImage::new(
-        &absolute_path_to_images_dir,
+        &absolute_path_to_image_dir,
         absolute_path_to_image.clone(),
         image_file.image,
         input.placeholder_to_generate,
@@ -105,7 +105,7 @@ fn print_code_for_debugging(token_stream: &proc_macro2::TokenStream) {
 //     log::info!("Building images.");
 //     log::info!(
 //         "Path to images directory: {}",
-//         input.absolute_path_to_images_dir.display()
+//         input.absolute_path_to_image_dir.display()
 //     );
 //     let images_to_build = get_images_from_disk(input);
 //     let code = generate_code(&images_to_build);

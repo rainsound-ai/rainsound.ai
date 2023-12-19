@@ -43,8 +43,8 @@ if #[cfg(feature = "build_time")] {
             self.load_time_budget
         }
 
-        fn bytes(&self) -> &[u8] {
-            self.contents.as_bytes()
+        fn size_in_bytes(&self) -> usize{
+            self.contents.len()
         }
 
         fn path_for_reporting_asset_over_budget(&self) -> &std::path::Path {

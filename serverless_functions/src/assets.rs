@@ -1,4 +1,4 @@
-use assets::{BrowserCrateAsset, CssAsset, ImageAsset};
+use assets::{BrowserCrateAsset, CssAsset, FontAsset, ImageAsset};
 use once_cell::sync::Lazy;
 
 pub static assets: Lazy<Assets> = Lazy::new(Assets::new);
@@ -7,6 +7,7 @@ pub struct Assets {
     pub css: CssAsset,
     pub browser_crate: BrowserCrateAsset,
     pub hasui_hero: ImageAsset,
+    pub my_font: FontAsset,
 }
 
 // We have to separate out the non-html assets because
@@ -37,10 +38,19 @@ impl Assets {
             placeholder: lqip,
         );
 
+        // let my_font = assets::build_font!(
+        //     path_to_input_file: "serverless_functions/src/fonts/MyFont.otf",
+        //     url_path: "fonts/MyFont.otf",
+        //     performance_budget_millis: 150,
+        // );
+
+        // favicon
+
         Self {
             css,
             browser_crate,
             hasui_hero,
+            my_font,
         }
     }
 }

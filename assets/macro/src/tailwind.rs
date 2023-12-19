@@ -92,7 +92,7 @@ pub fn tailwind_config_path() -> PathBuf {
 }
 
 struct BuildTailwindInput {
-    path_to_input_file: String,
+    path_to_input_file: PathBuf,
     url_path: PathBuf,
     performance_budget: Duration,
     minify: bool,
@@ -117,8 +117,11 @@ build_tailwind!(
 
         let error = syn::Error::new(input_span, error_message);
 
-        let path_to_input_file =
+        let path_to_input_file_string =
             parse_named_string_argument("path_to_input_file", &input).ok_or(error.clone())?;
+
+        let path_to_input_file = PathBuf::from_str(&path_to_input_file_string)
+            .expect("Error parsing path_to_input_file.");
 
         let url_path_string =
             parse_named_string_argument("url_path", &input).ok_or(error.clone())?;
