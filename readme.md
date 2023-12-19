@@ -34,7 +34,7 @@ Most notably, we use Rust across the entire stack:
 
 - At build time to resize images and do other asset pre-processing.
 
-- At runtime on the server to generate HTML, handle form submissions, and do other server-side processing.
+- At runtime on the server to generate html, handle form submissions, and do other server-side processing.
 
 - At runtime in the browser to add bits of interactivity where necessary.
 
@@ -56,7 +56,7 @@ _Pit of success_. The easiest way to build our site should also be the best, for
 
 [Maud](https://maud.lambda.xyz/) for un-complicated html templates on the server and client. Doesn't blow up our bundle size.
 
-[Tailwind](https://tailwindcss.com/) for CSS.
+[Tailwind](https://tailwindcss.com/) for css.
 
 [Procedural macros](https://blog.logrocket.com/procedural-macros-in-rust/) for resizing images, running the Tailwind CLI, and other asset pre-processing.
 
@@ -86,7 +86,7 @@ The assets crate. This is the public interface for all things asset-related.
 
 `/assets/runtime`
 
-The assets_runtime crate. Provides structs for representing assets like CSS, images, and wasm.
+The assets_runtime crate. Provides structs for representing assets like css, images, and wasm.
 
 `/assets/macro`
 
