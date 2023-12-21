@@ -29,7 +29,7 @@ pub fn include(input: TokenStream) -> TokenStream {
         .expect("Error getting metadata for file.")
         .len();
 
-    let output_file_path = built_assets_dir().join(&input.url_path);
+    let output_file_path = output_file_path(&input.url_path);
 
     let output_dir = output_file_path
         .parent()

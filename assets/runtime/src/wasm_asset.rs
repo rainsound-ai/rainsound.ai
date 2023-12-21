@@ -1,5 +1,5 @@
-use crate::built_assets_browser_prefix;
 use crate::paths::built_assets_dir;
+use crate::{built_assets_browser_prefix, output_file_path};
 use cfg_if::cfg_if;
 use std::path::PathBuf;
 use std::time::Duration;
@@ -94,7 +94,7 @@ if #[cfg(feature = "build_time")] {
     }
 
     fn path_on_disk(wasm_asset: &WasmAsset) -> PathBuf {
-        built_assets_dir().join(&wasm_asset.url_path_starting_from_built_assets_dir)
+        output_file_path(&wasm_asset.url_path)
     }
 }
 }

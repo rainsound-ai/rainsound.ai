@@ -13,6 +13,14 @@ pub fn built_assets_dir() -> PathBuf {
     assets_dir().join(built_assets_dir_name())
 }
 
+pub fn output_file_path(url_path: &Path) -> PathBuf {
+    let url_path_without_prefix = url_path
+        .strip_prefix(built_assets_browser_prefix())
+        .unwrap();
+
+    built_assets_dir().join(url_path_without_prefix)
+}
+
 pub fn built_assets_dir_name() -> &'static str {
     "built"
 }

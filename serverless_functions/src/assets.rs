@@ -48,8 +48,8 @@ impl Assets {
         // favicon
 
         let favicon = assets::include_file!(
-            path_to_input_file: "serverless_functions/src/images/favicon.png",
-            url_path: "built-assets/favicon.png",
+            path_to_input_file: "serverless_functions/src/images/favicon.ico",
+            url_path: "built-assets/favicon.ico",
             performance_budget_millis: 150,
         );
 

@@ -36,7 +36,7 @@ pub fn include(input: TokenStream) -> TokenStream {
             .into();
     }
 
-    let output_file = built_assets_dir().join(&input.url_path);
+    let output_file = output_file_path(&input.url_path);
     let output_file_str = output_file
         .to_str()
         .expect("Error converting the path to the Tailwind output CSS file to a string.");

@@ -24,7 +24,7 @@ pub fn include(input: TokenStream) -> TokenStream {
 
     // Move the built wasm from the temporary directory where wasm-pack
     // saved it to its final location in the built assets directory.
-    let final_path_to_built_wasm = built_assets_dir().join(&input.wasm_url_path);
+    let final_path_to_built_wasm = output_file_path(&input.wasm_url_path);
     std::fs::rename(
         &wasm_pack_output.path_to_built_wasm,
         &final_path_to_built_wasm,
@@ -33,7 +33,7 @@ pub fn include(input: TokenStream) -> TokenStream {
 
     // Move the built JavaScript from the temporary directory where wasm-pack
     // saved it to its final location in the built assets directory.
-    let final_path_to_built_js = built_assets_dir().join(&input.js_url_path);
+    let final_path_to_built_js = output_file_path(&input.js_url_path);
     log::info!("Moving JS file to {:?}", &final_path_to_built_js);
     if !wasm_pack_output.path_to_built_js.exists() {
         let error_message = format!(

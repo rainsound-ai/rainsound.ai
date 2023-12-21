@@ -10,6 +10,7 @@ pub fn layout(content: Markup) -> Markup {
     html lang="en" {
         head {
             meta charset="UTF-8";
+            link rel="icon" href=(assets.favicon.url_path.to_string_lossy().to_string());
             meta name="viewport" content="width=device-width, initial-scale=1.0";
             meta http_equiv="X-UA-Compatible" content="ie=edge";
             (stylesheet(&assets.css))
@@ -17,6 +18,11 @@ pub fn layout(content: Markup) -> Markup {
 
         body class={(bg_background()) " dark:text-white flex flex-col items-center selection:bg-neutral-200/75 dark:selection:bg-neutral-700/75"} {
             (nav_links())
+
+            a href=(assets.favicon.url_path.to_string_lossy().to_string()) class="sr-only sr-only-focusable" {
+            "favicon: " (assets.favicon.url_path.to_string_lossy().to_string())
+            }
+
 
             main {
                 (content)
