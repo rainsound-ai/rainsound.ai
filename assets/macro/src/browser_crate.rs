@@ -84,9 +84,19 @@ pub fn build(input: TokenStream) -> TokenStream {
 fn run_wasm_pack(input: &BuildBrowserCrateInput) -> Result<WasmPackOutput, TokenStream> {
     log::info!("Building browser crate.");
 
-    let wasm_pack = path_to_cargo_install_binary("wasm-pack")
-        .to_string_lossy()
-        .to_string();
+    let wasm_pack = path_to_cargo_install_binary("wasm-pack");
+
+    if !wasm_pack.exists() {
+        return Err(syn::Error::new(
+            input.span,
+            format!(
+                "Wasm-pack not found - try running `./scripts setup`. Path: {:?}.",
+                wasm_pack
+            ),
+        )
+        .to_compile_error()
+        .into());
+    }
 
     // Generate a unique name for the out directory so that
     // if we're running multiple builds in parallel, they
