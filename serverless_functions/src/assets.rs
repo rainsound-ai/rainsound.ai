@@ -1,4 +1,4 @@
-use assets::{BrowserCrateAsset, CssAsset, FileAsset, FontAsset, ImageAsset};
+use assets::*;
 use once_cell::sync::Lazy;
 
 pub static assets: Lazy<Assets> = Lazy::new(Assets::new);

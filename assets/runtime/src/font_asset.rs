@@ -75,7 +75,7 @@ if #[cfg(feature = "build_time")] {
             // log::info!("size_in_bytes: {}", size_in_bytes);
 
             let quoted = quote! {
-                FontAsset {
+                assets::FontAsset {
                     url_path: std::path::PathBuf::from(#url_path),
                     url_path_starting_from_built_assets_dir: std::path::PathBuf::from(#url_path_starting_from_built_assets_dir),
                     load_time_budget: std::time::Duration::from_millis(#load_time_budget_millis),

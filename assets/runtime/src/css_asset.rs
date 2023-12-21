@@ -74,7 +74,7 @@ if #[cfg(feature = "build_time")] {
             // log::info!("load_time_budget_millis: {}", load_time_budget_millis);
 
             let quoted = quote! {
-                CssAsset {
+                assets::CssAsset {
                     url_path: std::path::PathBuf::from(#url_path),
                     url_path_starting_from_built_assets_dir: std::path::PathBuf::from(#url_path_starting_from_built_assets_dir),
                     contents: #contents.to_string(),
