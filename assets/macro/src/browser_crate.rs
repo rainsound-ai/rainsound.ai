@@ -10,8 +10,8 @@ use syn::{
     Result as SynResult,
 };
 
-pub fn build(input: TokenStream) -> TokenStream {
-    let input = syn::parse_macro_input!(input as BuildBrowserCrateInput);
+pub fn include(input: TokenStream) -> TokenStream {
+    let input = syn::parse_macro_input!(input as IncludeBrowserCrateInput);
     crate::logger::init_logger(input.debug);
 
     let maybe_wasm_pack_output = run_wasm_pack(&input);
@@ -81,8 +81,8 @@ pub fn build(input: TokenStream) -> TokenStream {
     output.into()
 }
 
-fn run_wasm_pack(input: &BuildBrowserCrateInput) -> Result<WasmPackOutput, TokenStream> {
-    log::info!("Building browser crate.");
+fn run_wasm_pack(input: &IncludeBrowserCrateInput) -> Result<WasmPackOutput, TokenStream> {
+    log::info!("Including browser crate.");
 
     let wasm_pack = path_to_cargo_install_binary("wasm-pack");
 
@@ -170,7 +170,7 @@ fn run_wasm_pack(input: &BuildBrowserCrateInput) -> Result<WasmPackOutput, Token
         let stderr = String::from_utf8(wasm_pack_output.stderr)
             .expect("Error converting wasm-pack's stderr to a string.");
         let error_message = format!(
-            "Error building browser crate.\nstdout:\n{}\n\nstderr:\n{}",
+            "Error including browser crate.\nstdout:\n{}\n\nstderr:\n{}",
             stdout, stderr
         );
         log::error!("{}", error_message);
@@ -212,7 +212,7 @@ fn overwrite_js_with_minified(path_to_js: PathBuf) -> String {
     minified_string
 }
 
-struct BuildBrowserCrateInput {
+struct IncludeBrowserCrateInput {
     path_to_browser_crate: PathBuf,
 
     js_url_path: PathBuf,
@@ -227,13 +227,13 @@ struct BuildBrowserCrateInput {
     span: proc_macro2::Span,
 }
 
-impl Parse for BuildBrowserCrateInput {
+impl Parse for IncludeBrowserCrateInput {
     fn parse(input: ParseStream) -> SynResult<Self> {
         let input_span = input.span();
 
-        let error_message = r#"Please make sure to pass arguments to build_browser! like this:
+        let error_message = r#"Please make sure to pass arguments to include_browser_crate! like this:
 
-build_browser_crate!(
+include_browser_crate!(
     path_to_browser_crate: \"browser\",
     js_url_path: \"browser.js\",
     js_performance_budget: 200,
@@ -281,7 +281,7 @@ build_browser_crate!(
         let debug = parse_named_bool_argument("debug", &input).unwrap_or(false);
         // eprintln!("debug: {:?}", debug);
 
-        Ok(BuildBrowserCrateInput {
+        Ok(IncludeBrowserCrateInput {
             path_to_browser_crate: PathBuf::from(path_to_browser_crate),
             js_url_path: PathBuf::from(js_url_path),
             js_performance_budget,

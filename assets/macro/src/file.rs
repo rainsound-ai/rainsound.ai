@@ -1,5 +1,5 @@
 use crate::parse_macro_arguments::*;
-use assets_runtime::{paths::*, FontAsset};
+use assets_runtime::{paths::*, FileAsset};
 use proc_macro::TokenStream;
 use quote::quote;
 use std::str::FromStr;
@@ -10,10 +10,10 @@ use syn::{
 };
 
 pub fn include(input: TokenStream) -> TokenStream {
-    let input = syn::parse_macro_input!(input as IncludeFontInput);
+    let input = syn::parse_macro_input!(input as BuildFileInput);
     crate::logger::init_logger(input.debug);
 
-    log::info!("Including font: {}", input.path_to_input_file.display());
+    log::info!("Including file: {}", input.path_to_input_file.display());
 
     let input_file_path = workspace_root_dir().join(&input.path_to_input_file);
 
@@ -26,33 +26,33 @@ pub fn include(input: TokenStream) -> TokenStream {
     }
 
     let size_in_bytes = std::fs::metadata(&input_file_path)
-        .expect("Error getting metadata for font file.")
+        .expect("Error getting metadata for file.")
         .len();
 
     let output_file_path = built_assets_dir().join(&input.url_path);
 
     let output_dir = output_file_path
         .parent()
-        .expect("Error getting fonts directory.");
+        .expect("Error getting file directory.");
 
     std::fs::create_dir_all(output_dir).expect("Error creating built assets dir.");
 
-    std::fs::copy(input_file_path, output_file_path).expect("Error copying font file.");
+    std::fs::copy(input_file_path, output_file_path).expect("Error copying file file.");
 
-    let font_asset = FontAsset::new(
+    let file_asset = FileAsset::new(
         input.url_path,
         input.performance_budget,
         size_in_bytes as usize,
     );
 
     let output = quote! {
-        #font_asset
+        #file_asset
     };
 
     output.into()
 }
 
-struct IncludeFontInput {
+struct BuildFileInput {
     path_to_input_file: PathBuf,
     url_path: PathBuf,
     performance_budget: Duration,
@@ -60,15 +60,15 @@ struct IncludeFontInput {
     span: proc_macro2::Span,
 }
 
-impl Parse for IncludeFontInput {
+impl Parse for BuildFileInput {
     fn parse(input: ParseStream) -> SynResult<Self> {
         let input_span = input.span();
 
-        let error_message = r#"Please make sure to pass arguments to include_font! like this:
+        let error_message = r#"Please make sure to pass arguments to include_file! like this:
 
-include_font!(
-    path_to_input_file: \"src/fonts/MyFont.otf\",
-    url_path: \"fonts/MyFont.otf\",
+include_file!(
+    path_to_input_file: \"src/my_file.txt\",
+    url_path: \"my-file.txt\",
     performance_budget_millis: 300,
     debug: true,
 );
@@ -92,7 +92,7 @@ include_font!(
 
         let debug = parse_named_bool_argument("debug", &input).unwrap_or(false);
 
-        Ok(IncludeFontInput {
+        Ok(BuildFileInput {
             path_to_input_file,
             url_path,
             performance_budget,

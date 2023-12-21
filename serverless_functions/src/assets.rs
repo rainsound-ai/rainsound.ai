@@ -1,4 +1,4 @@
-use assets::{BrowserCrateAsset, CssAsset, FontAsset, ImageAsset};
+use assets::{BrowserCrateAsset, CssAsset, FileAsset, FontAsset, ImageAsset};
 use once_cell::sync::Lazy;
 
 pub static assets: Lazy<Assets> = Lazy::new(Assets::new);
@@ -8,6 +8,7 @@ pub struct Assets {
     pub browser_crate: BrowserCrateAsset,
     pub hasui_hero: ImageAsset,
     pub fugi: FontAsset,
+    pub favicon: FileAsset,
 }
 
 // We have to separate out the non-html assets because
@@ -18,13 +19,13 @@ pub struct Assets {
 // deadlocking if we're using a lazily initialized global variable.
 impl Assets {
     pub fn new() -> Self {
-        let css = assets::build_tailwind!(
+        let css = assets::include_tailwind!(
             path_to_input_file: "serverless_functions/src/main.css",
             url_path: "built-assets/built.css",
             performance_budget_millis: 150,
         );
 
-        let browser_crate = assets::build_browser_crate!(
+        let browser_crate = assets::include_browser_crate!(
             path_to_browser_crate: "browser",
             js_url_path: "built-assets/browser.js",
             js_performance_budget_millis: 150,
@@ -32,13 +33,13 @@ impl Assets {
             wasm_performance_budget_millis: 150,
         );
 
-        let hasui_hero = assets::build_image!(
+        let hasui_hero = assets::include_image!(
             path_to_image: "serverless_functions/src/images/hasui_light.jpeg",
             alt: "A woodblock print of mountains and a river by Kawase Hasui.",
             placeholder: lqip,
         );
 
-        let fugi = assets::build_font!(
+        let fugi = assets::include_font!(
             path_to_input_file: "serverless_functions/src/fonts/Fugi.ttf",
             url_path: "built-assets/fonts/Fugi.ttf",
             performance_budget_millis: 150,
@@ -46,11 +47,18 @@ impl Assets {
 
         // favicon
 
+        let favicon = assets::include_file!(
+            path_to_input_file: "serverless_functions/src/images/favicon.png",
+            url_path: "built-assets/favicon.png",
+            performance_budget_millis: 150,
+        );
+
         Self {
             css,
             browser_crate,
             hasui_hero,
             fugi,
+            favicon,
         }
     }
 }

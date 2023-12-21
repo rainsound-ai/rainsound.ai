@@ -25,3 +25,6 @@ pub use self::wasm_asset::WasmAsset;
 
 mod font_asset;
 pub use self::font_asset::FontAsset;
+
+mod file_asset;
+pub use self::file_asset::FileAsset;

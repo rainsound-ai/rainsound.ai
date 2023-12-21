@@ -10,11 +10,11 @@ use syn::{
     Result as SynResult,
 };
 
-pub fn build(input: TokenStream) -> TokenStream {
-    let input = syn::parse_macro_input!(input as BuildTailwindInput);
+pub fn include(input: TokenStream) -> TokenStream {
+    let input = syn::parse_macro_input!(input as IncludeTailwindInput);
     crate::logger::init_logger(input.debug);
 
-    log::info!("Building Tailwind.");
+    log::info!("Including Tailwind.");
 
     let config = tailwind_config_path();
     let config_str = config
@@ -65,7 +65,7 @@ pub fn build(input: TokenStream) -> TokenStream {
         let stderr = String::from_utf8(tailwind_cli_output.stderr)
             .expect("Error converting the Tailwind CLI's error output to a string.");
         let error_message = format!(
-            "Error building Tailwind.\nstdout:\n{}\n\nstderr:\n{}",
+            "Error includeing Tailwind.\nstdout:\n{}\n\nstderr:\n{}",
             stdout, stderr
         );
         log::error!("{}", error_message);
@@ -91,7 +91,7 @@ pub fn tailwind_config_path() -> PathBuf {
     assets_macros_dir().join("tailwind.config.js")
 }
 
-struct BuildTailwindInput {
+struct IncludeTailwindInput {
     path_to_input_file: PathBuf,
     url_path: PathBuf,
     performance_budget: Duration,
@@ -100,13 +100,13 @@ struct BuildTailwindInput {
     span: proc_macro2::Span,
 }
 
-impl Parse for BuildTailwindInput {
+impl Parse for IncludeTailwindInput {
     fn parse(input: ParseStream) -> SynResult<Self> {
         let input_span = input.span();
 
-        let error_message = r#"Please make sure to pass arguments to build_tailwind! like this:
+        let error_message = r#"Please make sure to pass arguments to include_tailwind! like this:
 
-build_tailwind!(
+include_tailwind!(
     path_to_input_file: \"src/main.css\",
     url_path: \"built.css\",
     performance_budget_millis: 300,
@@ -139,7 +139,7 @@ build_tailwind!(
 
         let debug = parse_named_bool_argument("debug", &input).unwrap_or(false);
 
-        Ok(BuildTailwindInput {
+        Ok(IncludeTailwindInput {
             path_to_input_file,
             url_path,
             performance_budget,

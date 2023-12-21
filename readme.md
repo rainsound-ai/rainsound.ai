@@ -90,7 +90,7 @@ The assets_runtime crate. Provides structs for representing assets like css, ima
 
 `/assets/macro`
 
-The assets_macro crate. Cargo requires that you define procedural macros in their own crate, so this is where we put our macros and other build-time related code. This includes the `build_tailwind!`, `build_browser_crate!`, and `build_images!` macros that get re-exported by `assets/mod`.
+The assets_macro crate. Cargo requires that you define procedural macros in their own crate, so this is where we put our macros and other build-time related code. This includes the `include_tailwind!`, `include_browser_crate!`, and `include_images!` macros that get re-exported by `assets/mod`.
 
 `spin.toml`
 

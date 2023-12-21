@@ -5,23 +5,23 @@ use syn::{
     Result as SynResult,
 };
 
-/// This struct represents the input to the `build_images_in_folder!` macro.
-pub struct BuildImagesInFolderInput {
+/// This struct represents the input to the `include_images_in_folder!` macro.
+pub struct IncludeImagesInFolderInput {
     pub absolute_path_to_images_dir: PathBuf,
     pub debug: bool,
 }
 
-impl Parse for BuildImagesInFolderInput {
+impl Parse for IncludeImagesInFolderInput {
     fn parse(input: ParseStream) -> SynResult<Self> {
-        let error_message = r#"Please make sure to pass arguments to build_images! like this:
+        let error_message = r#"Please make sure to pass arguments to include_images! like this:
 
-build_images!(path_to_images_dir: \"src/original_images\");
+include_images!(path_to_images_dir: \"src/original_images\");
 
 The path should be relative to the workspace root.
 
 You can also pass an optional `debug` argument like this:
 
-build_images!(path_to_images_dir: \"src/original_images\", debug: true);
+include_images!(path_to_images_dir: \"src/original_images\", debug: true);
 "#;
         let error = syn::Error::new(input.span(), error_message);
 
@@ -36,7 +36,7 @@ build_images!(path_to_images_dir: \"src/original_images\", debug: true);
         // This argument is optional, so we default to `false` if it's not present.
         let debug = parse_named_bool_argument("debug", &input).unwrap_or(false);
 
-        Ok(BuildImagesInFolderInput {
+        Ok(IncludeImagesInFolderInput {
             absolute_path_to_images_dir,
             debug,
         })

@@ -7,26 +7,26 @@ use syn::{
 
 use super::build_time_image::PlaceholderToGenerate;
 
-/// This struct represents the input to the `build_image!` macro.
-pub struct BuildImageInput {
+/// This struct represents the input to the `include_image!` macro.
+pub struct IncludeImageInput {
     pub absolute_path_to_image: PathBuf,
     pub placeholder_to_generate: PlaceholderToGenerate,
     pub alt: Alt,
     pub debug: bool,
 }
 
-impl Parse for BuildImageInput {
+impl Parse for IncludeImageInput {
     fn parse(input: ParseStream) -> SynResult<Self> {
-        let error_message = r#"Please make sure to pass arguments to build_image! like this. The path should be relative to the workspace root. By default this will detect the dominant color of the image and use that as the placeholder.
+        let error_message = r#"Please make sure to pass arguments to include_image! like this. The path should be relative to the workspace root. By default this will detect the dominant color of the image and use that as the placeholder.
 
-build_image!(
+include_image!(
     path_to_image: \"src/images/santoka.jpg\",
     alt: \"Taneda Santōka\",
 );
 
 There are also some optional arguments. `placeholder` can be `lqip` or `automatic_color`. `lqip` generates a low resolution version of the image as a base64 string, suitable for embedding directly into html. `automatic_color` computes the dominant color of the image. `debug` can be `true` or `false`.
 
-build_image!(
+include_image!(
     path_to_image: \"src/images/santoka.jpg\",
     alt: \"Taneda Santōka\",
     placeholder: lqip,
@@ -50,7 +50,7 @@ build_image!(
         // This argument is optional, so we default to `false` if it's not present.
         let debug = parse_named_bool_argument("debug", &input).unwrap_or(false);
 
-        Ok(BuildImageInput {
+        Ok(IncludeImageInput {
             absolute_path_to_image,
             alt,
             placeholder_to_generate,
