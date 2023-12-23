@@ -1,7 +1,6 @@
 use maud::Markup;
 use spin_sdk::http::Request;
 
-use super::contact::*;
 use super::*;
 
 pub use shared::Route;
@@ -20,7 +19,7 @@ impl ServerSideRouteExtension for Route {
     fn html(&self) -> Markup {
         match self {
             Route::Home => home_page(),
-            Route::Contact => contact_page(),
+            Route::Contact => not_found_page(), // For the moment, our contact page is just a mailto link.
             Route::BuildTime => build_time_page(),
             Route::Portfolio => portfolio_page(),
             Route::Paurtfaurliaur => portfolio_page(),

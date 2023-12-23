@@ -27,7 +27,7 @@ impl Display for Route {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let route_str = match self {
             Route::Home => "/",
-            Route::Contact => "/contact",
+            Route::Contact => "mailto:hello@rainsound.ai",
             Route::Portfolio => "/portfolio",
             Route::Paurtfaurliaur => "/paurtfaurliaur",
             Route::NotFound => "/not-found",
