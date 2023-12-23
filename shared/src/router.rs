@@ -5,6 +5,8 @@ use std::fmt::Display;
 pub enum Route {
     Home,
     Contact,
+    Portfolio,
+    Paurtfaurliaur,
     NotFound,
     BuildTime,
 }
@@ -23,13 +25,15 @@ impl Route {
 
 impl Display for Route {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let string = match self {
-            Route::Home => "/".to_string(),
-            Route::Contact => "/contact".to_string(),
-            Route::NotFound => "/not-found".to_string(),
-            Route::BuildTime => "/build-time".to_string(),
+        let route_str = match self {
+            Route::Home => "/",
+            Route::Contact => "/contact",
+            Route::Portfolio => "/portfolio",
+            Route::Paurtfaurliaur => "/paurtfaurliaur",
+            Route::NotFound => "/not-found",
+            Route::BuildTime => "/build-time",
         };
 
-        write!(f, "{}", string)
+        write!(f, "{}", route_str)
     }
 }

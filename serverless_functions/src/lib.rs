@@ -1,5 +1,6 @@
 #![allow(non_upper_case_globals)]
 
+use crate::extensions::*;
 use anyhow::Result;
 use routes::*;
 use spin_sdk::{
@@ -8,18 +9,11 @@ use spin_sdk::{
 };
 
 mod components;
-
 mod css_class_groups;
-
 mod extensions;
 // mod notion;
-
-mod prelude;
-use self::prelude::*;
-
-mod routes;
-
 mod assets;
+mod routes;
 
 #[http_component]
 fn main(req: Request) -> Result<Response> {

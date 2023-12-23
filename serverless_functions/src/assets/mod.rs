@@ -8,6 +8,7 @@ pub struct Assets {
     pub browser_crate: BrowserCrateAsset,
     pub hasui_hero: ImageAsset,
     pub favicon: FileAsset,
+    pub logo: FileAsset,
 
     // Fonts
     pub fugi: FontAsset,
@@ -45,6 +46,12 @@ impl Assets {
             performance_budget_millis: 150,
         );
 
+        let logo = assets::include_file!(
+            path_to_input_file: "serverless_functions/src/assets/images/logo.png",
+            url_path: "built-assets/favicon.ico",
+            performance_budget_millis: 150,
+        );
+
         // Fonts
 
         let fugi = assets::include_font!(
@@ -55,19 +62,19 @@ impl Assets {
 
         let aurora_grotesk_bold = assets::include_font!(
             path_to_input_file: "serverless_functions/src/assets/fonts/aurora_grotesk_bold.otf",
-            url_path: "built-assets/fonts/aurora-grotesk-bold.ttf",
+            url_path: "built-assets/fonts/aurora-grotesk-bold.otf",
             performance_budget_millis: 150,
         );
 
         let aurora_grotesk_medium = assets::include_font!(
             path_to_input_file: "serverless_functions/src/assets/fonts/aurora_grotesk_medium.otf",
-            url_path: "built-assets/fonts/aurora-grotesk-medium.ttf",
+            url_path: "built-assets/fonts/aurora-grotesk-medium.otf",
             performance_budget_millis: 150,
         );
 
         let aurora_grotesk_light = assets::include_font!(
             path_to_input_file: "serverless_functions/src/assets/fonts/aurora_grotesk_light.otf",
-            url_path: "built-assets/fonts/aurora-grotesk-light.ttf",
+            url_path: "built-assets/fonts/aurora-grotesk-light.otf",
             performance_budget_millis: 150,
         );
 
@@ -82,6 +89,7 @@ impl Assets {
             browser_crate,
             hasui_hero,
             favicon,
+            logo,
 
             fugi,
             aurora_grotesk_bold,

@@ -46,14 +46,6 @@ p {
   @apply mb-grid-2;
 }
 
-a:not(.box) {
-  @apply underline;
-}
-
-a.box {
-  @apply border px-2 align-middle;
-}
-
 button.cta {
   @apply bg-petal-salmon text-grid-4 px-grid-4 py-grid-2 rounded-sm border;
 }

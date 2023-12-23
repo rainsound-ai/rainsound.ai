@@ -21,9 +21,10 @@ impl ServerSideRouteExtension for Route {
         match self {
             Route::Home => home_page(),
             Route::Contact => contact_page(),
-            Route::NotFound => not_found_page(),
             Route::BuildTime => build_time_page(),
-            //
+            Route::Portfolio => portfolio_page(),
+            Route::Paurtfaurliaur => portfolio_page(),
+            Route::NotFound => not_found_page(),
             // Routes::SubmitContactForm => Route {
             //     verb: HttpVerb::Post,
             //     path: "/contact".to_string(),
