@@ -1,6 +1,8 @@
-# Creative Computing Website
+# rainsound.ai
 
-**Getting started**
+This is the source code for our website at [rainsound.ai](https://rainsound.ai).
+
+## Getting started
 
 Install necessary CLIs like Spin and wasm-pack:
 
@@ -26,11 +28,11 @@ Deploy:
 spin deploy
 ```
 
-**Architecture overview**
+## Architecture overview
 
-Our site is basically a traditional multi-page, vanilla-JS web site, but with some modern niceties.
+Our site is basically a traditional multi-page web site, but with some modern niceties.
 
-Most notably, we use Rust across the entire stack:
+Most notably, we use Rust instead of JavaScript across the entire stack:
 
 - At build time to resize images and do other asset pre-processing.
 
@@ -40,7 +42,7 @@ Most notably, we use Rust across the entire stack:
 
 We use [Spin](https://www.fermyon.com/spin)'s wasm-powered, quick-booting serverless functions to minimize carbon emissions and maximize performance.
 
-**Design principles**
+## Design principles
 
 _Carbon negative_. Reduce emissions as much as possible, automatically measure and offset the rest.
 
@@ -50,7 +52,7 @@ _Full-stack type safety_. Use Rust's type system to make invalid states unrepres
 
 _Pit of success_. The easiest way to build our site should also be the best, for the planet and for our visitors.
 
-**Important tools**
+## Important tools
 
 [Spin](https://www.fermyon.com/spin) for running our serverless functions in development and production.
 
@@ -62,7 +64,7 @@ _Pit of success_. The easiest way to build our site should also be the best, for
 
 [wasm-pack](https://github.com/rustwasm/wasm-pack) for compiling our client-side Rust to wasm.
 
-**Files and folders**
+## Files and folders
 
 `/serverless_functions`
 
