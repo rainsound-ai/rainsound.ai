@@ -22,9 +22,8 @@ pub fn layout(content: Markup) -> Markup {
 
             body class="bg-slate text-white min-h-screen flex flex-col font-aurora-grotesk text-grid-4" {
                 header class="h-grid-10 px-grid-7 flex justify-between items-center text-neutral bg-slate whitespace-nowrap z-20 text-grid-3" {
-                    (Link::new(Route::Home)
+                    (Link::no_underline(Route::Home)
                         .class("flex items-center gap-grid-1 no-underline")
-                        .variant(LinkVariant::NoUnderline)
                         .slot(html! {
                             img src=(assets.logo.url_path.to_string()) alt="rainsound.ai logo" class="h-grid-4 w-grid-4" {
                                 "rainsound.ai"
@@ -33,17 +32,14 @@ pub fn layout(content: Markup) -> Markup {
                     )
 
                     div class="flex gap-grid-4" {
-                        (Link::new(Route::Paurtfaurliaur)
+                        (Link::no_underline(Route::Paurtfaurliaur)
                             .class("text-slate")
-                            .variant(LinkVariant::NoUnderline)
                             .slot("Paurtfaurliaur")
                         )
-                        (Link::new(Route::Portfolio)
-                            .variant(LinkVariant::NoUnderline)
+                        (Link::no_underline(Route::Portfolio)
                             .slot("Portfolio")
                         )
-                        (Link::new(Route::Contact)
-                            .variant(LinkVariant::NoUnderline)
+                        (Link::no_underline(Route::Contact)
                             .slot("Contact")
                         )
                     }
@@ -64,16 +60,13 @@ pub fn layout(content: Markup) -> Markup {
 
                     div class="flex gap-grid-4 justify-between" {
 
-                        (Link::new(Route::Home)
-                            .variant(LinkVariant::NoUnderline)
+                        (Link::no_underline(Route::Home)
                             .slot("Home")
                         )
-                        (Link::new(Route::Portfolio)
-                            .variant(LinkVariant::NoUnderline)
+                        (Link::no_underline(Route::Portfolio)
                             .slot("Portfolio")
                         )
-                        (Link::new(Route::Contact)
-                            .variant(LinkVariant::NoUnderline)
+                        (Link::no_underline(Route::Contact)
                             .slot("Contact")
                         )
                     }

@@ -38,14 +38,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-slate text-white min-h-screen flex flex-col font-aurora-grotesk text-grid-4;
-}
-
-p {
-  @apply mb-grid-2;
-}
-
 button.cta {
   @apply bg-petal-salmon text-grid-4 px-grid-4 py-grid-2 rounded-sm border;
 }

@@ -9,12 +9,30 @@ pub struct Link<'a> {
 }
 
 impl<'a> Link<'a> {
-    pub fn new(route: Route) -> Self {
+    pub fn underline(route: Route) -> Self {
         Self {
             route,
             slot: html! { "" },
             class: "",
             variant: LinkVariant::Underline,
+        }
+    }
+
+    pub fn no_underline(route: Route) -> Self {
+        Self {
+            route,
+            slot: html! { "" },
+            class: "",
+            variant: LinkVariant::NoUnderline,
+        }
+    }
+
+    pub fn r#box(route: Route) -> Self {
+        Self {
+            route,
+            slot: html! { "" },
+            class: "",
+            variant: LinkVariant::Box,
         }
     }
 
@@ -25,11 +43,6 @@ impl<'a> Link<'a> {
 
     pub fn class(mut self, class: impl Into<&'a str>) -> Self {
         self.class = class.into();
-        self
-    }
-
-    pub fn variant(mut self, variant: LinkVariant) -> Self {
-        self.variant = variant;
         self
     }
 }
