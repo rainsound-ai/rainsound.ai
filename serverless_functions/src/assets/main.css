@@ -1,0 +1,100 @@
+@tailwind base;
+
+@layer base {
+  @font-face {
+    font-family: 'Fugi';
+    src: local('Fugi'), local('fugi'), url('/built-assets/fonts/fugi.ttf');
+    font-weight: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Aurora Grotesk';
+    src: local('Aurora Grotesk'), local('Aurora-Grotesk'),
+      local('aurora grotesk'), local('aurora-grotesk'),
+      url('/built-assets/fonts/aurora-grotesk-medium.otf') format('opentype');
+    font-weight: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Aurora Grotesk';
+    src: local('Aurora Grotesk'), local('Aurora-Grotesk'),
+      local('aurora grotesk'), local('aurora-grotesk'),
+      url('/built-assets/fonts/aurora-grotesk-light.otf') format('opentype');
+    font-weight: light;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Clearface';
+    src: local('Clearface'), local('clearface'),
+      url('/built-assets/fonts/clearface-bold.ttf');
+    font-weight: light;
+    font-display: swap;
+  }
+}
+
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-slate text-white min-h-screen flex flex-col font-aurora-grotesk text-grid-4;
+}
+
+p {
+  @apply mb-grid-2;
+}
+
+a:not(.box) {
+  @apply underline;
+}
+
+a.box {
+  @apply border px-2 align-middle;
+}
+
+button.cta {
+  @apply bg-petal-salmon text-grid-4 px-grid-4 py-grid-2 rounded-sm border;
+}
+
+input {
+  @apply bg-transparent border-b;
+}
+
+textarea {
+  @apply bg-transparent;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply text-neutral font-clearface;
+}
+
+h1 {
+  @apply text-grid-10;
+}
+
+h2 {
+  @apply text-grid-6; /* text-5xl */
+}
+
+h3 {
+  @apply text-grid-4;
+}
+
+h4 {
+  @apply text-grid-3;
+}
+
+h5 {
+  @apply text-grid-2;
+}
+
+h6 {
+  @apply text-grid-1;
+}

@@ -65,7 +65,7 @@ pub fn include(input: TokenStream) -> TokenStream {
         let stderr = String::from_utf8(tailwind_cli_output.stderr)
             .expect("Error converting the Tailwind CLI's error output to a string.");
         let error_message = format!(
-            "Error includeing Tailwind.\nstdout:\n{}\n\nstderr:\n{}",
+            "Error including Tailwind.\nstdout:\n{}\n\nstderr:\n{}",
             stdout, stderr
         );
         log::error!("{}", error_message);

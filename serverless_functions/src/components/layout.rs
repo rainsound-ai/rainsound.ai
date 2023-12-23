@@ -72,7 +72,8 @@ fn main_js() -> Markup {
         .url_path
         .to_string_lossy()
         .to_string();
-    let contents = include_str!("../main.js").replace("{browser_js_filename}", &browser_js_path);
+    let contents =
+        include_str!("../assets/main.js").replace("{browser_js_filename}", &browser_js_path);
     html! {
         script type="module" {
             (PreEscaped(contents))

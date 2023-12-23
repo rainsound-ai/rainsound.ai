@@ -48,7 +48,7 @@ _Carbon negative_. Reduce emissions as much as possible, automatically measure a
 
 _Minimal bundle size_. Automatically enforced performance budgets. Progressive enhancement. Client-side code is optional.
 
-_Full-stack type safety_. Use Rust's type system to make invalid states unrepresentable, including across the client-server boundary.
+_Full-stack type safety_. Use Rust's type system to make invalid states unrepresentable, including across the client-server boundary. This includes assets like images. By using our asset macros, the compiler will prevent you referring to a non-existent image.
 
 _Pit of success_. The easiest way to build our site should also be the best, for the planet and for our visitors.
 
