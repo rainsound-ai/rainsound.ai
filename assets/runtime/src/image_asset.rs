@@ -1,5 +1,6 @@
 use cfg_if::cfg_if;
 
+#[derive(Clone)]
 pub struct ImageAsset {
     pub alt: String,
     pub placeholder: Placeholder,

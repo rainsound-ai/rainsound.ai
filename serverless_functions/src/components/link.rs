@@ -51,8 +51,10 @@ impl Render for Link<'_> {
     fn render(&self) -> Markup {
         let class = match self.variant {
             LinkVariant::NoUnderline => format!("{} no-underline", self.class),
-            LinkVariant::Underline => format!("{} underline", self.class),
-            LinkVariant::Button => format!("{} border px-2 align-middle", self.class),
+            LinkVariant::Underline => {
+                format!("{} underline decoration-2 underline-offset-2", self.class)
+            }
+            LinkVariant::Button => format!("{} border px-2 align-middle rounded-md", self.class),
         };
 
         html! {

@@ -6,9 +6,14 @@ pub static assets: Lazy<Assets> = Lazy::new(Assets::new);
 pub struct Assets {
     pub css: CssAsset,
     pub browser_crate: BrowserCrateAsset,
-    pub hasui_hero: ImageAsset,
     pub favicon: FileAsset,
     pub logo: FileAsset,
+    pub project_flower_one: ImageAsset,
+    pub project_flower_two: ImageAsset,
+    pub project_flower_three: ImageAsset,
+    pub project_flower_four: ImageAsset,
+    pub project_flower_five: ImageAsset,
+    pub project_flower_six: ImageAsset,
 
     // Fonts
     pub fugi: FontAsset,
@@ -34,12 +39,6 @@ impl Assets {
             wasm_performance_budget_millis: 150,
         );
 
-        let hasui_hero = assets::include_image!(
-            path_to_image: "serverless_functions/src/assets/images/hasui_light.jpeg",
-            alt: "A woodblock print of mountains and a river by Kawase Hasui.",
-            placeholder: lqip,
-        );
-
         let favicon = assets::include_file!(
             path_to_input_file: "serverless_functions/src/assets/images/favicon.ico",
             url_path: "built-assets/favicon.ico",
@@ -50,6 +49,48 @@ impl Assets {
             path_to_input_file: "serverless_functions/src/assets/images/logo.png",
             url_path: "built-assets/favicon.ico",
             performance_budget_millis: 150,
+        );
+
+        // This image is decorative, so we skip the alt text.
+        let project_flower_one = assets::include_image!(
+            path_to_image: "serverless_functions/src/assets/images/project_flower_one.png",
+            alt: "",
+            placeholder: automatic_color,
+        );
+
+        // This image is decorative, so we skip the alt text.
+        let project_flower_two = assets::include_image!(
+            path_to_image: "serverless_functions/src/assets/images/project_flower_two.png",
+            alt: "",
+            placeholder: automatic_color,
+        );
+
+        // This image is decorative, so we skip the alt text.
+        let project_flower_three = assets::include_image!(
+            path_to_image: "serverless_functions/src/assets/images/project_flower_three.png",
+            alt: "",
+            placeholder: automatic_color,
+        );
+
+        // This image is decorative, so we skip the alt text.
+        let project_flower_four = assets::include_image!(
+            path_to_image: "serverless_functions/src/assets/images/project_flower_four.png",
+            alt: "",
+            placeholder: automatic_color,
+        );
+
+        // This image is decorative, so we skip the alt text.
+        let project_flower_five = assets::include_image!(
+            path_to_image: "serverless_functions/src/assets/images/project_flower_five.png",
+            alt: "",
+            placeholder: automatic_color,
+        );
+
+        // This image is decorative, so we skip the alt text.
+        let project_flower_six = assets::include_image!(
+            path_to_image: "serverless_functions/src/assets/images/project_flower_six.png",
+            alt: "",
+            placeholder: automatic_color,
         );
 
         // Fonts
@@ -87,9 +128,14 @@ impl Assets {
         Self {
             css,
             browser_crate,
-            hasui_hero,
             favicon,
             logo,
+            project_flower_one,
+            project_flower_two,
+            project_flower_three,
+            project_flower_four,
+            project_flower_five,
+            project_flower_six,
 
             fugi,
             aurora_grotesk_bold,

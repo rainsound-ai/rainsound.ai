@@ -775,12 +775,20 @@ video {
   height: calc(4*100vw/180);
 }
 
+.h-grid-48 {
+  height: calc(48*100vw/180);
+}
+
 .h-grid-5 {
   height: calc(5*100vw/180);
 }
 
 .h-grid-52 {
   height: calc(52*100vw/180);
+}
+
+.h-grid-56 {
+  height: calc(56*100vw/180);
 }
 
 .h-grid-64 {
@@ -835,6 +843,10 @@ video {
   width: calc(4*100vw/180);
 }
 
+.w-grid-48 {
+  width: calc(48*100vw/180);
+}
+
 .w-grid-5 {
   width: calc(5*100vw/180);
 }
@@ -845,6 +857,10 @@ video {
 
 .w-grid-52 {
   width: calc(52*100vw/180);
+}
+
+.w-grid-56 {
+  width: calc(56*100vw/180);
 }
 
 .w-grid-62 {
@@ -1024,6 +1040,14 @@ video {
   gap: calc(4*100vw/180);
 }
 
+.self-start {
+  align-self: flex-start;
+}
+
+.self-end {
+  align-self: flex-end;
+}
+
 .justify-self-end {
   justify-self: end;
 }
@@ -1072,6 +1096,11 @@ video {
 
 .border {
   border-width: 1px;
+}
+
+.\!bg-slate {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(40 48 54 / var(--tw-bg-opacity)) !important;
 }
 
 .bg-petal-blue {
@@ -1154,9 +1183,19 @@ video {
   --tw-gradient-to-position: 100%;
 }
 
+.object-contain {
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.object-bottom {
+  -o-object-position: bottom;
+     object-position: bottom;
 }
 
 .p-2 {
@@ -1309,6 +1348,18 @@ video {
 
 .no-underline {
   text-decoration-line: none;
+}
+
+.decoration-2 {
+  text-decoration-thickness: 2px;
+}
+
+.underline-offset-2 {
+  text-underline-offset: 2px;
+}
+
+.underline-offset-4 {
+  text-underline-offset: 4px;
 }
 
 .shadow-sm {

@@ -46,7 +46,7 @@ fn image_with_color_placeholder(
 fn image_with_lqip(class: &str, asset: &ImageAsset, data_uri: &str) -> Markup {
     html!(
         div
-            class={"select-none relative " (class)}
+            class={"select-none relative overflow-hidden " (class)}
         {
 
             // LQIP.
