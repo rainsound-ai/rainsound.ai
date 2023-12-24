@@ -7,13 +7,15 @@ version = "1.0"
 
 [[component]]
 id = "invoke_serverless_functions"
-source = "target/wasm32-wasi/debug/serverless_functions.wasm"
+source = "target/wasm32-wasi/release/serverless_functions.wasm"
 allowed_http_hosts = []
 # This makes assets available server-side in our serverless functions.
 files = [{ source = "assets/built", destination = "/assets/built" }]
 [component.trigger]
 route = "/..."
 [component.build]
+# ✨✨✨ If this changes where the built files go, make sure to update `source` above.
+# ✨✨✨ This happens if you add the --release flag, for example.
 command = "cargo build --release --target wasm32-wasi"
 watch = [
     "serverless_functions/**/*.rs",
