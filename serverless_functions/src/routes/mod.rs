@@ -16,13 +16,15 @@ use self::flower::*;
 mod row;
 use self::row::*;
 mod tooth;
-use self::tooth::*;
 
 pub fn home_page() -> Markup {
-    layout(html! {
-        (hero_section())
-        (body())
-    })
+    layout(
+        "rainsound.ai: Custom AI & Web App Development",
+        html! {
+            (hero_section())
+            (body())
+        },
+    )
 }
 
 fn hero_section() -> Markup {

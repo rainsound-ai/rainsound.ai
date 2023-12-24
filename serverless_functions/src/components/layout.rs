@@ -5,7 +5,7 @@ use crate::routes::Route;
 use chrono::{Datelike, Utc};
 use maud::{html, Markup, PreEscaped, DOCTYPE};
 
-pub fn layout(content: Markup) -> Markup {
+pub fn layout(title: &'static str, content: Markup) -> Markup {
     let current_year = Utc::now().year();
 
     html! {
@@ -16,8 +16,11 @@ pub fn layout(content: Markup) -> Markup {
                 link rel="icon" href=(assets.favicon.url_path.to_string_lossy().to_string());
                 meta name="viewport" content="width=device-width, initial-scale=1.0";
                 meta http_equiv="X-UA-Compatible" content="ie=edge";
-                meta name="description" content="rainsound.ai - An AI Technology Studio";
+                meta name="description" content="rainsound.ai: Custom AI & Web App Development";
                 (stylesheet(&assets.css))
+                title {
+                    (title)
+                }
             }
 
             body class="bg-slate text-white min-h-screen flex flex-col font-aurora-grotesk text-grid-4" {
@@ -32,10 +35,10 @@ pub fn layout(content: Markup) -> Markup {
                     )
 
                     div class="flex gap-grid-4" {
-                        (Link::no_underline(Route::Paurtfaurliaur)
-                            .class("text-slate")
-                            .slot("Paurtfaurliaur")
-                        )
+                        // (Link::no_underline(Route::Paurtfaurliaur)
+                        //     .class("text-slate")
+                        //     .slot("Paurtfaurliaur")
+                        // )
                         (Link::no_underline(Route::Portfolio)
                             .slot("Portfolio")
                         )
