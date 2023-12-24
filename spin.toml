@@ -1,9 +1,9 @@
 spin_manifest_version = "1"
-authors = ["Luca Aurelia <mail@photon.garden>"]
+authors = ["rainsound.ai <hello@rainsound.ai>"]
 description = ""
-name = "creative_computing_website"
+name = "rainsound-ai"
 trigger = { type = "http", base = "/" }
-version = "0.1.0"
+version = "1.0"
 
 [[component]]
 id = "invoke_serverless_functions"
@@ -14,7 +14,7 @@ files = [{ source = "assets/built", destination = "/assets/built" }]
 [component.trigger]
 route = "/..."
 [component.build]
-command = "cargo build --target wasm32-wasi"
+command = "cargo build --release --target wasm32-wasi"
 watch = [
     "serverless_functions/**/*.rs",
     "serverless_functions/**/*.html",

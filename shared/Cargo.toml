@@ -6,7 +6,7 @@ version = "0.1.0"
 edition = "2021"
 description = "Code shared between browser and server."
 license = "unlicensed"
-repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
+repository = "https://github.com/rainsound-ai/rainsound.ai/"
 
 [features]
 browser = ["wasm-bindgen", "web-sys", "gloo", "serde"]

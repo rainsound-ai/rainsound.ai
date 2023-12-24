@@ -5,7 +5,7 @@ authors = ["Luca Bailey <mail@photon.garden>"]
 edition = "2021"
 description = "The browser code for this project."
 license = "unlicensed"
-repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
+repository = "https://github.com/rainsound-ai/rainsound.ai/"
 
 [lib]
 crate-type = ["cdylib", "rlib"]

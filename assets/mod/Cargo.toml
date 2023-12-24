@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 description = "Assets processing."
 license = "unlicensed"
-repository = "https://github.com/hyperbloom-ai/creative-computing-website/"
+repository = "https://github.com/rainsound-ai/rainsound.ai/"
 
 [dependencies]
 assets_runtime = { path = "../runtime" }

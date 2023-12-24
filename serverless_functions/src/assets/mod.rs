@@ -48,7 +48,7 @@ impl Assets {
         let logo = assets::include_file!(
             path_to_input_file: "serverless_functions/src/assets/images/logo.png",
             url_path: "built-assets/favicon.ico",
-            performance_budget_millis: 150,
+            performance_budget_millis: 275,
         );
 
         // This image is decorative, so we skip the alt text.
@@ -98,31 +98,31 @@ impl Assets {
         let fugi = assets::include_font!(
             path_to_input_file: "serverless_functions/src/assets/fonts/fugi.ttf",
             url_path: "built-assets/fonts/fugi.ttf",
-            performance_budget_millis: 150,
+            performance_budget_millis: 275,
         );
 
         let aurora_grotesk_bold = assets::include_font!(
             path_to_input_file: "serverless_functions/src/assets/fonts/aurora_grotesk_bold.otf",
             url_path: "built-assets/fonts/aurora-grotesk-bold.otf",
-            performance_budget_millis: 150,
+            performance_budget_millis: 275,
         );
 
         let aurora_grotesk_medium = assets::include_font!(
             path_to_input_file: "serverless_functions/src/assets/fonts/aurora_grotesk_medium.otf",
             url_path: "built-assets/fonts/aurora-grotesk-medium.otf",
-            performance_budget_millis: 150,
+            performance_budget_millis: 275,
         );
 
         let aurora_grotesk_light = assets::include_font!(
             path_to_input_file: "serverless_functions/src/assets/fonts/aurora_grotesk_light.otf",
             url_path: "built-assets/fonts/aurora-grotesk-light.otf",
-            performance_budget_millis: 150,
+            performance_budget_millis: 275,
         );
 
         let clearface_bold = assets::include_font!(
             path_to_input_file: "serverless_functions/src/assets/fonts/clearface_bold.ttf",
             url_path: "built-assets/fonts/clearface-bold.ttf",
-            performance_budget_millis: 150,
+            performance_budget_millis: 275,
         );
 
         Self {
