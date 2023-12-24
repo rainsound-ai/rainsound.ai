@@ -97,8 +97,12 @@ fn body() -> Markup {
                         .class("w-grid-50")
                         .slot(html! {
                             "See some examples of our work "
-                            (Link::underline(Route::Portfolio)
-                                .slot("here")
+                            (Link::button(Route::Portfolio)
+                                .slot(html! {
+                                    span class="inline-block translate-y-[0.1vw]" {
+                                        "here"
+                                    }
+                                })
                             )
                             "."
                         })
@@ -115,11 +119,13 @@ fn body() -> Markup {
 
                     div class="inline-block w-grid-64 mt-grid-10 text-center float-right" {
                         (Link::no_underline(Route::Contact)
-                            .slot(html! {
-                                button class="cta" {
-                                    "Tell us about it!"
-                                }
-                            })
+                            .slot(CtaButton::new()
+                                .slot(html! {
+                                    span class="inline-block translate-y-[0.2vw]" {
+                                        "Tell us about it!"
+                                    }
+                                })
+                            )
                         )
                     }
                 })

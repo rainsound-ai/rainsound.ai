@@ -113,7 +113,11 @@ impl Render for ProjectCard {
                         .slot("Learn More")
                     )
                     (Link::button(Route::Contact)
-                        .slot("Build This")
+                        .slot(html! {
+                            span class="inline-block translate-y-[0.2vw]" {
+                                "Build This"
+                            }
+                        })
                     )
                 }
 

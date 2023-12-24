@@ -38,10 +38,6 @@
 @tailwind components;
 @tailwind utilities;
 
-button.cta {
-  @apply bg-petal-salmon text-grid-4 px-grid-4 py-grid-2 rounded-sm border;
-}
-
 input {
   @apply bg-transparent border-b;
 }

@@ -1,3 +1,6 @@
+mod cta_button;
+pub use self::cta_button::*;
+
 mod image;
 pub use self::image::*;
 
