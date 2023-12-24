@@ -97,9 +97,10 @@ fn body() -> Markup {
                         .class("w-grid-50")
                         .slot(html! {
                             "See some examples of our work "
-                            (Link::no_underline(Route::Portfolio)
+                            (Link::underline(Route::Portfolio)
                                 .slot("here")
                             )
+                            "."
                         })
                     )
                 })

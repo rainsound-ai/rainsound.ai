@@ -1,13 +1,13 @@
-use super::row::RowSide;
+use crate::side::*;
 use maud::{html, Markup, Render};
 
 pub struct Tooth {
-    pub side: RowSide,
+    pub side: Side,
     pub last: bool,
 }
 
 impl Tooth {
-    pub fn new(side: RowSide) -> Self {
+    pub fn new(side: Side) -> Self {
         Self { side, last: false }
     }
 
@@ -21,8 +21,8 @@ impl Render for Tooth {
     fn render(&self) -> Markup {
         // CSS for the figure element.
         let side = match self.side {
-            RowSide::Left => "right-0", // These are intentionally flipped.
-            RowSide::Right => "left-0",
+            Left => "right-0", // These are intentionally flipped.
+            Right => "left-0",
         };
         let last = if self.last {
             "!w-grid-78 !h-grid-52"
@@ -38,11 +38,11 @@ impl Render for Tooth {
         let after = "after:-bottom-grid-20 after:shadow-[0_calc(-10_*_100vw_/_180)_0_0_#283036]";
 
         let (side_before, side_after) = match self.side {
-            RowSide::Left => (
+            Left => (
                 "before:right-0 before:rounded-br-tooth",
                 "after:right-0 after:rounded-tr-tooth",
             ),
-            RowSide::Right => (
+            Right => (
                 "before:left-0 before:rounded-bl-tooth",
                 "after:left-0 after:rounded-tl-tooth",
             ),
@@ -58,13 +58,14 @@ impl Render for Tooth {
                     absolute top-0
                     w-grid-96
                     h-grid-64
-                    grid grid-cols-3 grid-rows-2 "
+                    grid grid-cols-3 grid-rows-2 
+                    z-10 "
                     (figure_class)
                 }
             {
                 (match self.side {
-                    RowSide::Left => left_children(self.last),
-                    RowSide::Right => right_children(self.last),
+                    Left => left_children(self.last),
+                    Right => right_children(self.last),
                 })
             }
         }

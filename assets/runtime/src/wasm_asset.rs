@@ -1,4 +1,3 @@
-use crate::paths::built_assets_dir;
 use crate::{built_assets_browser_prefix, output_file_path};
 use cfg_if::cfg_if;
 use std::path::PathBuf;

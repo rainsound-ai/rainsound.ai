@@ -18,12 +18,14 @@ impl ServerSideRouteExtension for Route {
 
     fn html(&self) -> Markup {
         match self {
-            Route::Home => home_page(),
-            Route::Contact => not_found_page(), // For the moment, our contact page is just a mailto link.
+            Route::ArtbreederUserStory => not_found_page(), // Should be a link to Notion for now.
             Route::BuildTime => build_time_page(),
-            Route::Portfolio => portfolio_page(),
-            Route::Paurtfaurliaur => portfolio_page(),
+            Route::Contact => not_found_page(), // Should be a mailto link for now.
+            Route::Home => home_page(),
+            Route::LevelAllUserStory => not_found_page(), // Should be a link to Notion for now.
             Route::NotFound => not_found_page(),
+            Route::Paurtfaurliaur => portfolio_page(),
+            Route::Portfolio => portfolio_page(),
             // Routes::SubmitContactForm => Route {
             //     verb: HttpVerb::Post,
             //     path: "/contact".to_string(),

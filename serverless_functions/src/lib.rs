@@ -14,6 +14,7 @@ mod extensions;
 // mod notion;
 mod assets;
 mod routes;
+mod side;
 
 #[http_component]
 fn main(req: Request) -> Result<Response> {

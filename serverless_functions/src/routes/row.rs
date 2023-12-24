@@ -1,9 +1,9 @@
+use super::tooth::*;
+use crate::side::*;
 use maud::{html, Markup, Render};
 
-use super::tooth::*;
-
 pub struct Row {
-    pub side: RowSide,
+    pub side: Side,
     pub last: bool,
     pub slot: Markup,
 }
@@ -11,7 +11,7 @@ pub struct Row {
 impl Row {
     pub fn left() -> Self {
         Self {
-            side: RowSide::Left,
+            side: Left,
             slot: html! { "" },
             last: false,
         }
@@ -19,7 +19,7 @@ impl Row {
 
     pub fn right() -> Self {
         Self {
-            side: RowSide::Right,
+            side: Right,
             slot: html! { "" },
             last: false,
         }
@@ -41,8 +41,8 @@ impl Render for Row {
         let last_section_classes = if self.last { "h-grid-52" } else { "h-grid-68" };
 
         let side_classes = match self.side {
-            RowSide::Left => "justify-start",
-            RowSide::Right => "justify-end",
+            Left => "justify-start",
+            Right => "justify-end",
         };
 
         let section_classes = format!(
@@ -53,14 +53,14 @@ impl Render for Row {
             section
                 class=(section_classes)
             {
-                (Tooth::new(self.side.clone()).last(self.last))
+                (Tooth::new(self.side).last(self.last))
 
                 div
                     class={
-                        "flex flex-col w-grid-93 "
+                        "flex flex-col w-grid-93 z-20 "
                         (match self.side {
-                            RowSide::Left => "",
-                            RowSide::Right => "items-end",
+                            Left => "",
+                            Right => "items-end",
                         })
                     }
                 {
@@ -69,10 +69,4 @@ impl Render for Row {
             }
         }
     }
-}
-
-#[derive(Clone)]
-pub enum RowSide {
-    Right,
-    Left,
 }

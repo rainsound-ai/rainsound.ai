@@ -27,12 +27,12 @@ impl<'a> Link<'a> {
         }
     }
 
-    pub fn r#box(route: Route) -> Self {
+    pub fn button(route: Route) -> Self {
         Self {
             route,
             slot: html! { "" },
             class: "",
-            variant: LinkVariant::Box,
+            variant: LinkVariant::Button,
         }
     }
 
@@ -52,7 +52,7 @@ impl Render for Link<'_> {
         let class = match self.variant {
             LinkVariant::NoUnderline => format!("{} no-underline", self.class),
             LinkVariant::Underline => format!("{} underline", self.class),
-            LinkVariant::Box => format!("{} border px-2 align-middle", self.class),
+            LinkVariant::Button => format!("{} border px-2 align-middle", self.class),
         };
 
         html! {
@@ -66,5 +66,5 @@ impl Render for Link<'_> {
 pub enum LinkVariant {
     NoUnderline,
     Underline,
-    Box,
+    Button, // In SvelteKit this was called box, but that's a reserved word in Rust.
 }
