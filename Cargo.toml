@@ -1,11 +1,5 @@
 [workspace]
-members = [
-    "serverless_functions",
-    "shared",
-    "assets/mod",
-    "assets/runtime",
-    "assets/macro",
-]
+members = ["server", "shared", "assets/mod", "assets/runtime", "assets/macro"]
 exclude = [
     # If we add the browser crate to the workspace, building causes
     # a deadlock. This is because:

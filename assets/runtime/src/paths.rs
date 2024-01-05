@@ -63,10 +63,9 @@ pub fn built_image_path(path_starting_from_images_dir: &Path) -> PathBuf {
 mod tests {
     #[test]
     fn test_built_assets_dir() {
-        let invoke_serverless_functions_component =
-            find_spin_toml_component_by_id("invoke_serverless_functions");
+        let invoke_server_component = find_spin_toml_component_by_id("invoke_server");
 
-        let mut file_tables = invoke_serverless_functions_component
+        let mut file_tables = invoke_server_component
             .get("files")
             .unwrap()
             .as_array()
