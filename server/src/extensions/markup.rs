@@ -1,5 +1,4 @@
 use maud::Markup;
-use spin_sdk::http::Response;
 
 pub trait MarkupExtension {
     fn into_response(self) -> Response;

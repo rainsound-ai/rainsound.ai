@@ -1,5 +1,4 @@
 use maud::Markup;
-use spin_sdk::http::Request;
 
 use super::*;
 
