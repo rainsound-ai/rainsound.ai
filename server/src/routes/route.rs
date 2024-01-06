@@ -2,7 +2,7 @@ use maud::Markup;
 
 use super::*;
 
-pub use shared::Route;
+pub use shared::route::Route;
 
 pub trait ServerSideRouteExtension {
     fn from_request(req: &Request) -> Self;
