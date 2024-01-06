@@ -23,6 +23,10 @@ impl Route {
             .find(|route| route.to_string() == path)
             .unwrap_or(Route::NotFound)
     }
+
+    pub fn register_axum_route(&self) -> bool {
+        self.to_string().starts_with('/')
+    }
 }
 
 impl Display for Route {
