@@ -34,11 +34,7 @@ setup() {
 		rm -rf ./build_tailwind/node_modules &&
 		cd build_tailwind &&
 		npm install &&
-		cd .. &&
-		# Install Spin.
-		rustup target add wasm32-wasi &&
-		brew tap fermyon/tap &&
-		brew install fermyon/tap/spin
+		cd ..
 }
 
 profile_bundle_size() {

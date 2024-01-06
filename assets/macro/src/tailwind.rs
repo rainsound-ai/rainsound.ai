@@ -42,36 +42,41 @@ pub fn include(input: TokenStream) -> TokenStream {
         .expect("Error converting the path to the Tailwind output CSS file to a string.");
     log::info!("Saving Tailwind output to {}.", output_file_str);
 
-    let mut run_tailwind = Command::new("npx");
+    // For now we skip building on render.com because we'll need to
+    // figure out how to install wasm-pack and Tailwind. We assume
+    // the assets have been built locally.
+    if !crate::render::is_building_on_render_dot_com() {
+        let mut run_tailwind = Command::new("npx");
 
-    run_tailwind
-        .arg("tailwindcss")
-        .args(["--config", config_str])
-        .args(["--input", input_file_str])
-        .args(["--output", output_file_str]);
+        run_tailwind
+            .arg("tailwindcss")
+            .args(["--config", config_str])
+            .args(["--input", input_file_str])
+            .args(["--output", output_file_str]);
 
-    if input.minify {
-        run_tailwind.arg("--minify");
-    }
+        if input.minify {
+            run_tailwind.arg("--minify");
+        }
 
-    log::info!("Invoking Tailwind CLI.");
-    let tailwind_cli_output = run_tailwind
-        .output()
-        .expect("Error invoking the Tailwind CLI.");
+        log::info!("Invoking Tailwind CLI.");
+        let tailwind_cli_output = run_tailwind
+            .output()
+            .expect("Error invoking the Tailwind CLI.");
 
-    if !tailwind_cli_output.status.success() {
-        let stdout = String::from_utf8(tailwind_cli_output.stdout)
-            .expect("Error converting the Tailwind CLI's output to a string.");
-        let stderr = String::from_utf8(tailwind_cli_output.stderr)
-            .expect("Error converting the Tailwind CLI's error output to a string.");
-        let error_message = format!(
-            "Error including Tailwind.\nstdout:\n{}\n\nstderr:\n{}",
-            stdout, stderr
-        );
-        log::error!("{}", error_message);
-        return syn::Error::new(input.span, error_message)
-            .to_compile_error()
-            .into();
+        if !tailwind_cli_output.status.success() {
+            let stdout = String::from_utf8(tailwind_cli_output.stdout)
+                .expect("Error converting the Tailwind CLI's output to a string.");
+            let stderr = String::from_utf8(tailwind_cli_output.stderr)
+                .expect("Error converting the Tailwind CLI's error output to a string.");
+            let error_message = format!(
+                "Error including Tailwind.\nstdout:\n{}\n\nstderr:\n{}",
+                stdout, stderr
+            );
+            log::error!("{}", error_message);
+            return syn::Error::new(input.span, error_message)
+                .to_compile_error()
+                .into();
+        }
     }
 
     log::info!("Successfully built Tailwind.");

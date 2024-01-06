@@ -6,6 +6,7 @@ mod font;
 mod images;
 mod logger;
 mod parse_macro_arguments;
+mod render;
 mod tailwind;
 
 #[proc_macro]
