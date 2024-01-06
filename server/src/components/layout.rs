@@ -1,4 +1,4 @@
-use crate::assets::assets;
+use crate::assets::ASSETS;
 use crate::components::*;
 use crate::extensions::*;
 use crate::routes::Route;
@@ -13,11 +13,11 @@ pub fn layout(title: &'static str, content: Markup) -> Markup {
         html lang="en" {
             head {
                 meta charset="UTF-8";
-                link rel="icon" href=(assets.favicon.url_path.to_string_lossy().to_string());
+                link rel="icon" href=(ASSETS.favicon.url_path.to_string_lossy().to_string());
                 meta name="viewport" content="width=device-width, initial-scale=1.0";
                 meta http_equiv="X-UA-Compatible" content="ie=edge";
                 meta name="description" content="rainsound.ai: Custom AI & Web App Development";
-                (stylesheet(&assets.css))
+                (stylesheet(&ASSETS.css))
                 title {
                     (title)
                 }
@@ -28,7 +28,7 @@ pub fn layout(title: &'static str, content: Markup) -> Markup {
                     (Link::no_underline(Route::Home)
                         .class("flex items-center gap-grid-1 no-underline")
                         .slot(html! {
-                            img src=(assets.logo.url_path.to_string()) alt="rainsound.ai logo" class="h-grid-4 w-grid-4" {
+                            img src=(ASSETS.logo.url_path.to_string()) alt="rainsound.ai logo" class="h-grid-4 w-grid-4" {
                                 "rainsound.ai"
                             }
                         })
@@ -56,7 +56,7 @@ pub fn layout(title: &'static str, content: Markup) -> Markup {
                     class="h-grid-33 px-grid-10 w-full grid grid-cols-3 text-grid-2 items-center text-neutral whitespace-nowrap"
                 {
                     a href="/" class="flex items-center gap-grid-1 text-grid-3" {
-                        img src=(assets.logo.url_path.to_string()) alt="rainsound.ai logo" class="h-grid-5 w-grid-5" {
+                        img src=(ASSETS.logo.url_path.to_string()) alt="rainsound.ai logo" class="h-grid-5 w-grid-5" {
                             "rainsound.ai"
                         }
                     }
@@ -86,7 +86,7 @@ pub fn layout(title: &'static str, content: Markup) -> Markup {
 }
 
 fn main_js() -> Markup {
-    let browser_js_path = assets
+    let browser_js_path = ASSETS
         .browser_crate
         .js
         .url_path

@@ -1,7 +1,7 @@
 use assets::*;
 use once_cell::sync::Lazy;
 
-pub static assets: Lazy<Assets> = Lazy::new(Assets::new);
+pub static ASSETS: Lazy<Assets> = Lazy::new(Assets::new);
 
 pub struct Assets {
     pub css: CssAsset,
