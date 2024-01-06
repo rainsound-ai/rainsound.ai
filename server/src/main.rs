@@ -31,6 +31,7 @@ async fn main() {
     let app = Router::new()
         .route("/", get(handle_request)) // The wildcard "/*anthing" syntax doesn't match the root route, so we have to register that one separately.
         .route("/*anything", get(handle_request))
+        .route("/healthz", get(health_check))
         .nest_service(
             &built_assets_browser_prefix,
             ServeDir::new(built_assets_dir),
@@ -46,3 +47,5 @@ async fn handle_request(req: Request) -> axum::response::Html<String> {
     let route = Route::from_request(&req);
     route.html().into_axum_html_response()
 }
+
+async fn health_check() {}
