@@ -30,3 +30,4 @@ mime = "0.3.17"
 base64 = "0.21.5"
 # image_captioner = "0.2.2"
 uuid = { version = "1.6.1", features = ["v4"] }
+tailwind_cli = { git = "https://github.com/rainsound-ai/tailwind-cli" }

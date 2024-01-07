@@ -262,7 +262,7 @@ include_browser_crate!(
         // eprintln!("path_to_browser_crate: {:?}", path_to_browser_crate);
 
         let js_url_path = parse_url_path_argument("js_url_path", &input)
-            .map_err(|err| err.to_syn_error(input_span))?;
+            .map_err(|err| err.into_syn_error(input_span))?;
         // eprintln!("js_url_path: {:?}", js_url_path);
 
         let js_performance_budget_millis =
@@ -272,7 +272,7 @@ include_browser_crate!(
         // eprintln!("js_performance_budget: {:?}", js_performance_budget);
 
         let wasm_url_path = parse_url_path_argument("wasm_url_path", &input)
-            .map_err(|err| err.to_syn_error(input_span))?;
+            .map_err(|err| err.into_syn_error(input_span))?;
         // eprintln!("wasm_url_path: {:?}", wasm_url_path);
 
         let wasm_performance_budget_millis =

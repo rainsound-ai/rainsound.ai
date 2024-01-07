@@ -41,3 +41,6 @@ opt-level = 3
 opt-level = 3
 [profile.bench.package.image]
 opt-level = 3
+
+[install]
+root = "target/cargo_install"
