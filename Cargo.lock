@@ -1712,7 +1712,7 @@ checksum = "2047c6ded9c721764247e62cd3b03c09ffc529b2ba5b10ec482ae507a4a70160"
 [[package]]
 name = "tailwind_cli"
 version = "3.4.1-0"
-source = "git+https://github.com/rainsound-ai/tailwind-cli#4e19743321beab5a4e1aeebebdb5e2fb4bb3c338"
+source = "git+https://github.com/rainsound-ai/tailwind-cli#275e93faefddd22552aad55389a4aba5d5d3818e"
 dependencies = [
  "duct",
  "include-cargo-toml",
