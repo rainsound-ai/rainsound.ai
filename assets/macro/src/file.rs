@@ -83,7 +83,7 @@ include_file!(
             .expect("Error parsing path_to_input_file.");
 
         let url_path_string = parse_url_path_argument("url_path", &input)
-            .map_err(|err| err.to_syn_error(input_span))?;
+            .map_err(|err| err.into_syn_error(input_span))?;
         let url_path = PathBuf::from_str(&url_path_string).expect("Error parsing url_path.");
 
         let performance_budget_millis =

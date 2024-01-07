@@ -50,17 +50,20 @@ pub enum ParseUrlPathArgumentError {
 }
 
 impl ParseUrlPathArgumentError {
-    pub fn to_syn_error(self, span: proc_macro2::Span) -> syn::Error {
+    pub fn into_syn_error(self, span: proc_macro2::Span) -> syn::Error {
         syn::Error::new(span, self.to_string())
     }
+}
 
-    pub fn to_string(&self) -> String {
+impl std::fmt::Display for ParseUrlPathArgumentError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             ParseUrlPathArgumentError::MissingArgument => {
-                "url_path argument is missing".to_string()
+                write!(f, "url_path argument is missing")
             }
             ParseUrlPathArgumentError::InvalidPrefix => {
-                format!(
+                write!(
+                    f,
                     "url_path must start with {}",
                     &built_assets_browser_prefix().to_string_lossy().to_string()
                 )

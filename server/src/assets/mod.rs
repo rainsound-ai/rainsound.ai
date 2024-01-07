@@ -1,7 +1,7 @@
 use assets::*;
 use once_cell::sync::Lazy;
 
-pub static assets: Lazy<Assets> = Lazy::new(Assets::new);
+pub static ASSETS: Lazy<Assets> = Lazy::new(Assets::new);
 
 pub struct Assets {
     pub css: CssAsset,
@@ -26,7 +26,7 @@ pub struct Assets {
 impl Assets {
     pub fn new() -> Self {
         let css = assets::include_tailwind!(
-            path_to_input_file: "serverless_functions/src/assets/main.css",
+            path_to_input_file: "server/src/assets/main.css",
             url_path: "built-assets/built.css",
             performance_budget_millis: 150,
         );
@@ -40,55 +40,55 @@ impl Assets {
         );
 
         let favicon = assets::include_file!(
-            path_to_input_file: "serverless_functions/src/assets/images/favicon.ico",
+            path_to_input_file: "server/src/assets/images/favicon.ico",
             url_path: "built-assets/favicon.ico",
             performance_budget_millis: 150,
         );
 
         let logo = assets::include_file!(
-            path_to_input_file: "serverless_functions/src/assets/images/logo.png",
+            path_to_input_file: "server/src/assets/images/logo.png",
             url_path: "built-assets/favicon.ico",
             performance_budget_millis: 275,
         );
 
         // This image is decorative, so we skip the alt text.
         let project_flower_one = assets::include_image!(
-            path_to_image: "serverless_functions/src/assets/images/project_flower_one.png",
+            path_to_image: "server/src/assets/images/project_flower_one.png",
             alt: "",
             placeholder: automatic_color,
         );
 
         // This image is decorative, so we skip the alt text.
         let project_flower_two = assets::include_image!(
-            path_to_image: "serverless_functions/src/assets/images/project_flower_two.png",
+            path_to_image: "server/src/assets/images/project_flower_two.png",
             alt: "",
             placeholder: automatic_color,
         );
 
         // This image is decorative, so we skip the alt text.
         let project_flower_three = assets::include_image!(
-            path_to_image: "serverless_functions/src/assets/images/project_flower_three.png",
+            path_to_image: "server/src/assets/images/project_flower_three.png",
             alt: "",
             placeholder: automatic_color,
         );
 
         // This image is decorative, so we skip the alt text.
         let project_flower_four = assets::include_image!(
-            path_to_image: "serverless_functions/src/assets/images/project_flower_four.png",
+            path_to_image: "server/src/assets/images/project_flower_four.png",
             alt: "",
             placeholder: automatic_color,
         );
 
         // This image is decorative, so we skip the alt text.
         let project_flower_five = assets::include_image!(
-            path_to_image: "serverless_functions/src/assets/images/project_flower_five.png",
+            path_to_image: "server/src/assets/images/project_flower_five.png",
             alt: "",
             placeholder: automatic_color,
         );
 
         // This image is decorative, so we skip the alt text.
         let project_flower_six = assets::include_image!(
-            path_to_image: "serverless_functions/src/assets/images/project_flower_six.png",
+            path_to_image: "server/src/assets/images/project_flower_six.png",
             alt: "",
             placeholder: automatic_color,
         );
@@ -96,31 +96,31 @@ impl Assets {
         // Fonts
 
         let fugi = assets::include_font!(
-            path_to_input_file: "serverless_functions/src/assets/fonts/fugi.ttf",
+            path_to_input_file: "server/src/assets/fonts/fugi.ttf",
             url_path: "built-assets/fonts/fugi.ttf",
             performance_budget_millis: 275,
         );
 
         let aurora_grotesk_bold = assets::include_font!(
-            path_to_input_file: "serverless_functions/src/assets/fonts/aurora_grotesk_bold.otf",
+            path_to_input_file: "server/src/assets/fonts/aurora_grotesk_bold.otf",
             url_path: "built-assets/fonts/aurora-grotesk-bold.otf",
             performance_budget_millis: 275,
         );
 
         let aurora_grotesk_medium = assets::include_font!(
-            path_to_input_file: "serverless_functions/src/assets/fonts/aurora_grotesk_medium.otf",
+            path_to_input_file: "server/src/assets/fonts/aurora_grotesk_medium.otf",
             url_path: "built-assets/fonts/aurora-grotesk-medium.otf",
             performance_budget_millis: 275,
         );
 
         let aurora_grotesk_light = assets::include_font!(
-            path_to_input_file: "serverless_functions/src/assets/fonts/aurora_grotesk_light.otf",
+            path_to_input_file: "server/src/assets/fonts/aurora_grotesk_light.otf",
             url_path: "built-assets/fonts/aurora-grotesk-light.otf",
             performance_budget_millis: 275,
         );
 
         let clearface_bold = assets::include_font!(
-            path_to_input_file: "serverless_functions/src/assets/fonts/clearface_bold.ttf",
+            path_to_input_file: "server/src/assets/fonts/clearface_bold.ttf",
             url_path: "built-assets/fonts/clearface-bold.ttf",
             performance_budget_millis: 275,
         );

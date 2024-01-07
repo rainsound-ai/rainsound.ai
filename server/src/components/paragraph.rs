@@ -1,4 +1,3 @@
-use crate::routes::Route;
 use maud::{html, Markup, Render};
 
 pub struct Paragraph<'a> {

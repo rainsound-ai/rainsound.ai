@@ -4,7 +4,7 @@ use gloo::history::{BrowserHistory, History};
 use gloo::net::http::Request;
 use gloo::timers::callback::Interval;
 use once_cell::sync::OnceCell;
-use shared::Route;
+use shared::route::Route;
 use wasm_bindgen_futures::spawn_local;
 
 pub fn start_checking_for_updates() {

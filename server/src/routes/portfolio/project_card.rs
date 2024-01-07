@@ -2,7 +2,7 @@ use super::projects::*;
 use crate::components::*;
 use crate::side::*;
 use maud::{html, Markup, Render};
-use shared::Route;
+use shared::route::Route;
 
 pub struct ProjectCard {
     index: usize,
