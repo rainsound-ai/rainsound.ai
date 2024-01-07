@@ -441,12 +441,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "fastrand"
-version = "2.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "25cbce373ec4653f1a01a31e8a5e5ec0c622dc27ff9c4e6606eefef5cbbed4a5"
-
-[[package]]
 name = "fdeflate"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1051,10 +1045,11 @@ checksum = "03087c2bad5e1034e8cace5926dec053fb3790248370865f5117a7d0213354c8"
 [[package]]
 name = "lib_wasm_pack"
 version = "0.12.1-0.1.0"
-source = "git+https://github.com/rainsound-ai/lib-wasm-pack#df6f35d26f4a0cd21cafc7dc03063a1b31be91bf"
+source = "git+https://github.com/rainsound-ai/lib-wasm-pack#baab1599f35ac8522432b6b9ea5f92d752586110"
 dependencies = [
  "duct",
  "include-cargo-toml",
+ "uuid",
 ]
 
 [[package]]
@@ -1721,25 +1716,12 @@ checksum = "2047c6ded9c721764247e62cd3b03c09ffc529b2ba5b10ec482ae507a4a70160"
 
 [[package]]
 name = "tailwind_cli"
-version = "3.4.1-0"
-source = "git+https://github.com/rainsound-ai/tailwind-cli#275e93faefddd22552aad55389a4aba5d5d3818e"
+version = "3.4.1-0.1.0"
+source = "git+https://github.com/rainsound-ai/tailwind-cli#957464282a42ef69f939f0a54346cc5f5ab6c318"
 dependencies = [
  "duct",
  "include-cargo-toml",
- "tempfile",
-]
-
-[[package]]
-name = "tempfile"
-version = "3.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "01ce4141aa927a6d1bd34a041795abd0db1cccba5d5f24b009f694bdf3a1f3fa"
-dependencies = [
- "cfg-if",
- "fastrand",
- "redox_syscall",
- "rustix",
- "windows-sys 0.52.0",
+ "uuid",
 ]
 
 [[package]]
