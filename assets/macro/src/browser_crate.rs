@@ -16,43 +16,38 @@ pub fn include(input: TokenStream) -> TokenStream {
     let final_path_to_built_wasm = output_file_path(&input.wasm_url_path);
     let final_path_to_built_js = output_file_path(&input.js_url_path);
 
-    // For now we skip building on render.com because we'll need to
-    // figure out how to install wasm-pack and Tailwind. We assume
-    // the assets have been built locally.
-    if !crate::render::is_building_on_render_dot_com() {
-        let maybe_wasm_pack_output = run_wasm_pack(&input);
-        let wasm_pack_output = match maybe_wasm_pack_output {
-            Ok(wasm_pack_output) => wasm_pack_output,
-            Err(error) => return error,
-        };
+    let maybe_wasm_pack_output = run_wasm_pack(&input);
+    let wasm_pack_output = match maybe_wasm_pack_output {
+        Ok(wasm_pack_output) => wasm_pack_output,
+        Err(error) => return error,
+    };
 
-        std::fs::create_dir_all(built_assets_dir()).expect("Error creating built assets dir.");
+    std::fs::create_dir_all(built_assets_dir()).expect("Error creating built assets dir.");
 
-        // Move the built wasm from the temporary directory where wasm-pack
-        // saved it to its final location in the built assets directory.
-        std::fs::rename(
-            &wasm_pack_output.path_to_built_wasm,
-            &final_path_to_built_wasm,
-        )
-        .expect("Error moving the built wasm file to the final location.");
+    // Move the built wasm from the temporary directory where wasm-pack
+    // saved it to its final location in the built assets directory.
+    std::fs::rename(
+        &wasm_pack_output.path_to_built_wasm,
+        &final_path_to_built_wasm,
+    )
+    .expect("Error moving the built wasm file to the final location.");
 
-        // Move the built JavaScript from the temporary directory where wasm-pack
-        // saved it to its final location in the built assets directory.
-        log::info!("Moving JS file to {:?}", &final_path_to_built_js);
-        if !wasm_pack_output.path_to_built_js.exists() {
-            let error_message = format!(
-                "Error moving the built JS file to the final location. The built JS file doesn't exist at {:?}.",
-                &wasm_pack_output.path_to_built_js
-            );
-            log::error!("{}", error_message);
-            let error: TokenStream = syn::Error::new(input.span, error_message)
-                .to_compile_error()
-                .into();
-            return error;
-        }
-        std::fs::rename(&wasm_pack_output.path_to_built_js, &final_path_to_built_js)
-            .expect("Error moving the built JS file to the final location.");
+    // Move the built JavaScript from the temporary directory where wasm-pack
+    // saved it to its final location in the built assets directory.
+    log::info!("Moving JS file to {:?}", &final_path_to_built_js);
+    if !wasm_pack_output.path_to_built_js.exists() {
+        let error_message = format!(
+            "Error moving the built JS file to the final location. The built JS file doesn't exist at {:?}.",
+            &wasm_pack_output.path_to_built_js
+        );
+        log::error!("{}", error_message);
+        let error: TokenStream = syn::Error::new(input.span, error_message)
+            .to_compile_error()
+            .into();
+        return error;
     }
+    std::fs::rename(&wasm_pack_output.path_to_built_js, &final_path_to_built_js)
+        .expect("Error moving the built JS file to the final location.");
 
     let minified_js_string = if input.production {
         overwrite_js_with_minified(final_path_to_built_js)
@@ -76,14 +71,8 @@ pub fn include(input: TokenStream) -> TokenStream {
         ),
     };
 
-    // For now we skip building on render.com because we'll need to
-    // figure out how to install wasm-pack and Tailwind. We assume
-    // the assets have been built locally.
-    if !crate::render::is_building_on_render_dot_com() {
-        // Clean up the temporary directory where wasm-pack saved the built files.
-        // TODO: Uncomment this.
-        // std::fs::remove_dir_all(wasm_pack_output.out_dir).expect("Error deleting out_dir.");
-    }
+    // Clean up the temporary directory where wasm-pack saved the built files.
+    std::fs::remove_dir_all(wasm_pack_output.out_dir).expect("Error deleting out_dir.");
 
     let output = quote! {
         #browser_crate_asset
