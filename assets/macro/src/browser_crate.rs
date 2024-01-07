@@ -3,7 +3,6 @@ use assets_runtime::{paths::*, BrowserCrateAsset, JsAsset, WasmAsset};
 use proc_macro::TokenStream;
 use quote::quote;
 use std::path::PathBuf;
-use std::process::Command;
 use std::time::Duration;
 use syn::{
     parse::{Parse, ParseStream},
@@ -117,19 +116,21 @@ fn run_wasm_pack(input: &IncludeBrowserCrateInput) -> Result<WasmPackOutput, Tok
     let sub_folder_name = format!("browser_{}", uuid);
     let out_dir = target_dir().join(sub_folder_name);
     let out_dir_str = out_dir.to_str().unwrap();
-    let mut run_wasm_pack = Command::new(wasm_pack);
-
-    run_wasm_pack
-        .args(["build"])
-        .args(["--no-pack"]) // For some reason generating a package.json causes errors when running `spin build`: Error: invalid type: sequence, expected a string at line 3 column 19
-        .args(["--target", "web"])
-        .args(["--out-dir", out_dir_str])
-        .args(["--out-name", "browser"]);
+    let mut wasm_pack_args = vec![
+        "build",
+        "--no-pack", // For some reason generating a package.json causes errors when running `spin build`: Error: invalid type: sequence, expected a string at line 3 column 19
+        "--target",
+        "web",
+        "--out-dir",
+        out_dir_str,
+        "--out-name",
+        "browser",
+    ];
 
     if input.production {
-        run_wasm_pack.arg("--release");
+        wasm_pack_args.push("--release");
     } else {
-        run_wasm_pack.arg("--dev");
+        wasm_pack_args.push("--dev");
     }
 
     let browser_crate = workspace_root_dir().join(&input.path_to_browser_crate);
@@ -153,45 +154,38 @@ fn run_wasm_pack(input: &IncludeBrowserCrateInput) -> Result<WasmPackOutput, Tok
 
         return Err(error);
     }
-    run_wasm_pack.arg(browser_crate_str);
+    wasm_pack_args.push(browser_crate_str);
 
     // cargo arguments
     if !input.production {
-        run_wasm_pack.args(["--features", "dev"]);
+        wasm_pack_args.push("--features");
+        wasm_pack_args.push("dev");
     }
 
     log::info!(
-        "Invoking wasm-pack CLI with this command: {:?}",
-        &run_wasm_pack
+        "Invoking wasm-pack CLI with these arguments: {:?}",
+        &wasm_pack_args
     );
-    let wasm_pack_output = run_wasm_pack
-        .output()
-        .expect("Error invoking the wasm-pack CLI.");
 
-    if wasm_pack_output.status.success() {
-        log::info!("Successfully built browser crate.");
+    lib_wasm_pack::run(wasm_pack_args)
+        .map(|_| {
+            log::info!("Successfully built browser crate.");
 
-        Ok(WasmPackOutput {
-            path_to_built_wasm: out_dir.join("browser_bg.wasm"),
-            path_to_built_js: out_dir.join("browser.js"),
-            out_dir,
+            WasmPackOutput {
+                path_to_built_wasm: out_dir.join("browser_bg.wasm"),
+                path_to_built_js: out_dir.join("browser.js"),
+                out_dir,
+            }
         })
-    } else {
-        let stdout = String::from_utf8(wasm_pack_output.stdout)
-            .expect("Error converting wasm-pack's stdout to a string.");
-        let stderr = String::from_utf8(wasm_pack_output.stderr)
-            .expect("Error converting wasm-pack's stderr to a string.");
-        let error_message = format!(
-            "Error including browser crate.\nstdout:\n{}\n\nstderr:\n{}",
-            stdout, stderr
-        );
-        log::error!("{}", error_message);
-        let error: TokenStream = syn::Error::new(input.span, error_message)
-            .to_compile_error()
-            .into();
+        .map_err(|original_error| {
+            let error_message = format!("Error including browser crate. {}", original_error);
+            log::error!("{}", error_message);
+            let error: TokenStream = syn::Error::new(input.span, error_message)
+                .to_compile_error()
+                .into();
 
-        Err(error)
-    }
+            error
+        })
 }
 
 struct WasmPackOutput {

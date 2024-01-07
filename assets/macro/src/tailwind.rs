@@ -41,9 +41,6 @@ pub fn include(input: TokenStream) -> TokenStream {
         .expect("Error converting the path to the Tailwind output CSS file to a string.");
     log::info!("Saving Tailwind output to {}.", output_file_str);
 
-    // For now we skip building on render.com because we'll need to
-    // figure out how to install wasm-pack and Tailwind. We assume
-    // the assets have been built locally.
     let mut tailwind_args = vec![
         "--config",
         config_str,
