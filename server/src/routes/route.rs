@@ -1,9 +1,9 @@
+use axum::extract::Request;
 use maud::Markup;
-use spin_sdk::http::Request;
 
 use super::*;
 
-pub use shared::Route;
+pub use shared::route::Route;
 
 pub trait ServerSideRouteExtension {
     fn from_request(req: &Request) -> Self;

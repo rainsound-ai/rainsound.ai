@@ -1,7 +1,7 @@
-use enum_iterator::{all, Sequence};
+use enum_iterator;
 use std::fmt::Display;
 
-#[derive(Clone, Copy, Sequence)]
+#[derive(Clone, Copy, enum_iterator::Sequence)]
 pub enum Route {
     ArtbreederUserStory,
     BuildTime,
@@ -15,13 +15,17 @@ pub enum Route {
 
 impl Route {
     pub fn all() -> impl Iterator<Item = Route> {
-        all::<Route>()
+        enum_iterator::all::<Route>()
     }
 
     pub fn parse_path(path: &str) -> Route {
         Route::all()
             .find(|route| route.to_string() == path)
             .unwrap_or(Route::NotFound)
+    }
+
+    pub fn register_axum_route(&self) -> bool {
+        self.to_string().starts_with('/')
     }
 }
 

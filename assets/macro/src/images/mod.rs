@@ -38,8 +38,7 @@ pub fn include_image(input: TokenStream) -> TokenStream {
 
     let alt = match input.alt {
         Alt::Literal(alt) => alt,
-        Alt::Automatic => image_captioner::get_caption(absolute_path_to_image)
-            .expect("Error getting image caption."),
+        Alt::Automatic => "fix me".to_string(), // image_captioner::get_caption(absolute_path_to_image).expect("Error getting image caption."),
     };
 
     let build_time_image = BuildTimeImage::new(

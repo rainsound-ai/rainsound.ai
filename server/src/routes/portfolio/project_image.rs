@@ -1,4 +1,4 @@
-use crate::assets::assets;
+use crate::assets::ASSETS;
 use crate::components::*;
 use crate::side::*;
 use assets::ImageAsset;
@@ -40,12 +40,12 @@ impl ProjectImage {
 
     fn asset(&self) -> &ImageAsset {
         let mut image_assets = [
-            &assets.project_flower_one,
-            &assets.project_flower_two,
-            &assets.project_flower_three,
-            &assets.project_flower_four,
-            &assets.project_flower_five,
-            &assets.project_flower_six,
+            &ASSETS.project_flower_one,
+            &ASSETS.project_flower_two,
+            &ASSETS.project_flower_three,
+            &ASSETS.project_flower_four,
+            &ASSETS.project_flower_five,
+            &ASSETS.project_flower_six,
         ]
         .into_iter()
         .cycle();

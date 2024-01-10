@@ -1,7 +1,7 @@
 dev() {
 	echo "✨ Starting development server"
 	watch_rust &
-	watch_serverless_functions
+	watch_server
 }
 
 build() {
@@ -13,7 +13,7 @@ preview() {
 	echo "✨ Previewing production build"
 	build && (
 		serve_static_files &
-		watch_serverless_functions
+		watch_server
 	)
 }
 
@@ -23,7 +23,7 @@ deploy() {
 		git add --all &&
 		git commit -m "Deploy." &&
 		git push &&
-		deploy_serverless_functions
+		deploy_server
 }
 
 setup() {
@@ -34,11 +34,7 @@ setup() {
 		rm -rf ./build_tailwind/node_modules &&
 		cd build_tailwind &&
 		npm install &&
-		cd .. &&
-		# Install Spin.
-		rustup target add wasm32-wasi &&
-		brew tap fermyon/tap &&
-		brew install fermyon/tap/spin
+		cd ..
 }
 
 profile_bundle_size() {
@@ -71,13 +67,13 @@ watch_rust() {
 		--shell './scripts build_rust_dev'
 }
 
-watch_serverless_functions() {
+watch_server() {
 	echo "✨ Watching serverless functions"
-	cd ./serverless_functions && npm run dev
+	cd ./server && npm run dev
 }
 
-deploy_serverless_functions() {
-	cd ./serverless_functions
+deploy_server() {
+	cd ./server
 
 	npm run deploy
 
@@ -173,7 +169,7 @@ build_tailwind_dev() {
 	echo "✨ Watching Tailwind"
 	npx \
 		--prefix ./target/node_modules tailwindcss \
-		-i ./serverless_functions/src/main.css \
+		-i ./server/src/main.css \
 		-o ./target/tailwind/built.css
 }
 
@@ -181,7 +177,7 @@ build_tailwind_production() {
 	echo "✨ Building Tailwind for production"
 	npx \
 		--prefix ./target/node_modules tailwindcss \
-		-i ./serverless_functions/src/main.css \
+		-i ./server/src/main.css \
 		-o ./target/tailwind/built.css \
 		--minify
 }
@@ -207,8 +203,8 @@ for target in $ARGV; do
 		deploy
 	elif [ $target == "setup" ]; then
 		setup
-	elif [ $target == "watch_serverless_functions" ]; then
-		watch_serverless_functions
+	elif [ $target == "watch_server" ]; then
+		watch_server
 	elif [ $target == "build_tailwind_dev" ]; then
 		build_tailwind_dev
 	elif [ $target == "profile_bundle_size" ]; then

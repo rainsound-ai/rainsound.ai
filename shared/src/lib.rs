@@ -5,7 +5,7 @@
 pub mod prelude;
 pub use self::prelude::*;
 
-pub mod router;
+pub mod route;
 
 // pub mod components;
 // pub mod extensions;

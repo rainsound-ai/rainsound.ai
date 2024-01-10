@@ -1,11 +1,5 @@
 [workspace]
-members = [
-    "serverless_functions",
-    "shared",
-    "assets/mod",
-    "assets/runtime",
-    "assets/macro",
-]
+members = ["server", "shared", "assets/mod", "assets/runtime", "assets/macro"]
 exclude = [
     # If we add the browser crate to the workspace, building causes
     # a deadlock. This is because:
@@ -47,3 +41,6 @@ opt-level = 3
 opt-level = 3
 [profile.bench.package.image]
 opt-level = 3
+
+[install]
+root = "target/cargo_install"

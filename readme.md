@@ -66,7 +66,7 @@ _Pit of success_. The easiest way to build our site should also be the best, for
 
 ## Files and folders
 
-`/serverless_functions`
+`/server`
 
 This is our most important sub-crate. It's where we server-side render our Maud templates and handle form submissions.
 

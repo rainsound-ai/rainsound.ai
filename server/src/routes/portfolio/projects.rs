@@ -1,4 +1,4 @@
-use shared::Route;
+use shared::route::Route;
 
 pub struct Project {
     pub text: &'static str,
